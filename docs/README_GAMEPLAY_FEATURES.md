@@ -5,7 +5,7 @@ This file describes what the player should experience, not how every script must
 ## 1. Core play loop
 
 1. Choose a mode and start a short match.
-2. Inspect the play surface and target marbles.
+2. Inspect the play surface and the marbles on it (the holes, the line, the other sides' marbles).
 3. Adjust the camera to judge angle and distance.
 4. Drag the active striker to aim and set power.
 5. Release to shoot; marbles roll and collide without further input.
@@ -72,10 +72,10 @@ The game may stylise physics for enjoyable play. If so, use repeatable tuning an
 
 ## 5. Opponent behaviour
 
-For the first AI opponent:
+For the AI opponents (one to three sides):
 
 - It takes legal turns and uses the same shot interface as the player.
-- It aims at obvious targets and adjusts power based on rough distance.
+- It aims at obvious targets (in Batto, its next hole, or a rival marble when a hit looks worthwhile) and adjusts power based on rough distance.
 - It occasionally misses; perfect shots every turn are not fun or credible.
 - It does not see hidden information (if any is introduced later) or manipulate the board.
 - It does not need a language model, remote service, or machine learning.
@@ -86,18 +86,17 @@ Start with a transparent heuristic: generate a small number of candidate directi
 
 ### MVP
 
-- Guli Khela — adapted pit-and-strike variant.
-- Batto Challenge — provisional circle-knockout variant, pending local rule research.
+- **Kep** — the toss at the hole: every side tosses from behind the jalla, closest to the kep scores, a set number of rounds. The shortest mode and the opening of the other two.
+- **Batto** — a race for 2 to 4 sides along three holes and back (H1, H2, H3, H2, H1), with an opening toss, bonus shots for a hit or for reaching a hole, and a finishing order.
+- **Guli Khela** — the line, the hole, the stake and the _baad_ marble: stake marbles are scattered around the kep, a side names one _baad_ and must touch exactly one other marble, a wrong touch costs a fine, the winner of a round takes every marble on the ground, and marbles are won and lost across rounds.
+- **Quick Dan** (optional) — one round of Guli Khela for a short session.
+- Every mode plays against one to three AI opponents. Details are in [`README_GAME_RULES.md`](README_GAME_RULES.md); where the rules come from is on the About page ([`README_ABOUT.md`](README_ABOUT.md)).
 - Difficulty setting for opponent aim error only if it can be implemented and tested cheaply.
 - Local settings and small local match statistics.
 
-### Later, only if players ask for it
+### Not planned
 
-- Local pass-and-play / hot-seat turns.
-- More arena surfaces with meaningful friction differences.
-- Practice mode with no score.
-- Additional locally verified rule variants.
-- Cosmetic marble materials, if they do not reduce readability.
+Anything outside the four modes: pass-and-play, other languages, statistics and achievements, extra arenas, a practice mode, cosmetic marbles. See the overview's "Not in" list; adding one is a new decision recorded there first.
 
 No online multiplayer, remote profile, cloud save, or online leaderboard is part of the current product.
 
@@ -105,14 +104,18 @@ No online multiplayer, remote profile, cloud save, or online leaderboard is part
 
 In-match HUD should keep only essential information visible:
 
-- mode/objective;
-- active side/turn;
-- score or remaining target count;
+- mode name and the current objective;
+- active side/turn, with that side's marble mark;
+- the standings the mode needs: **Kep** the points and round, **Batto** each side's position on the route (H1 → H2 → H3 → H2 → H1) and who has finished, **Guli Khela** each side's purse and the pot on the ground, plus the named _baad_ marble;
 - aim/power feedback;
 - camera reset/view controls;
-- pause/restart.
+- pause/restart (and Surrender in Guli Khela).
 
-After a shot, use concise feedback such as “Target claimed”, “Opponent marble out”, “No score”, or “Your turn”. Keep a short result pause so the player can understand the outcome before the next aim begins. All feedback must be derived from the evaluated board state, not guessed from a sound or visual effect.
+In Guli Khela, before each throw the active side **names the baad marble** by tapping one marble; the marble is marked with a drawn cross and the call is shown in text. The shot is blocked until a marble is named.
+
+The modes carry no authenticity labels. A link to the About page is on the menu, and the rule text of a mode states the rule only.
+
+After a shot, use concise feedback such as “In the kep”, “Hit, one more shot”, “Reached hole 2, one more shot”, “Dan won”, “Fine: touched the baad marble”, “No touch”, or “Your turn”. Keep a short result pause so the player can understand the outcome before the next aim begins. All feedback must be derived from the evaluated board state, not guessed from a sound or visual effect.
 
 ## 8. Accessibility and comfort
 

@@ -1,50 +1,61 @@
 # TODO
 
-The plan and the reasons are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md) and [docs/README_IMPLEMENTATION.md](docs/README_IMPLEMENTATION.md). Tick items as they are done.
+The goal is the four modes, represented properly, on five platforms, with the same pages on the web and in the app, and nothing extra. The plan is in [docs/README_PROJECT_OVERVIEW.md](docs/README_PROJECT_OVERVIEW.md) and [docs/README_ROADMAP.md](docs/README_ROADMAP.md); the build order is in [docs/README_IMPLEMENTATION.md](docs/README_IMPLEMENTATION.md). Tick items as they are done.
 
-## Done: repository scaffold
+**Replanned 2026-10-21.** The docs describe the new plan. The code and the CI workflow still reflect the older, smaller plan until the phases below are done.
 
-- [x] Docs: architecture and code standards
-- [x] Doc fixes: roadmap and implementation mapping, Guli Khela score attack before the AI, pit definition
-- [x] `AGENTS.md`, `Makefile`, `.editorconfig`, `.gitignore`, `gdlintrc`
-- [x] Godot 4.7 project in `game/` with the Compatibility renderer, GUT, and a smoke scene (camera, light, ground, one marble) with two passing tests (`make game-test`)
-- [x] CI workflow (`.github/workflows/ci.yml`)
+## Built so far
 
-## Done: release pipeline and marketing site (not yet run on GitHub)
+- [x] The shot, settling and physics core with tests (Phase 1) and camera and input (Phase 2); checked headless and in rendered frames, **not played by hand on a phone**
+- [x] Kep, complete as a playable mode against two computer sides, with the full screen set in light and dark (Phase 3); 62 game tests
+- [x] A first version of the site: home, how to play, about, download, privacy, share image, theme toggle, and a play page that frames Godot's default page
+- [x] The web export builds and plays in headless Chrome (menu, aim, a shot, a computer toss into the kep; no console errors)
+- [x] Checks: lint, token and colour checks, file size, site tests and smoke test, CI that passes (build and release jobs have never run)
 
-- [x] `VERSION`, `make version`, `make release`, version stamped into the Android preset in CI
-- [x] CI workflow builds APK and web export on main and publishes a versioned release plus a rolling `latest` (written, never run)
-- [x] `web/` marketing site: home, how to play, download (reads latest release), privacy; `typecheck` and `build` pass locally
+## Phase 0 — five platforms build and run
 
-## Pending: release and site
+- [x] CI and infra follow the sibling project's flow: the Godot Docker image (`docker/`, `compose.yaml`), `make game-docker-*` and one export target per platform, quality / web / game / build / release jobs, rolling `latest` plus versioned releases, the Vercel deploy hook, and `docs/DEPLOY.md` (rewritten, **not yet run on GitHub**)
+- [x] Export presets for Windows, macOS and Linux (Android and Web existed)
+- [ ] Run the Docker image locally: `make game-docker-check`, `make game-docker-test`, and each export; confirm the image tag exists and has all five templates
+- [ ] First run of the pipeline on GitHub; fix whatever it needs
+- [ ] Run each build on a real target: an Android phone, a desktop browser, Windows, macOS, Linux
+- [ ] Write down what an unsigned Windows and macOS build makes the OS say, for the download page
+- [ ] Set up Vercel and the `VERCEL_DEPLOY_HOOK` secret; create the fixed Android key secret
+- [ ] Check Jolt in the web export directly
 
-- [ ] Push to GitHub, run the workflow once, fix whatever the APK job needs; record it in `docs/README_RELEASE.md`
-- [ ] Create the fixed debug keystore secret `ANDROID_DEBUG_KEYSTORE_BASE64`
-- [ ] Choose site hosting and a domain; add screenshots once the game has art
+## Phase 1 and 2 — hand checks
 
-## Now: Milestone 0, export smoke test
+- [ ] Play it on a phone and with a few people: pull sensitivity, the 3 to 5 s settle time, how often the kep captures, orbit and pinch zoom
 
-**Not done: nothing has been exported or run on a device or in a browser.** The scene loads and its tests pass headless on this machine only.
+## Phase 4 — Batto
 
-- [ ] Install Godot 4.7 export templates; pin the exact version in `project.godot`, the Makefile and CI
-- [ ] Set up the Android SDK and a debug keystore in Godot's editor settings
-- [ ] `make game-apk`, install on a real phone, confirm the scene runs and touch input arrives
-- [ ] `make game-web`, serve `game/build/web/` locally, load in a current desktop browser, check the console is clean
-- [ ] Record issues and the final export settings in `docs/README_IMPLEMENTATION.md`
-- [ ] Decide the Android minimum SDK and target device tier; decide where the web build is hosted
+- [ ] Three holes and the route on screen, hits and bonus shots (a hit or reaching a hole, cap of three), finishing order, computer sides choosing between the hole and a hit, cues, tests for every rule
+- [ ] Check the Batto rules with at least one more person who played
 
-## Next: Milestone 1, marble test bench
+## Phase 5 — Guli Khela and Quick Dan
 
-- [ ] `ShotCommand`, `SettleDetector` and `BoardSnapshot` in `game/scripts/core/` with GUT tests
-- [ ] Test scene: flat ground, boundaries, two or three marbles, reset layout
-- [ ] Shot applier, friction and bounce calibration, debug readout
-- [ ] Test cases listed in the implementation plan (straight, head-on, glancing, wall, trapped, low and max power, rapid restart)
-- [ ] Record tuned settle thresholds and tick rate in `docs/README_ARCHITECTURE.md`
+- [ ] Purses and stake, the scatter, naming the baad, a clean touch and a fine, winning a dan, the three-pass rule, surrender, the end; computer sides that name a baad and touch one marble; Quick Dan as a profile; tests for every rule
+- [ ] Check the Guli Khela rules with at least one person who played
+
+## Phase 6 — the pages, on the web and in the app
+
+- [ ] `content/` source and the diagram format; a check that the game and the site match; move the About text onto it
+- [ ] Site: the large Home, a page for each game, the very large How to play, Contact, About, Privacy
+- [ ] App: How to play, mode info, About, Contact, Privacy, and the links to the web and to the other platforms
+- [ ] Site-native browser loader (progress, WebGL and WebAssembly checks, failure and retry, sharp sizing, fullscreen) replacing the framed Godot page
+- [ ] Download page for every platform, reading the release
+- [ ] The basics: sound, locally saved settings with a reset
+- [ ] Contact details to publish; the author's review of the How to play and games wording
+
+## Phase 7 — release
+
+- [ ] Automatic release of every platform file and `SHA256SUMS` when the version changes
+- [ ] Choose the site host and a domain; deploy
+- [ ] Hand-test every platform; write the known-limitations note
+- [ ] Check the rules with people who played; update the About page from what they said
 
 ## Open decisions
 
-- [ ] Guli Khela pit: size, distance, and whether a success keeps the turn (needs the player research in `README_GAME_RULES.md`, section 7)
-- [ ] Batto circle knockout: marbles per side, partly-outside rule, whether the striker can be knocked out
-- [ ] UI language: English only, or English and Bangla (check Bangla font rendering in Godot first)
-- [ ] Whether hot-seat is wanted before the AI (default: no, only if playtests ask)
-- [ ] Release channel: Google Play, itch.io, or direct APK
+- [ ] Site hosting and domain
+- [ ] Desktop signing, if the warnings put people off
+- [ ] Whether to add iOS or a store listing later (not planned)

@@ -1,4 +1,8 @@
 {
-  "*.{json,md,yaml,yml,mjs}": ["prettier --write"],
-  "game/{scripts,tests}/**/*.gd": ["uvx --from gdtoolkit==4.5.0 gdformat", "uvx --from gdtoolkit==4.5.0 gdlint"]
+  "*.{json,md,yaml,yml,mjs,ts,tsx,css}": ["prettier --write"],
+  "design/tokens.json": ["node scripts/tokens.mjs"],
+  "game/{scripts,tests}/**/*.gd": [
+    "uvx --from gdtoolkit==4.5.0 gdformat",
+    "uvx --from gdtoolkit==4.5.0 gdlint"
+  ]
 }

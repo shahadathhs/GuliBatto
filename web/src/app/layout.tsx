@@ -1,32 +1,33 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import "./tokens.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
   title: { default: "Guli & Batto", template: "%s · Guli & Batto" },
   description:
-    "A small offline 3D marble game inspired by Guli Khela and Batto. Aim, shoot, and watch the marbles roll.",
+    "A small offline 3D marble game made from the traditional marble games of Bangladesh. Aim, shoot, and watch the marbles roll.",
+  openGraph: { siteName: "Guli & Batto", type: "website" },
 };
+
+// Applies a saved theme choice before the first paint, so the page never flashes the wrong theme.
+const THEME_SCRIPT = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
-        <header>
-          <Link className="brand" href="/">
-            Guli &amp; Batto
-          </Link>
-          <nav>
-            <Link href="/how-to-play">How to play</Link>
-            <Link href="/download">Download</Link>
-            <Link href="/privacy">Privacy</Link>
-          </nav>
-        </header>
-        {children}
-        <footer>
-          Inspired by marble games played in Bangladesh. The name and the Batto rules are
-          provisional.
-        </footer>
+        <a className="skip-link" href="#main">
+          Skip to content
+        </a>
+        <SiteHeader />
+        <div id="main">{children}</div>
+        <SiteFooter />
       </body>
     </html>
   );

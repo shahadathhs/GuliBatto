@@ -6,9 +6,12 @@
   "description": "Guli & Batto marketing site: what the game is, how to play, download, privacy.",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/fetch-play-build.mjs && next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"src/**/*.test.ts\"",
+    "smoke": "node scripts/smoke.mjs",
+    "lint": "oxlint --type-aware ."
   },
   "dependencies": {
     "next": "16.4.2",

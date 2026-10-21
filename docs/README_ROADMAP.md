@@ -1,134 +1,110 @@
 # Roadmap
 
-This roadmap is milestone-based. Each phase has a decision gate so the project can stop early if the core play does not feel good. Dates are intentionally omitted; the work is solo, and calendar estimates would be false precision.
+> **Replanned 2026-10-21.** The goal is the four modes, each represented properly, on Android, the web, Windows, macOS and Linux, with the same information on the web and in the app, and nothing extra ([`README_PROJECT_OVERVIEW.md`](README_PROJECT_OVERVIEW.md)). Phases are numbered like the implementation milestones in [`README_IMPLEMENTATION.md`](README_IMPLEMENTATION.md): Phase _n_ is Milestone _n_. Each phase has a gate. Dates are omitted; the work is solo and calendar estimates would be false precision.
 
-## Phase 0 — Confirm feasibility
+## Where things stand
 
-**Goal:** make sure the chosen engine and the two release targets are viable before substantial production work.
+**Built**
+
+- The shot, settling and physics core, with tests (Phase 1) and the camera and input (Phase 2), checked headless and in rendered frames; **not played by hand on a phone**.
+- Kep, complete as a playable mode against two computer sides, with its scoring and match flow, and the menu, HUD, results, About, pause and settings screens in light and dark (Phase 3).
+- A first version of the website: home, how to play, about, download, privacy, and a play page that frames Godot's default page.
+- The web export of the game builds and plays in headless Chrome. Android, Windows, macOS and Linux exports are **not** built yet.
+- Checks: lint, token and colour checks, 62 game tests, site tests and a smoke test, and a CI pipeline that passes (the build and release jobs have never run).
+
+**Not built**
+
+- Batto, Guli Khela and Quick Dan.
+- The shared content source, the large Home, per-game and How to play pages, Contact, the in-app pages, the site-native browser loader, and the all-platform download page.
+- Builds for Android, Windows, macOS and Linux, and automatic releases for them.
+- Sound, saved settings, and checking the rules with people who played.
+
+## Phase 0 — Five platforms build and run
+
+**Goal:** one Godot project that exports, from CI, to Android, the web, Windows, macOS and Linux, and each export starts and plays a toss.
 
 Deliverables:
 
-- pinned stable Godot 4.x version;
-- Compatibility renderer selected;
-- blank 3D Android export installed on a phone;
-- blank Web export running in a desktop browser;
-- Git repository and working README files.
+- pinned Godot version and export presets for all five platforms;
+- a CI that builds each platform in the Godot container, with the site rebuild hook and releases ([`CI.md`](CI.md), [`DEPLOY.md`](DEPLOY.md));
+- each build tried on a real target: an Android phone, a desktop browser, and each desktop OS (a virtual machine or a friend's machine is fine);
+- a note of what each OS shows for an unsigned build.
 
-**Gate:** if WebGL 2 support, rendering, or hosting constraints make browser release impractical, decide now whether to reduce web scope or change the platform plan. Do not wait until the game is finished.
+**Gate:** every platform's build launches and a toss can be played. If a platform cannot be built or run, decide now whether to drop it, not at the end. Status: the web export is built and played in headless Chrome; the rest are open.
 
 ## Phase 1 — The shot must feel good
 
 **Goal:** validate the primary interaction.
 
-Deliverables:
+Deliverables: marbles with real physics, a bounded shot impulse, collision and settling, a debug readout, and a repeatable reset.
 
-- one dirt-coloured test plane and boundaries;
-- two/three marbles;
-- aiming/power indicator;
-- shot impulse;
-- collision and settling;
-- debug reset scene.
-
-**Gate:** ask a few people to make several shots. Continue only if shot direction and power feel understandable, and collisions make sense enough that players want another attempt. Fix input/physics before adding content.
+**Gate:** a few people make several shots; direction and power feel understandable and collisions make sense. Status: built and tested; **the hand check is open.**
 
 ## Phase 2 — Camera and gesture quality
 
-**Goal:** support the promised free camera without breaking aiming.
+**Goal:** the promised free camera without breaking aiming.
+
+Deliverables: orbit, elevation, zoom, reset, three views, and gesture arbitration on touch and mouse.
+
+**Gate:** camera view changes never affect physical outcomes, and accidental shots during camera use are release blockers. Status: built and tested through the real input path; **the hand check on a phone is open.**
+
+## Phase 3 — Kep, complete
+
+**Goal:** the first mode, properly.
+
+Deliverables: the toss at the hole, scoring and rounds, computer opponents, and the full screen set.
+
+**Gate:** the acceptance list in the overview (section 3) for Kep. Status: built; the hand check and the explanations (How to play, the first-use prompt per mode) are open.
+
+## Phase 4 — Batto, complete
+
+**Goal:** the three-hole race, properly.
+
+Deliverables: three holes in a line and the route, route progress on screen, hits and bonus shots (a hit, or reaching a hole), the chain cap, finishing order and the end, computer sides that choose between the hole and a hit, result cues, and tests for every rule.
+
+**Gate:** the acceptance list for Batto; a full match against three computer sides ends and ranks correctly. Check the open points in [`README_GAME_RULES.md`](README_GAME_RULES.md) with at least one more person who played.
+
+## Phase 5 — Guli Khela and Quick Dan, complete
+
+**Goal:** the full stake game, properly, and its short form.
+
+Deliverables: purses and stake, the opening toss for each dan, the scatter, naming the _baad_ marble, a clean touch and a fine, winning a dan, the three-pass rule, surrender and the end of a match, computer sides that name a _baad_ and touch one marble, Quick Dan as a profile, and tests for every rule.
+
+**Gate:** the acceptance list for both; a full Guli Khela match against computer sides keeps the right purses at every step. Then the distinct-modes check: each of the four asks for a different decision.
+
+## Phase 6 — The pages, on the web and in the app
+
+**Goal:** everything the plan says to teach and say, in both places, from one source.
+
+Deliverables ([`README_WEB_AND_APP_PLAN.md`](README_WEB_AND_APP_PLAN.md)):
+
+- the shared content source and diagram format;
+- the large Home page, a page for each game, the very large How to play, About, Contact and Privacy on the site;
+- the same How to play, mode info, About, Contact and Privacy in the app, and the links between the web and the apps;
+- the browser game loading on the site's own canvas, with progress, checks and retry;
+- the download page for every platform;
+- the basics finished: sound, saved settings and a reset.
+
+**Gate:** a visitor can learn all four games from the site alone and the app teaches the same, from the same words, and a check proves they match.
+
+## Phase 7 — Release on every platform
+
+**Goal:** a stable first release for all five platforms.
 
 Deliverables:
 
-- orbit, elevation, zoom, reset;
-- angled and top-down presets;
-- low view with ground/arena safety limits;
-- temporary shot-follow camera;
-- mobile and desktop gesture arbitration.
+- automatic release when the version changes: an APK, a Windows build, a macOS build, a Linux build, the web export and a checksum file ([`CI.md`](CI.md));
+- the site live, with the download page listing every platform;
+- hand testing on a real phone, a desktop browser and each desktop OS; a known-limitations note;
+- the rules checked with people who played, and the About page updated from what they said;
+- icons, a share image, and the privacy statement.
 
-**Gate:** camera view changes must not affect physical outcomes. Accidental shots during camera use are release blockers.
+**Gate:** do not call it shipped until each platform has been run by a person. Editor playback and headless tests do not prove it.
 
-## Phase 3 — A complete match
+## Not on the roadmap
 
-**Goal:** turn the test bench into a small game. Guli Khela is a single-side score attack here; there is no opponent until Phase 4.
-
-Deliverables:
-
-- match and turn state machine;
-- initial layout;
-- score/victory logic;
-- minimal HUD and menus;
-- deterministic test setups;
-- restart/rematch.
-
-**Gate:** a full round can start, resolve, display a correct result, and restart without stuck states or double scoring.
-
-## Phase 4 — Two modes, one foundation
-
-**Goal:** make the two modes distinct without duplicating the game.
-
-Deliverables:
-
-- adapted Guli Khela pit-and-strike mode;
-- provisional Batto Challenge circle-knockout mode;
-- shared physics, camera, and turn lifecycle;
-- rule profiles that separate mode data and scoring behaviour;
-- a first simple local AI so the second side can be played alone.
-
-**Gate:** each mode should ask the player to make a different tactical decision. If the modes feel like the same rule with different labels, refine them before adding a third mode.
-
-**Cultural validation:** interview people familiar with Batto and local Guli Khela variants. Keep the mode labelled provisional/inspired if standard rules cannot be verified.
-
-## Phase 5 — Opponent tuning and polish
-
-**Goal:** make the game playable alone and understandable to a first-time player. The first AI is built in Phase 4 (Implementation Milestone 4); this phase tunes it.
-
-Deliverables:
-
-- AI difficulty and error tuning;
-- first-use controls prompt;
-- scoring cues and turn transitions;
-- basic sound and restrained impact feedback;
-- settings and local save;
-- reset-save path.
-
-**Gate:** the AI should make legal, plausible shots and occasionally miss. If it takes too long to build, use a smaller heuristic rather than holding the whole release hostage.
-
-## Phase 6 — Device and browser hardening
-
-**Goal:** confirm the actual target builds are comfortable to play.
-
-Deliverables:
-
-- Android release-candidate package;
-- Web release-candidate export;
-- low/medium visual tuning as required;
-- test matrix for input, viewport, reload, storage, pause, and restart;
-- known-limitations note.
-
-**Gate:** do not call it shipped until there are successful tests on a real phone and a real browser. Editor playback alone does not prove export quality.
-
-## Phase 7 — Release and observe
-
-**Goal:** publish a small, stable first release.
-
-Deliverables:
-
-- the marketing site live with a working download page (see [README_RELEASE.md](README_RELEASE.md));
-- app icons, store/web description, screenshots, privacy statement appropriate to the actual data collection (ideally none beyond local storage);
-- final rules labels that do not overclaim authenticity;
-- versioned build and backup of signing credentials;
-- basic issue-reporting route that does not require an in-game account.
-
-After release, decide from player feedback whether to add another arena, local pass-and-play, verified variants, or improved AI. Avoid starting several of these at once.
-
-## Not on the roadmap unless justified
-
-- backend or cloud infrastructure;
-- online matchmaking/leaderboards;
-- large creator dashboard;
-- human character models;
-- dozens of arenas or a content campaign;
-- monetisation and in-game economy;
-- online AI service.
+Pass-and-play, other languages, statistics and achievements, extra arenas or skins, a campaign, online play, accounts, leaderboards or any backend, human characters, monetisation, a dashboard. Adding one is a new decision recorded in the overview first.
 
 ## Roadmap rule
 
-The project moves forward when the current milestone meets its exit conditions, not because its checklist is long. A playable and understandable marble game is a stronger result than a large folder of half-integrated systems.
+The project moves forward when the current phase meets its gate, not because its checklist is long. Four modes that are right, explained and playable everywhere are worth more than many half-finished parts.

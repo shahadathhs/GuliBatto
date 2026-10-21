@@ -30,7 +30,7 @@ These come from the architecture and must not be broken:
 6. **Data in resources, decisions in scripts.** Layouts, sizes, limits and score values live in `RuleProfile` resources. There is no `if mode == ...` scattered across UI or physics scripts.
 7. **No magic numbers.** Tuning values are named constants in one place or exported resource fields. A threshold that appears in a test must come from the same constant as the code.
 8. **Offline.** No network calls, analytics, or third-party SDKs.
-9. **Colors come from one theme resource.** Hex values and `Color(...)` literals live only in the theme/palette file. A grep elsewhere must find nothing.
+9. **Colours come only from `design/tokens.json`.** `make tokens` generates the Godot palette (`Palette.get_color`) and the web CSS variables. `make colors-check` fails on a hex value or `Color(...)` anywhere else, and `make tokens-check` fails when a generated file is out of date or a text pair loses contrast.
 
 ## 4. Tests
 
@@ -38,6 +38,7 @@ These come from the architecture and must not be broken:
 - Rule tests use hand-built snapshots, so they are fast and do not depend on physics.
 - Physics tests assert outcomes with margins, never exact floating-point positions.
 - A test never depends on frame rate, wall-clock time, or the order of other tests.
+- Tests that step real physics for a long time extend `PhysicsTest` (`tests/physics_test.gd`), which ignores one known, benign Jolt job-queue warning and nothing else.
 - Run `make game-test` before saying a change works. State exactly what you ran. Do not claim an export, device run or browser run that did not happen.
 
 ## 5. Assets and licences

@@ -1,0 +1,31 @@
+# Local tools. The Godot image runs the headless project check, the tests and every export:
+#   docker compose --profile tools run --rm godot ...
+# `make game-docker-*` and `make game-apk|web|windows|macos|linux` wrap it, and CI runs the same.
+services:
+  godot:
+    profiles: ["tools"]
+    build:
+      context: .
+      dockerfile: docker/godot.Dockerfile
+      args:
+        GODOT_VERSION: ${GODOT_VERSION:-4.7.2}
+    image: gulibatto-godot:${GODOT_VERSION:-4.7.2}
+    platform: linux/amd64
+    working_dir: /project
+    environment:
+      # Optional: a fixed debug key for signing (CI sets it; see docs/CI.md).
+      ANDROID_DEBUG_KEYSTORE_BASE64: ${ANDROID_DEBUG_KEYSTORE_BASE64:-}
+      # Where Godot finds the debug key. docker/android-setup.sh creates it there if missing.
+      GODOT_ANDROID_KEYSTORE_DEBUG_PATH: /root/.android/debug.keystore
+      GODOT_ANDROID_KEYSTORE_DEBUG_USER: androiddebugkey
+      GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD: android
+    volumes:
+      - ./game:/project
+      # Persist editor settings and the debug keystore between runs.
+      - godot-config:/root/.config/godot
+      - android-keys:/root/.android
+      - ./docker/android-setup.sh:/usr/local/bin/android-setup:ro
+
+volumes:
+  godot-config:
+  android-keys:

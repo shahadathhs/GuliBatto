@@ -1,63 +1,94 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { latestRelease } from "@/lib/latest-release";
 
 export const metadata: Metadata = { title: "Download" };
-
-// Rebuilt when CI publishes a release; also refreshed hourly.
 export const revalidate = 3600;
-
-const REPO = process.env.GITHUB_REPOSITORY ?? "shahadathhs/GuliBatto";
-
-type Asset = { name: string; browser_download_url: string; size: number };
-type Release = { tag_name: string; html_url: string; assets: Asset[] };
-
-async function latestRelease(): Promise<Release | null> {
-  try {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, {
-      headers: { Accept: "application/vnd.github+json" },
-      next: { revalidate: 3600 },
-    });
-    return res.ok ? ((await res.json()) as Release) : null;
-  } catch {
-    return null;
-  }
-}
 
 export default async function DownloadPage() {
   const release = await latestRelease();
-  const apk = release?.assets.find((a) => a.name.endsWith(".apk"));
-  const sum = release?.assets.find((a) => a.name.endsWith(".apk.sha256"));
-
   return (
-    <main>
+    <main className="page prose">
       <h1>Download</h1>
-      {apk && release ? (
+      {release ? (
         <>
-          <p>
-            Version {release.tag_name.replace(/^v/, "")} for Android ({(apk.size / 1e6).toFixed(0)}{" "}
-            MB).
+          <p className="lede">
+            Version {release.version} for Android ({release.apk.sizeMb} MB).
           </p>
-          <p>
-            <a className="button" href={apk.browser_download_url}>
-              Download APK
+          <div className="cta-row">
+            <a className="btn-primary" href={release.apk.url}>
+              DOWNLOAD APK
             </a>
-          </p>
-          {sum && (
-            <p>
-              <a href={sum.browser_download_url}>SHA-256 checksum</a>
-            </p>
-          )}
-          <p>
-            <a href={release.html_url}>Release notes</a>
-          </p>
+            <a href={release.notesUrl}>Release notes</a>
+          </div>
+          <p className="meta">64-bit ARM. A direct download, not a store build.</p>
+
+          <section className="verify" aria-labelledby="about-apk">
+            <h3 id="about-apk">About this APK</h3>
+            <dl>
+              <dt>File</dt>
+              <dd>{release.apkName}</dd>
+              <dt>Version</dt>
+              <dd>{release.version}</dd>
+              <dt>Size</dt>
+              <dd>{release.apk.sizeMb} MB</dd>
+              <dt>SHA-256</dt>
+              <dd>
+                {release.sha256 ? <code>{release.sha256}</code> : "Not published for this release."}
+              </dd>
+            </dl>
+            {release.sha256 && (
+              <>
+                <p className="meta" style={{ marginTop: 14 }}>
+                  To check the file, compare its checksum with the one above.
+                </p>
+                <pre>
+                  <code>shasum -a 256 {release.apkName}</code>
+                </pre>
+                <pre>
+                  <code>certutil -hashfile {release.apkName} SHA256</code>
+                </pre>
+              </>
+            )}
+          </section>
         </>
       ) : (
-        <p>No release is published yet. Check back soon.</p>
+        <p className="lede">No release is published yet. Check back soon.</p>
       )}
-      <h2>Installing</h2>
-      <p>
-        Open the APK on your phone and allow installs from your browser when asked. This is a direct
-        download, not a store build, so Android will warn you.
-      </p>
+
+      <h2>Install</h2>
+      <ol className="install">
+        <li>
+          <div>
+            <h3>Download the file</h3>
+            <p className="meta">Do it on your phone, from this page.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Open it</h3>
+            <p className="meta">
+              Android asks once to allow installs from your browser. This is normal for a direct
+              download.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Open Guli &amp; Batto</h3>
+            <p className="meta">Press Play, choose a game, and drag back from your marble.</p>
+          </div>
+        </li>
+      </ol>
+
+      <h2>Good to know</h2>
+      <ul>
+        <li>It is not on Google Play and not available for iPhone.</li>
+        <li>Every build is signed with the same key, so updates install over older versions.</li>
+        <li>
+          It collects nothing. See <Link href="/privacy">privacy</Link>.
+        </li>
+      </ul>
     </main>
   );
 }

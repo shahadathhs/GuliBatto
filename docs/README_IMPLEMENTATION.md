@@ -25,31 +25,32 @@ Official references:
 
 [README_ROADMAP.md](README_ROADMAP.md) uses phases and decision gates; this document uses milestones and technical exit checks. They describe the same work.
 
-| Implementation milestone                      | Roadmap phase                                               |
-| --------------------------------------------- | ----------------------------------------------------------- |
-| Milestone 0 — export smoke test               | Phase 0 — Confirm feasibility                               |
-| Milestone 1 — marble test bench               | Phase 1 — The shot must feel good                           |
-| Milestone 2 — camera and input                | Phase 2 — Camera and gesture quality                        |
-| Milestone 3 — match state and one ruleset     | Phase 3 — A complete match                                  |
-| Milestone 4 — second mode and simple opponent | Phase 4 — Two modes, one foundation (and the first AI)      |
-| Milestone 5 — production basics               | Phase 5 — Opponent tuning and polish                        |
-| Milestone 6 — release candidate               | Phase 6 — Device and browser hardening (Phase 7 is release) |
+| Implementation milestone                           | Roadmap phase                                  |
+| -------------------------------------------------- | ---------------------------------------------- |
+| Milestone 0 — five platforms build and run         | Phase 0 — Five platforms build and run         |
+| Milestone 1 — marble test bench                    | Phase 1 — The shot must feel good              |
+| Milestone 2 — camera and input                     | Phase 2 — Camera and gesture quality           |
+| Milestone 3 — match, sides, and Kep                | Phase 3 — Kep, complete                        |
+| Milestone 4 — Batto                                | Phase 4 — Batto, complete                      |
+| Milestone 5 — Guli Khela and Quick Dan             | Phase 5 — Guli Khela and Quick Dan             |
+| Milestone 6 — the pages, on the web and in the app | Phase 6 — The pages, on the web and in the app |
+| Milestone 7 — release on every platform            | Phase 7 — Release on every platform            |
 
 Concrete starting values for settling, the aim handle size, tick rate and the test approach are in [README_ARCHITECTURE.md](README_ARCHITECTURE.md). Tune them in Milestone 1 and record the final numbers there.
 
-## 3. Milestone 0 — export smoke test
+## 3. Milestone 0 — five platforms build and run
 
-**Build:** a blank 3D scene with one camera, one light, a sphere and a ground plane. The repository scaffold (Makefile, lint, GUT, CI) is set up first, so this milestone's only open work is the Android and Web exports on real targets.
+**Build:** export presets for Android, Web, Windows, macOS and Linux, and a CI that builds each from the pinned Godot container ([CI.md](CI.md)). The project and its checks already exist; this milestone is about the exports.
 
-**Verify:**
+**Verify, one platform at a time, by a person:**
 
-- It exports and loads as an Android debug APK on a real device.
-- It exports and loads in a current desktop browser with WebGL 2 support.
-- The browser build can be served from the intended host without console errors.
-- Touch/mouse focus and resize behaviour are understood.
-- The project uses the Compatibility renderer.
+- Android: the debug APK installs and plays a toss on a real phone.
+- Web: the export loads in a desktop browser with WebGL 2 and plays a toss, without console errors. (Played in headless Chrome so far.)
+- Windows, macOS and Linux: the build starts and plays a toss on each OS; write down what an unsigned build makes the OS say.
+- Touch and mouse focus and resize behaviour are understood on each.
+- The project uses the Compatibility renderer and Jolt physics on every platform.
 
-**Exit gate:** do not invest in detailed assets until both required builds start successfully. Record issues and pin the exact Godot version/export settings.
+**Exit gate:** every platform's build launches and a toss can be played. Pin the exact Godot version and export settings, and record issues. If a platform cannot be built or run, decide whether to drop it now.
 
 ## 4. Milestone 1 — physical marble test bench
 
@@ -85,64 +86,79 @@ Concrete starting values for settling, the aim handle size, tick rate and the te
 
 **Exit gate:** repeat at least 20 aim/orbit/zoom interactions on a phone and desktop without accidental firing or camera drift. Compare shots from top-down and angled views; the same aim parameters must produce the same shot command.
 
-## 6. Milestone 3 — match state and one ruleset
+## 6. Milestone 3 — match, sides, and Kep
 
-**Build:** match lifecycle, turn ownership, stable board snapshot, rule evaluation, minimal HUD, restart and match result screen. Implement the Guli Khela adapted mode first because it has a public descriptive source to start from.
+**Build:** the match lifecycle for 2 to 4 sides, turn order, the board snapshot and shot report, rule evaluation, a minimal HUD, restart, a result screen, and the **Kep** mode (the toss at the hole; see [README_GAME_RULES.md](README_GAME_RULES.md), section 4). Kep goes first because it is the smallest mode and its opening toss is the first step of the other two, so it proves holes, settling, distance ranking and several sides with almost no extra rules.
 
-**Playable without an opponent:** this milestone plays Guli Khela as a single-side score attack: one player, the configured turn limit, claim as many targets as possible. The match still tracks a side and a turn owner, so the AI in Milestone 4 only needs to submit shots for a second side. Hot-seat stays out of scope unless playtests ask for it.
+**All modes stay in the design:** the match controller is written against an N-side layout and a `RuleSet` interface, so Batto and Guli Khela later add a ruleset, a profile and a layout, not a second controller. `KepRules` is the only implementation until Milestone 4.
 
-**Implement:**
-
-- valid initial layout;
-- legal turn validation;
-- score and turn transitions;
-- one-time evaluation after settling;
-- victory/tie conditions;
-- readable scoring feedback;
-- tests for hit, miss, pit/goal, restart, and match end.
-
-**Exit gate:** a deterministic test layout leads to the expected score/turn result. Repeating a shot does not double-score. The rules are read from the ruleset rather than embedded in UI scripts.
-
-## 7. Milestone 4 — provisional second mode and simple opponent
-
-**Build:** Batto Challenge as a clearly provisional custom ruleset and a basic local opponent. This is the first version of the AI (legal, plausible shots, configurable error); difficulty tuning and polish follow in Milestone 5. Do not duplicate the match controller for the second mode.
+**No AI yet, so a debug hot-seat:** the milestone is tested with a debug harness where the tester controls each side in turn. This is a test tool, not a player feature, and it is removed from release builds unless playtests ask for hot-seat.
 
 **Implement:**
 
-- same arena and marble systems;
-- separate starting layout and scoring evaluation;
-- AI picks a legal target/direction/power and commits through the regular shot command;
-- imperfect, configurable aim;
-- no network or model API dependency.
+- the arena with a jalla and a kep, from a rule profile (positions, radii);
+- the opening toss and ordering of sides by closeness, a marble in the kep counting as closest;
+- the `BoardSnapshot`, `ShotReport` and `SettleDetector` wired to the match state machine;
+- Kep scoring (in the kep 3, closest 2, second 1), the round count and the ranking;
+- legal turn validation, one-time evaluation after settling, readable result cues;
+- tests for: in the kep, closest, a tie, a marble out of bounds, round order, ranking, restart, and no double scoring.
 
-**Research gate:** before presenting the mode as a faithful version of Batto, interview local players/elders and update `README_GAME_RULES.md` with verified information. Otherwise label it an inspired/custom mode in menus and public descriptions.
+**Exit gate:** a deterministic test layout gives the expected scores and ranking. Repeating a shot never double-counts. The rules are read from the ruleset and profile, not embedded in UI scripts. Four debug sides finish a full match without a stuck state.
 
-## 8. Milestone 5 — production-quality basics
+## 7. Milestone 4 — opponents and Batto
 
-**Build:** main menu, mode selection, tutorial prompt, pause/restart, settings, audio, local save/load, quality fallback, and basic polish.
+**Build:** a basic local opponent (1 to 3 AI sides) and the **Batto** route race ([README_GAME_RULES.md](README_GAME_RULES.md), section 5). The computer sides already exist from Milestone 3 (Kep); here they learn Batto's real decisions, going for the hole or hitting a rival. Do not duplicate the match controller.
 
-**Local save:** version the schema, validate values, return default settings on failure, and include a reset option. Test Android and browser storage separately. Do not promise web save reliability in private browsing or where site storage is blocked.
+**Implement:**
 
-**Performance:**
+- the AI picks a legal target, direction and power and commits through the regular shot command;
+- Batto: three holes in a line, route progress `H1 → H2 → H3 → H2 → H1`, hits detected from the `ShotReport`, a bonus shot with the chain cap, finish detection, finishing order, the "last on the route" end and the turn-cap fallback;
+- the AI aims at its next hole, or at a rival marble when a hit looks worthwhile;
+- imperfect, configurable aim; no network or model API dependency;
+- tests for: a hole reached (and its bonus shot), a hole passed over, a hit (and its bonus shot), a chain, the cap of three bonus shots, no bonus shot after finishing, a marble knocked out of bounds, finishing order.
 
-- low-cost materials and textures;
-- restrained dynamic shadows;
-- no expensive post-processing as a dependency for readability;
-- limit visible props and particles;
-- profile actual target devices instead of guessing from editor FPS;
-- include a lower-cost setting if profiling shows it is needed.
+**Check with people:** ask at least one more person who played Batto about the points under "To confirm with players" in section 5 of the rules doc. What they say may change the rules and the tests.
 
-## 9. Milestone 6 — release candidate
+**Exit gate:** a full Batto match against three AI sides finishes and ranks correctly; the AI never takes an illegal shot and sometimes misses.
 
-Test on:
+## 8. Milestone 5 — Guli Khela and the distinct-modes check
 
-- at least one real Android phone representative of the target tier;
-- a second Android device if available;
-- a current Chromium-based desktop browser;
-- another browser engine where practical;
-- browser window resize, fullscreen, lost focus, reload, and storage reset.
+**Build:** the **Guli Khela** mode ([README_GAME_RULES.md](README_GAME_RULES.md), section 6) on the same foundation: purses and stakes, the opening toss for each dan, the scatter around the kep, naming the _baad_ marble, evaluating a throw (exactly one other marble touched wins the dan; the _baad_ marble or two or more touched is a fine; no touch passes the turn), a Surrender action, and the end when a side cannot pay or the dan limit is reached. **Quick Dan** is the same ruleset with a profile that ends after the first dan.
 
-Check loading time, input latency, restart stability, save recovery, readable UI at common aspect ratios, and no internet connection for the installed Android game. The web build naturally needs a successful initial download unless a previously installed/cached PWA version is available; that cache is not guaranteed to remain forever.
+**Implement:**
+
+- `GuliKhelaRules` and the per-side purse and the pot in the match state;
+- the `SCATTER` and `CALLING_BAAD` states, and the `baad_marble_id` on the shot command;
+- the AI naming a _baad_ marble and choosing a single marble to touch;
+- the pass logic: one attempt per other side per pass, a new pass when all fail, and the scatterer winning the ground after three passes;
+- tests for: a clean single touch, the _baad_ marble touched, two marbles touched, no touch, a fine adding a marble, a fine with an empty purse, a dan won (the winner takes the whole ground and the throwing marble returns), all sides failing for one and for three passes, purses changing, a side out of marbles, a surrender, the dan limit.
+
+**Check with people:** ask at least one person who played about the points under "To confirm with players" in section 6 of the rules doc (the fine, the usual stake, whether the scatterer keeps the ground).
+
+**Exit gate:** a full Guli Khela match against an AI finishes with the correct purses at every step. Then the **distinct-modes check**: each mode asks the player to make a different decision (see the table in section 2 of the rules doc). If two modes feel alike, cut the weaker one; do not add another to rescue it.
+
+## 9. Milestone 6 — the pages, on the web and in the app
+
+**Build** ([README_WEB_AND_APP_PLAN.md](README_WEB_AND_APP_PLAN.md)):
+
+- the shared `content/` source and the diagram format, and the check that the game and the site match;
+- on the site: the large Home, a page for each game, the very large How to play, About, Contact and Privacy;
+- in the app: How to play, mode info, About, Contact, Privacy, and the links to the web and to the other platforms;
+- the site-native browser loader (progress, WebGL and WebAssembly checks, failure and retry, sharp sizing, fullscreen) replacing the framed Godot page;
+- the download page for every platform, reading the release;
+- the basics finished: sound, locally saved settings with a reset (versioned, validated, defaults on failure), and the quality fallback if profiling shows it is needed.
+
+**Performance:** low-cost materials and textures, restrained shadows, no expensive post-processing, and profiling on real devices instead of guessing from editor frame rate.
+
+**Exit gate:** a visitor can learn all four games from the site alone; the app teaches the same, from the same words, and a check proves the content matches.
+
+## 9a. Milestone 7 — release on every platform
+
+**Build:** the release job ([CI.md](CI.md)) publishes an APK, a Windows build, a macOS build, a Linux build, the web export and `SHA256SUMS` when the version changes, and the site's download page lists them.
+
+**Test, by a person, on:** a real Android phone, a desktop browser (and another engine where practical), and each desktop OS. Check loading time, input latency, restart stability, save recovery, readable UI at common sizes, window resize and fullscreen, lost focus and reload, and no internet connection after install.
+
+**Then:** check the rules with people who played and update the About page; write a known-limitations note.
 
 ## 10. Implementation guardrails
 
@@ -153,3 +169,51 @@ Check loading time, input latency, restart stability, save recovery, readable UI
 - Do not build an admin web dashboard; use Godot Resources and the Inspector first.
 - Do not ask an AI tool to rewrite the entire project when a focused script or scene change will do.
 - Keep a playable build and a Git commit at every milestone.
+
+## 11. Release gates
+
+- **Foundation gate:** all five exports start on real targets (Milestone 0), the tooling passes in CI, and the Godot version is pinned.
+- **Feel gate:** three people unfamiliar with the game can aim and shoot after a short prompt, with the developer silent (Milestones 1 and 2).
+- **Rules gate:** a full match of each mode resolves with the correct result, no double counting and no stuck state (Milestones 3 to 5).
+- **Distinct modes gate:** each mode asks for a different tactical decision (Milestone 5).
+- **Honesty gate:** the About page matches the rules, lists what the author changed, and no mode, screen, or store text claims the rules are official or authentic.
+- **Pages gate:** the site and the app teach all four games from one source of content (Milestone 6).
+- **Release gate:** every platform has been run by a person; the download page lists a verified file for each; a known-limitations note exists (Milestone 7).
+
+## 12. Testing checklist by risk
+
+### Shot and physics
+
+- Straight roll, head-on, glancing, wall bounce, marble trapped on a boundary, low power, maximum power, rapid restart.
+- No marble leaves the arena; marbles settle within the timeout; the next shot is never enabled while the previous one resolves.
+
+### Rules
+
+- Hit, miss, pit (rest inside the radius), rolled through the pit, out of ring, rolled back inside the ring, turn limit, tie.
+- A shot never scores twice; restart restores layout and score atomically.
+
+### Input and camera
+
+- Aim from empty space does not fire; orbit from the striker does not orbit; two-finger zoom never fires.
+- Pause, lost focus and a UI tap cancel an in-progress aim.
+- The same aim parameters give the same shot command from every view.
+
+### Save and settings
+
+- First run, corrupted file, newer schema, blocked web storage, reset.
+
+### Devices and browser
+
+- A real Android phone, a second device if available, a Chromium browser and one other engine; resize, fullscreen, lost focus, reload, no network after install.
+
+### Site
+
+- The download page with no release, a private repository, GitHub down, and a valid release; pages without JavaScript; both themes at desktop and mobile widths.
+
+## 13. Avoid scope traps
+
+Do not add anything outside the four modes and their pages (the overview's "Not in" list). Do not ask an AI tool to rewrite the whole project when a focused script or scene change will do. Do not build the site's pages before the rules they describe are settled.
+
+## 14. Definition of done for a feature
+
+It behaves correctly after restart and rematch, is clear without developer explanation, has a GUT test for its rule or state, passes `make check`, has been tried on the required input and platform combinations (and says which were not), keeps the docs in step, and respects the guardrails above.

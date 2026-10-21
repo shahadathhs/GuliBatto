@@ -4,7 +4,7 @@ Instructions for AI coding agents working in this repository.
 
 ## Project
 
-Guli & Batto (working title): a small offline 3D marble game inspired by Guli Khela and Batto. Godot 4, GDScript, Compatibility renderer, Android first, desktop browser second. The Godot project is in `game/`; `web/` is a small marketing site (Next.js) and holds no game logic. See `docs/README_RELEASE.md` for versioning and CI releases.
+Guli & Batto (working title): a 3D marble game of four modes (Kep, Batto, Guli Khela, Quick Dan), each a modernised version of a traditional marble game the author played as a child. One Godot 4 project (GDScript, Compatibility renderer, Jolt physics) exports to Android, the web, Windows, macOS and Linux; the web version is the full game, not a try-out. `web/` is the website (Next.js) and holds no game logic. The site and the app show the same pages from one source of content. The scope is the four modes represented properly and nothing extra (see the overview's "Not in" list). See `docs/CI.md` for versioning and releases.
 
 - `docs/` is the specification and the source of truth; read the relevant file before changing behaviour.
 - Read `docs/README_PROJECT_OVERVIEW.md` for scope. Do not add anything from its "out of scope" list (online play, accounts, game backend, human avatars, monetisation).
@@ -20,14 +20,19 @@ Work on `dev`; changes reach `main` through a pull request. Commits follow Conve
 `make` is the command surface (run `make help`). CI runs the same targets.
 
 ```sh
-make check    # load the project, lint, test (what CI runs)
-make test     # GUT tests, headless
-make lint     # gdlint + gdformat --check
-make format   # gdformat
-make run      # play on this machine
+make check         # every gate CI runs, except the exports (needs uv, pnpm, Godot)
+make lint          # gdlint, gdformat, prettier, oxlint, tokens, colours, file size
+make test          # GUT tests and the site's unit tests
+make format        # gdformat and prettier
+make tokens        # regenerate the Godot palette and web CSS from design/tokens.json
+make run           # play on this machine
+make web-dev       # the website at localhost:3000
+make game-docker-check   # load the project in the Godot container (what CI runs)
+make game-docker-test    # the game tests in the container
+make game-apk | game-web | game-windows | game-macos | game-linux   # exports, in the container
+make game-desktop        # all three desktop builds
+make workflows           # lint the GitHub workflow files
 make version v=X.Y.Z  # write a version into every file that carries it (no git)
-make apk      # debug APK (needs Android export templates and SDK)
-make web      # browser export (needs Web export templates)
 ```
 
 After any change run the targets that cover it. Docs in `docs/` must match the code; update them in the same change.
@@ -37,12 +42,12 @@ After any change run the targets that cover it. Docs in `docs/` must match the c
 - **One simulation, several views.** Camera mode changes presentation only. Nothing in `camera/` or `ui/` changes shot direction, power, physics, or score.
 - **One shot path.** Player and AI both build a `ShotCommand` and submit it to the match. Only `physics/` applies impulses.
 - **Physics is real.** Never fake motion with transform animation, and never hide weak physics under effects.
-- **Rules read snapshots.** Scoring is decided once per shot, from a `BoardSnapshot` taken after the board settles. Collision callbacks are evidence, not scoring.
+- **Rules read snapshots and the shot report.** Scoring is decided once per shot, from a `BoardSnapshot` taken after the board settles. Collision callbacks are evidence, not scoring.
 - **Content is data.** Layouts, sizes, limits and score values live in `RuleProfile` resources. No `if mode == ...` branches in UI or physics code.
 - **Restart is atomic.** It builds a fresh match; it never reuses partial turn state.
 - **Offline.** No network, accounts, analytics, or third-party SDKs.
-- **Be honest about tradition.** Guli Khela is "adapted"; Batto is "provisional". Do not describe a rule as authentic unless README_GAME_RULES.md records a verified source.
-- **Colors come from one theme resource.** A grep for hex colors or `Color(` outside the theme file must find nothing. (The Milestone 0 test scene is the only exception until the theme exists.)
+- **Honesty lives on the About page.** `docs/README_ABOUT.md` says where the rules come from and what the author changed. Mode screens, the HUD, the site and store text carry no per-mode labels ("adapted", "provisional", "traditional", "authentic") and never call a rule official. When a rule changes, update the About page's "What I changed" list in the same change. Nothing is invented from nothing: each mode comes from a game in `docs/README_GAME_RULES.md`, section 1.
+- **Colours come only from `design/tokens.json`.** `make tokens` generates the Godot palette and web CSS; `make colors-check` fails on any hex value or `Color(...)` elsewhere. The Milestone 0 smoke scene is the one exception until the real arena exists.
 
 ## Code shape rules
 
@@ -56,6 +61,16 @@ After any change run the targets that cover it. Docs in `docs/` must match the c
 
 Follow `docs/README_IMPLEMENTATION.md`: build the riskiest slice first. Do not build menus, art, or the AI before the shot feels right. Track progress in `TODO.md`.
 
-## Web
+## Web and app pages
 
-`web/` explains and distributes the game: home, how to play, download, privacy. No backend, accounts, cookies or trackers. Copy must keep the "adapted" and "provisional" labels for the rules. Run `pnpm --filter web typecheck` and `pnpm --filter web build` after changes.
+`web/` teaches and distributes the game: Home, the four game pages, How to play, Play, Download, About, Contact, Privacy. The app carries the same information. Both render the shared `content/` (planned) and must not drift apart. No backend, accounts, cookies or trackers. Copy follows `docs/README_ABOUT.md`. Run `make check` after changes; see `docs/README_WEB_AND_APP_PLAN.md`.
+
+## Visual rules (the house style: Drawn Ground)
+
+Full rules are in `docs/README_VISUAL_DESIGN.md`. When touching UI or the site:
+
+- Exactly one primary action per screen: a solid glaze-blue disc (a full-round button on the web). Secondary actions are outlined rounded rectangles; tertiary are underlined text.
+- No gradients, glow, drop shadows, glass or blur in the UI; no card inside a card; no taglines, exclamation marks, emoji or folk-motif decoration.
+- Marbles carry colour **and** a mark: player = blue ring, opponent = amber dot, neutral target = bone bar. Colour is never the only signal.
+- Both themes (light and dark) are first-class; check every screen in both. Colours come only from the token table, never hand-written.
+- Concept renders live in `docs/design/` and are regenerated with `node scripts/design/render.mjs`.
