@@ -94,13 +94,9 @@ Start with a transparent heuristic: generate a small number of candidate directi
 - Difficulty setting for opponent aim error only if it can be implemented and tested cheaply.
 - Local settings and small local match statistics.
 
-### Later, only if players ask for it
+### Not planned
 
-- Local pass-and-play / hot-seat turns.
-- More arena surfaces with meaningful friction differences.
-- Practice mode with no score.
-- Additional locally verified rule variants.
-- Cosmetic marble materials, if they do not reduce readability.
+Anything outside the four modes: pass-and-play, other languages, statistics and achievements, extra arenas, a practice mode, cosmetic marbles. See the overview's "Not in" list; adding one is a new decision recorded there first.
 
 No online multiplayer, remote profile, cloud save, or online leaderboard is part of the current product.
 

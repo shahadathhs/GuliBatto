@@ -1,6 +1,6 @@
 # Guli & Batto — Visual Design Guide
 
-> **Goal:** one visual identity across the Godot game and the marketing site. The 3D arena is the hero; everything around it (HUD, menus, site) stays quiet and legible.  
+> **Goal:** one visual identity across the Godot game and the website. The 3D arena is the hero; everything around it (HUD, menus, site) stays quiet and legible.  
 > **Reference renders:** [design/SCREENS.md](design/SCREENS.md) lists every screen; [overview-light](design/overview-light.png) and [overview-dark](design/overview-dark.png) show them all. They are 2D concept renders: the real arena is 3D, so tune from the running game.  
 > **Status:** direction proposed, tokens chosen and contrast-checked, fonts and the 3D art still to be decided. Orientation is **portrait** (390 × 844 reference); that is a proposal to confirm in playtests, because aiming with a thumb and reading the arena both depend on it.
 
@@ -203,9 +203,9 @@ The game screens are listed with their purpose in [design/SCREENS.md](design/SCR
 - **About:** one plain text screen reached from the menu, with the same layout as Settings; see [README_ABOUT.md](README_ABOUT.md). Mode screens carry no authenticity labels.
 - **Save data failure:** the game starts with defaults and says so once; nothing is blocking.
 
-## 10. Marketing site
+## 10. The website
 
-The site uses the same tokens, wordmark and rules, so it reads as the same product. Details and the page-by-page plan are in [README_WEB_PLAN.md](README_WEB_PLAN.md); renders are in [design/web/](design/web/).
+The site uses the same tokens, wordmark and rules, so it reads as the same product. Details and the page-by-page plan are in [README_WEB_AND_APP_PLAN.md](README_WEB_AND_APP_PLAN.md); renders are in [design/web/](design/web/).
 
 - Purpose: explain the game and get people to install it. **Download is the single primary action.**
 - On the web the primary action is the same glaze, drawn as a full-round button (a disc is impractical for a wide label).

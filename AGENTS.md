@@ -4,7 +4,7 @@ Instructions for AI coding agents working in this repository.
 
 ## Project
 
-Guli & Batto (working title): a small offline 3D marble game of four modes (Kep, Batto, Guli Khela, Quick Dan), each a modernised version of a traditional marble game the author played as a child. Godot 4, GDScript, Compatibility renderer, Android first, desktop browser second. The Godot project is in `game/`; `web/` is a small marketing site (Next.js) and holds no game logic. See `docs/CI.md` for versioning and CI releases.
+Guli & Batto (working title): a 3D marble game of four modes (Kep, Batto, Guli Khela, Quick Dan), each a modernised version of a traditional marble game the author played as a child. One Godot 4 project (GDScript, Compatibility renderer, Jolt physics) exports to Android, the web, Windows, macOS and Linux; the web version is the full game, not a try-out. `web/` is the website (Next.js) and holds no game logic. The site and the app show the same pages from one source of content. The scope is the four modes represented properly and nothing extra (see the overview's "Not in" list). See `docs/CI.md` for versioning and releases.
 
 - `docs/` is the specification and the source of truth; read the relevant file before changing behaviour.
 - Read `docs/README_PROJECT_OVERVIEW.md` for scope. Do not add anything from its "out of scope" list (online play, accounts, game backend, human avatars, monetisation).
@@ -26,7 +26,7 @@ make test          # GUT tests and the site's unit tests
 make format        # gdformat and prettier
 make tokens        # regenerate the Godot palette and web CSS from design/tokens.json
 make run           # play on this machine
-make web-dev       # the marketing site at localhost:3000
+make web-dev       # the website at localhost:3000
 make apk           # debug APK (needs Android export templates and SDK)
 make web           # browser export (needs Web export templates)
 make version v=X.Y.Z  # write a version into every file that carries it (no git)
@@ -58,9 +58,9 @@ After any change run the targets that cover it. Docs in `docs/` must match the c
 
 Follow `docs/README_IMPLEMENTATION.md`: build the riskiest slice first. Do not build menus, art, or the AI before the shot feels right. Track progress in `TODO.md`.
 
-## Web
+## Web and app pages
 
-`web/` explains and distributes the game: home, how to play, download, privacy. No backend, accounts, cookies or trackers. Copy follows `docs/README_ABOUT.md`; `/about` mirrors it. Run `pnpm --filter web typecheck` and `pnpm --filter web build` after changes.
+`web/` teaches and distributes the game: Home, the four game pages, How to play, Play, Download, About, Contact, Privacy. The app carries the same information. Both render the shared `content/` (planned) and must not drift apart. No backend, accounts, cookies or trackers. Copy follows `docs/README_ABOUT.md`. Run `make check` after changes; see `docs/README_WEB_AND_APP_PLAN.md`.
 
 ## Visual rules (the house style: Drawn Ground)
 

@@ -35,7 +35,7 @@ Individual screens (390 × 844, 2x): `screens/light/` and `screens/dark/`.
 
 ## Website
 
-The site is planned in [../README_WEB_PLAN.md](../README_WEB_PLAN.md). These are real screenshots of the built site, not concepts, taken with Chrome at 1280 px and 390 px wide in both themes. The download page shows a stand-in release (version, size and checksum are not a real build), because no release has been published yet.
+The site is planned in [../README_WEB_AND_APP_PLAN.md](../README_WEB_AND_APP_PLAN.md). These are real screenshots of the built site, not concepts, taken with Chrome at 1280 px and 390 px wide in both themes. The download page shows a stand-in release (version, size and checksum are not a real build), because no release has been published yet.
 
 | Page              | Light                                                            | Dark                                                           |
 | ----------------- | ---------------------------------------------------------------- | -------------------------------------------------------------- |
