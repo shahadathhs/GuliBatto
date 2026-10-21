@@ -6,7 +6,7 @@
 #
 # VERSION is the source of truth. The script also updates the Godot project, the Android
 # preset and the web package so they never drift. On the next merge to main, CI sees a VERSION
-# with no release yet and publishes vX.Y.Z with the APK (docs/README_RELEASE.md).
+# with no release yet and publishes vX.Y.Z with the APK (docs/CI.md).
 set -euo pipefail
 
 cd "$(dirname "$0")/.."

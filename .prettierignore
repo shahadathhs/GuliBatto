@@ -6,3 +6,5 @@ game/.godot/
 graphify-out/
 web/.next/
 web/next-env.d.ts
+web/src/app/tokens.css
+game/scripts/generated/

@@ -1,0 +1,48 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "import", "node", "promise", "react", "nextjs"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "no-unused-vars": "off",
+    "typescript/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "typescript/no-floating-promises": "error",
+    "typescript/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "nextjs/no-html-link-for-pages": "off"
+  },
+  "ignorePatterns": [
+    "node_modules",
+    "web/.next",
+    "web/next-env.d.ts",
+    "game",
+    "docs",
+    "pnpm-lock.yaml"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.test.ts"],
+      "rules": {
+        "typescript/no-floating-promises": "off"
+      }
+    },
+    {
+      "files": ["scripts/**/*.mjs", "web/scripts/**/*.mjs"],
+      "rules": {
+        "typescript/restrict-template-expressions": "off"
+      }
+    }
+  ]
+}

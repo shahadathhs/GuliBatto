@@ -1,0 +1,58 @@
+name: Set up Godot
+description: Install the pinned Godot (and, when asked, its export templates and the Android tooling), cached between runs.
+inputs:
+  version:
+    description: Godot version, for example 4.7.2
+    required: true
+  export:
+    description: Also install export templates and the Android debug key and settings
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-java@v5
+      if: inputs.export == 'true'
+      with:
+        distribution: temurin
+        java-version: 17
+
+    - name: Restore Godot
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/godot-bin
+          ~/.local/share/godot/export_templates
+        key: godot-${{ inputs.version }}-export-${{ inputs.export }}
+
+    - name: Download Godot
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      env:
+        V: ${{ inputs.version }}
+        EXPORT: ${{ inputs.export }}
+      run: |
+        base="https://github.com/godotengine/godot-builds/releases/download/${V}-stable"
+        mkdir -p "$HOME/godot-bin"
+        curl -fsSL -o godot.zip "${base}/Godot_v${V}-stable_linux.x86_64.zip"
+        unzip -q godot.zip -d "$HOME/godot-bin"
+        if [ "$EXPORT" = "true" ]; then
+          curl -fsSL -o templates.tpz "${base}/Godot_v${V}-stable_export_templates.tpz"
+          unzip -q templates.tpz -d templates
+          mkdir -p "$HOME/.local/share/godot/export_templates"
+          mv templates/templates "$HOME/.local/share/godot/export_templates/${V}.stable"
+        fi
+
+    - name: Put godot on the path
+      shell: bash
+      env:
+        V: ${{ inputs.version }}
+      run: |
+        mkdir -p "$HOME/bin"
+        ln -sf "$HOME/godot-bin/Godot_v${V}-stable_linux.x86_64" "$HOME/bin/godot"
+        echo "$HOME/bin" >> "$GITHUB_PATH"
+
+    - name: Android debug key and editor settings
+      if: inputs.export == 'true'
+      shell: bash
+      run: ./scripts/android-setup.sh

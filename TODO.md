@@ -18,9 +18,24 @@ The plan and the reasons are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md)
 
 ## Pending: release and site
 
-- [ ] Push to GitHub, run the workflow once, fix whatever the APK job needs; record it in `docs/README_RELEASE.md`
+- [ ] Push to GitHub, run the workflow once, fix whatever the APK job needs; record it in `docs/CI.md`
 - [ ] Create the fixed debug keystore secret `ANDROID_DEBUG_KEYSTORE_BASE64`
 - [ ] Choose site hosting and a domain; add screenshots once the game has art
+
+## Done: tooling gaps from the comparison review
+
+- [x] Web: oxlint (type-aware), unit tests for the release parsing, a smoke test of every page, robots and sitemap
+- [x] `design/tokens.json` with generators for the Godot palette and web CSS, a token drift and contrast check, a colour-literal check; the site now uses the generated tokens
+- [x] File-size check (300 soft, 450 hard)
+- [x] CI: quality, game, web, actionlint, export on pull requests, Godot and template caching
+- [x] `make check` runs every gate locally except the exports
+
+## Pending: web and CI
+
+**Not verified on GitHub:** the workflow has never run there. The first run may need fixes (export templates, Android SDK and JDK paths); record them in `docs/CI.md`.
+
+- [ ] Web: light/dark toggle (progressive enhancement), Open Graph image, accessibility and contrast pass against `docs/design/web/`
+- [ ] Confirm the orientation (portrait proposed) and the UI language (Bangla or not) from playtests
 
 ## Now: Milestone 0, export smoke test
 
@@ -35,6 +50,8 @@ The plan and the reasons are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md)
 
 ## Next: Milestone 1, marble test bench
 
+The modes are locked (2026-10-21): Kep, Batto, Guli Khela, and Quick Dan (optional); build order Kep, Batto, Guli Khela. See `docs/README_GAME_RULES.md`.
+
 - [ ] `ShotCommand`, `SettleDetector` and `BoardSnapshot` in `game/scripts/core/` with GUT tests
 - [ ] Test scene: flat ground, boundaries, two or three marbles, reset layout
 - [ ] Shot applier, friction and bounce calibration, debug readout
@@ -43,8 +60,8 @@ The plan and the reasons are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md)
 
 ## Open decisions
 
-- [ ] Guli Khela pit: size, distance, and whether a success keeps the turn (needs the player research in `README_GAME_RULES.md`, section 7)
-- [ ] Batto circle knockout: marbles per side, partly-outside rule, whether the striker can be knocked out
+- [ ] Check the rules with at least one more person who played each game ("To confirm with players" in `docs/README_GAME_RULES.md`)
+- [ ] Review the About page wording (`docs/README_ABOUT.md`) and keep `web/src/app/about/page.tsx` identical
 - [ ] UI language: English only, or English and Bangla (check Bangla font rendering in Godot first)
 - [ ] Whether hot-seat is wanted before the AI (default: no, only if playtests ask)
 - [ ] Release channel: Google Play, itch.io, or direct APK
