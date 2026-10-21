@@ -33,9 +33,9 @@ Individual screens (390 × 844, 2x): `screens/light/` and `screens/dark/`.
 - **Bangla text:** every screen needs a Bangla pass once the UI language is decided; the games' own words (_jalla_, _kep_, _dan_, _baad_) are shown in Latin letters for now.
 - **Motion:** shot-follow, camera easing and the result cue are described in [../README_VISUAL_DESIGN.md](../README_VISUAL_DESIGN.md), not shown in stills.
 
-## Web renders
+## Website
 
-The site is planned in [../README_WEB_PLAN.md](../README_WEB_PLAN.md). Renders (version, size and hash are placeholders). Mobile renders are 500 px wide, because headless Chrome will not make a narrower window:
+The site is planned in [../README_WEB_PLAN.md](../README_WEB_PLAN.md). These are real screenshots of the built site, not concepts, taken with Chrome at 1280 px and 390 px wide in both themes. The download page shows a stand-in release (version, size and checksum are not a real build), because no release has been published yet.
 
 | Page              | Light                                                            | Dark                                                           |
 | ----------------- | ---------------------------------------------------------------- | -------------------------------------------------------------- |

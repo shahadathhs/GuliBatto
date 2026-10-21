@@ -56,11 +56,13 @@ Each build gets a higher Android `version/code` (the CI run number), so a newer 
 
 ## Secrets and variables
 
-| Name                            | Kind                            | Used by                                                          |
-| ------------------------------- | ------------------------------- | ---------------------------------------------------------------- |
-| `ANDROID_DEBUG_KEYSTORE_BASE64` | secret                          | `build` (a fixed signing key, so builds install over each other) |
-| `GITHUB_REPOSITORY`             | web env                         | the download page (default `shahadathhs/GuliBatto`)              |
-| `VERCEL_DEPLOY_HOOK`            | secret, optional, not wired yet | rebuild the site after a release so the download page shows it   |
+| Name                            | Kind                            | Used by                                                                                                            |
+| ------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `ANDROID_DEBUG_KEYSTORE_BASE64` | secret                          | `build` (a fixed signing key, so builds install over each other)                                                   |
+| `GITHUB_API_URL`                | web env, tests only             | the download page: point it at a stand-in server to see the page with a release (leave unset in production)        |
+| `PLAY_BUILD_TAG`                | web env, optional               | the site's build (`scripts/fetch-play-build.mjs`): which release's browser export `/play` serves, default `latest` |
+| `GITHUB_REPOSITORY`             | web env                         | the download page (default `shahadathhs/GuliBatto`)                                                                |
+| `VERCEL_DEPLOY_HOOK`            | secret, optional, not wired yet | rebuild the site after a release so the download page shows it                                                     |
 
 Without `ANDROID_DEBUG_KEYSTORE_BASE64` each build is signed with a throwaway key and cannot be installed over a previous one. Create the key once and store it as a secret; changing it changes the signing key. A store release needs a separate upload keystore and an `.aab`; that is outside the current scope. Secrets are never committed.
 

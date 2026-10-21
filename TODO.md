@@ -59,6 +59,7 @@ Press Play, choose Kep, drag back from your marble and release. You play three s
 - [x] Camera: `CameraRig` with angled, top-down and low views, reset, elevation and zoom limits
 - [x] UI as in the concept renders: menu, mode select, About, How to play, Settings (theme), HUD with the power meter and first-use prompt, round result, match over, pause; light and dark
 - [ ] **Played by hand on a phone:** nothing here has been played on a device. Feel (pull sensitivity, settle time of 3 to 5 s, how often the kep captures) needs a human
+- [x] Web: the full site design from the plan (header, theme toggle, hero with arena art, steps, game diagrams, verify box, share image, favicon) and `/play` with the browser export; the export was built and played in headless Chrome (menu, aim, a shot, and a computer toss dropping into the kep, no console errors)
 - [ ] Shot-follow camera, sound, saved settings, Bangla text, UI polish against the renders at 360 × 640 and 412 × 915
 - [ ] Milestone 0 is still open: nothing has been exported to a device or browser (this machine has no Android export templates). Jolt's support in the web export is unverified
 

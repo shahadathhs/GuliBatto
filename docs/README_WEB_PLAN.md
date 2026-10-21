@@ -1,8 +1,8 @@
 # Guli & Batto — Marketing Website Plan
 
 > **Purpose:** plan the small public site in `web/`.  
-> **Reference renders:** [design/web/](design/web/) holds the landing and download pages in light and dark, desktop and mobile. Values (version, size, hash) are placeholders.  
-> **Status:** home, how to play, about, download and privacy are built, use the generated tokens, and are covered by lint, type-check, unit tests, a production build and a smoke test. Not yet done: the light/dark toggle (the site follows the system setting), an Open Graph image, and an accessibility and contrast pass against the renders. Deviations from this plan are noted where they apply.
+> **Reference images:** [design/web/](design/web/) holds screenshots of the built landing and download pages in light and dark, desktop and mobile. The release shown is a stand-in.  
+> **Status:** built to this plan: landing, how to play, about, download, privacy and play, with the header and theme toggle, the arena illustrations, the verify box and a share image. It uses the generated tokens in both themes and is covered by lint, type-check, unit tests, a production build and a smoke test. Not done: an accessibility audit with a screen reader, a real-device check, and a host (nothing is deployed). Deviations from this plan are noted where they apply.
 
 ## 1. Goal
 
@@ -79,9 +79,14 @@ Make a direct install feel safe and simple.
 - **Hosting:** undecided (any static or Node host; the free tier's limits must be checked before launch).
 - **Tooling:** oxlint, type-check, unit tests, build and a smoke test run in CI (and in `make check`); see [CI.md](CI.md).
 
-## 7. Browser play (optional, later)
+## 7. Browser play
 
-The release already includes the game's web export. A `/play` page would load it only after the visitor presses Play, show real loading and failure states (no WebAssembly, no WebGL 2, download error), and say it needs JavaScript. The export is single-threaded, so no special headers are needed. Expect a first-load download of tens of megabytes; measure it from the real export before promising anything, and check the host's bandwidth terms. It is a secondary "Try in your browser" link; the download stays primary.
+**Built** as `/play`. It is the same Godot project exported to the web, never a separate web implementation.
+
+- **How it is wired:** the game has a `Web` export preset (single-threaded, no extensions, so no special headers are needed). `make web-play` exports it and copies it to `web/public/play-build/` (git-ignored). On a deployed site, `web/scripts/fetch-play-build.mjs` runs before `next build` and downloads `gulibatto-web-*.tar.gz` from the release tagged `PLAY_BUILD_TAG` (default `latest`, the rolling build) unless an export is already there. A failed fetch never fails the build.
+- **The page:** a server component checks for the export at build time. A small client component loads nothing until Play is pressed (the export is tens of megabytes), then shows the game in a frame. Without JavaScript the page says it is needed. With no export, the page says the browser version is not available and links to the download, and the header leaves out the Play link.
+- **It is a secondary route.** The download stays the primary action. Nothing is saved or sent anywhere.
+- **Still to measure from the real export:** the first-load size, load time on a phone, and whether the host's free tier allows the bandwidth.
 
 ## 8. Implementation phases (web)
 
