@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { SiteFooter } from "@/components/site-footer";
+import { SITE_URL } from "@/lib/site";
 import { SiteHeader } from "@/components/site-header";
 import "./tokens.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(SITE_URL),
   title: { default: "Guli & Batto", template: "%s · Guli & Batto" },
   description:
     "A small offline 3D marble game made from the traditional marble games of Bangladesh. Aim, shoot, and watch the marbles roll.",
