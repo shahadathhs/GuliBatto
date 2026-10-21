@@ -1,122 +1,146 @@
-# Guli & Batto — Project Overview
+# Guli & Batto — Product Document
 
-> **Replanned 2026-10-21.** The first plan treated this as a minimal prototype with a brochure site. The goal is now a complete game: four traditional marble games, each represented properly, on Android, the web, Windows, macOS and Linux, with the same game and the same information everywhere. Nothing beyond that is planned. Sections 2 and 4 say what that means, and [`README_ROADMAP.md`](README_ROADMAP.md) says in what order.
+> The product in one place: what it is, who it is for, what is in it and what is not, what "done" means, how it reaches people, and where it stands. The details live in the documents linked from section 13.  
+> **Replanned 2026-10-21.** Last updated with the first release and the live site (2026-10-21).
 
-## 1. The idea
+## 1. Summary
 
-Make a tactile 3D game from the traditional marble games the project owner played as a child: **Kep**, **Batto**, **Guli Khela** and **Quick Dan**. The player interacts with marbles and a physical play area rather than controlling human avatars. One arena, one marble behaviour, one aiming system and one camera rig serve all four modes.
+**Guli & Batto** is a 3D game of four traditional marble games from Bangladesh: **Kep**, **Batto**, **Guli Khela** and **Quick Dan**. They are the games the author played as a child on bare ground, with a line drawn in the dirt, a small hole and a few marbles. The game rebuilds them with real physics, so every shot can be learned: line up, pull back, release, watch the marbles roll and collide, and understand why the turn went the way it did.
 
-The product should feel like playing on a real patch of ground: line up a shot, judge distance and angle, release, watch the marbles collide and roll, then understand why the turn was won or lost.
+It is free, runs offline, and has no accounts, ads or tracking. One Godot project runs on **Android, the web, Windows, macOS and Linux**, and a website teaches the games and distributes the builds.
 
-This game is one person's attempt to bring childhood memories back. Nothing in it is invented from nothing: each mode starts from a game people played, the author modified the rules for play on a screen, and one central page, [`README_ABOUT.md`](README_ABOUT.md), says so plainly, so no mode needs an "adapted" or "provisional" label. The sources are in [`README_GAME_RULES.md`](README_GAME_RULES.md).
+- **Site:** <https://playgulibatto.vercel.app> (play in the browser, download, learn the games)
+- **Source and releases:** <https://github.com/shahadathhs/GuliBatto>
 
-## 2. Scope: what is in, and what is not
+**What makes it different:** the physics is real and legible (no scripted outcomes); it is built from games people actually played, with the author's changes listed openly rather than claimed as the official rules; and the web and the apps are the same game with the same information.
 
-**The scope is the four modes, represented properly, on every platform, with nothing extra.**
+## 2. Vision and goals
 
-### In
+**Vision.** Anyone who remembers these games can play them again, and anyone who never knew them can learn them in minutes. The game should feel like a patch of real ground.
 
-- **Four modes, complete:** Kep (the toss at the hole), Batto (a race along three holes and back), Guli Khela (the line, the hole, the stake and the _baad_ marble) and Quick Dan (one round of Guli Khela). Rules in [`README_GAME_RULES.md`](README_GAME_RULES.md).
-- **One to three computer opponents** in every mode, so each can be played alone, with two to four sides.
-- **Five platforms from one Godot project:** Android, the web (the full game, not a try-out), Windows, macOS and Linux.
-- **The same information on the web and in the app,** from one source of content (see [`README_WEB_AND_APP_PLAN.md`](README_WEB_AND_APP_PLAN.md)): Home, How to play (large, with every mode), a page for each game, Play or Download, About, Contact and Privacy. The web points people to the apps; the apps point people to the web version.
-- **Automatic releases for every platform** when the version changes, with checksums.
-- **The basics a game needs,** as in the first plan: a menu and mode select, in-game status, pause and restart, a theme setting, basic sound, and locally saved settings.
+**Goals**
 
-### Not in
+1. A shot that feels physical and learnable, with results that are always explained.
+2. Four modes that each ask for a different decision, on one shared foundation.
+3. The same game on five platforms, and the same information on the web and in the app.
+4. Honest labelling in one place: the About page names the sources and what the author changed.
+5. A small, dependable release process: change the version, and every platform is built and published.
 
-Pass-and-play on one device, Bangla or other languages, statistics and achievements, extra arenas or skins, a campaign, online play, accounts, leaderboards, cloud saves or any backend, human characters, ads and monetisation, a dashboard or authoring tool. Adding any of these is a new decision recorded here first.
+## 3. Who it is for
 
-## 3. What "represented properly" means
+- **People who remember playing.** They will judge the feel and the rules first. They need a way to say how they played, and the game must not lecture them.
+- **Curious players.** They have never played marbles this way. They need to understand a shot without being told, in the first minute, and to learn each game from the site or the app.
+- **Casual players.** Short rounds, one hand, no account, no ads.
 
-A mode is done when all of these are true. This is the acceptance list for each of the four.
+## 4. The four games
 
-1. **The rules are exactly the written rules.** Every rule in the mode's section of [`README_GAME_RULES.md`](README_GAME_RULES.md) is implemented and has a test on a hand-built board.
-2. **The board shows the real elements of the game.** Jalla and kep for Kep; three holes and the route for Batto; the scatter, the named _baad_ marble, the pot and each side's purse for Guli Khela.
-3. **The computer sides play the mode's real decisions.** Batto: go for the hole or hit a rival. Guli Khela: name a _baad_ marble and touch exactly one other. They sometimes miss.
-4. **The result is always explained.** After every shot the player sees what happened and why ("In the kep", "Hit, one more shot", "Fine: touched the baad marble"), derived from the settled board.
-5. **The mode is explained to a first-time player,** in the game and on the site, from the same words: the rules, a diagram, and the terms (_jalla_, _kep_, _dan_, _baad_).
-6. **It works on all five platforms** with the same behaviour, and has been played by hand on at least a phone and a desktop browser.
+Each is a modernised version of a game people played. Sources and the rules in full are in [`README_GAME_RULES.md`](README_GAME_RULES.md); the words and the author's changes are on the About page ([`README_ABOUT.md`](README_ABOUT.md)). Two to four sides: you and one to three computer players.
 
-## 4. Product principles
+| Game           | The idea                                                                                                                                                          | Keeps marbles between rounds | Ends                                   | State        |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | -------------------------------------- | ------------ |
+| **Kep**        | Toss at the hole from behind the line. In the hole scores most, then the closest                                                                                  | No, scored                   | After a set number of rounds           | **Playable** |
+| **Batto**      | Race along three holes and back; a hit or reaching a hole earns another shot                                                                                      | No, ranked                   | All but one have finished              | Next         |
+| **Guli Khela** | Stake marbles scattered round the hole; name the marble you must not touch, then touch exactly one other; a wrong touch costs a fine; the winner takes the ground | **Yes**, play for keeps      | One side out of marbles, or surrenders | Next         |
+| **Quick Dan**  | One round of Guli Khela                                                                                                                                           | No, one stake and one winner | The round is won                       | Next         |
 
-1. **Physics first.** The pleasure of a shot comes from understandable direction, power, rolling, friction and collisions. Do not hide weak physical behaviour under visual effects.
-2. **One simulation, several views.** Camera modes change presentation, not the world state or the shot outcome.
-3. **No people required.** The game shows the play surface, marbles, marks and the environment. No human avatars.
-4. **One game on every platform.** The same Godot project, the same rules and the same content. A platform may differ only where it must (no vibration on a desktop).
-5. **Offline and private.** No account, server, analytics or online match is needed for play. The web version runs entirely in the browser.
-6. **Do the four modes well before anything else.** Depth in the four modes, not breadth of features.
-7. **Be honest about tradition, in one place.** The About page names the sources and lists what the author changed. Modes carry no authenticity labels, and nothing claims to be the official rules.
+Build order: Kep, Batto, Guli Khela, Quick Dan. Each must ask for a different decision; if two feel alike, the weaker is cut rather than another added.
 
-## 5. Target experience
+## 5. The experience
 
-- **Platforms:** Android phones (the first target), desktop and mobile browsers, Windows, macOS and Linux desktops.
-- **Engine:** Godot 4, GDScript, 3D scenes and the Compatibility renderer, so one project reaches every platform including the web.
-- **Controls:** touch and mouse. On touch: drag back from your marble to aim, drag empty ground to orbit, pinch to zoom. On a desktop: the same with the mouse, wheel to zoom.
-- **Play style:** turn-based shots against computer sides. No real-time networked play.
-- **Session length:** short rounds that are easy to restart, a design target to check in playtests.
+- **Controls:** drag back from your marble to aim, like a slingshot; a longer pull is more power; release to shoot. Drag empty ground to orbit the camera, wheel or pinch to zoom, three views and a reset. Aim is computed in world space, so the camera never changes a shot.
+- **A turn:** the game shows whose turn it is, you aim, the marbles roll and settle, the result is judged once from where everything rests, and a short cue says what happened and why.
+- **Look and feel:** warm, tactile and quiet. The marbles are the only saturated objects, each side has a mark (ring, dot, bar, triangle) so colour is never the only signal, light and dark themes are both first-class ([`README_VISUAL_DESIGN.md`](README_VISUAL_DESIGN.md)).
+- **Session:** short rounds that are easy to restart; a design target to check in playtests.
 
-## 6. What would make the game worth shipping
+## 6. Platforms and distribution
 
-- A first-time player can aim and shoot after one short prompt and read why a turn went the way it did.
+| Platform | How people get it                                                  | State                                                     |
+| -------- | ------------------------------------------------------------------ | --------------------------------------------------------- |
+| Android  | APK from the releases page and the download page; no store listing | Built and published; not tried on a phone                 |
+| Web      | Played in the browser at `/play`; the same game                    | Built, published and served; played in a headless browser |
+| Windows  | Zip from the releases page; unsigned                               | Built and published; not run on Windows                   |
+| macOS    | Zip with an unsigned app                                           | Built and published; not run on a Mac                     |
+| Linux    | `tar.gz`, x86-64                                                   | Built and published; not run on Linux                     |
+
+A version change builds all five and publishes a release with a checksum file; a rolling "latest" build follows `main`. Hosting is **Vercel** for the site and **GitHub Releases** for the files ([`CI.md`](CI.md), [`DEPLOY.md`](DEPLOY.md)). iOS and store listings are not planned. Desktop code signing is not planned; the OS will warn on first open, and the download page says so.
+
+## 7. Content: the same pages on the web and in the app
+
+The website and the app carry the same information from one source ([`README_WEB_AND_APP_PLAN.md`](README_WEB_AND_APP_PLAN.md)): **Home**, **the games** (a page for each), **How to play** (very large: controls, every game with a worked example, a glossary of _jalla_, _kep_, _dan_ and _baad_, a short FAQ), **Play** or **Download**, **About**, **Contact** and **Privacy**; **Settings** is in the app only. The web points people to the apps, and the apps point to the web version. Today the site has the first version of Home, How to play, About, Download, Privacy and Play; the large pages, the per-game pages, Contact and the in-app copies are planned.
+
+## 8. Scope
+
+**In:** the four games, complete; one to three computer opponents in each; five platforms from one project; the pages above on the web and in the app; automatic releases; and the basics a game needs: menu and mode select, pause and restart, a theme setting, basic sound and locally saved settings.
+
+**Not in:** pass-and-play on one device, other languages, statistics and achievements, extra arenas or skins, a campaign, online play, accounts, leaderboards, cloud saves or any backend, human characters, ads and monetisation, a dashboard or authoring tool. Adding any of these is a new decision recorded here first.
+
+## 9. When a game is "represented properly"
+
+All six must hold for each of the four games.
+
+1. **The rules are exactly the written rules,** each with a test on a hand-built board.
+2. **The board shows the real elements:** jalla and kep; three holes and the route; the scatter, the named _baad_ marble, the pot and each side's purse.
+3. **The computer sides make the game's real decisions,** and sometimes miss.
+4. **The result is always explained** after every shot, from the settled board.
+5. **The game is explained to a first-time player,** in the app and on the site, from the same words and diagrams.
+6. **It works the same on all five platforms** and has been played by hand on at least a phone and a desktop browser.
+
+## 10. Quality and success
+
+- A first-time player can aim and shoot after one short prompt and read why a turn went as it did.
 - Changing the camera never changes the shot or the result.
 - Shots are repeatable enough that skill matters, and collisions still make interesting outcomes.
-- The four modes feel different: each asks for a different decision.
-- It runs acceptably on a real mid-range Android phone, in a desktop browser, and on each desktop OS.
-- People who played these games recognise them, or tell us how theirs differed, and the About page invites that.
+- The four games feel different.
+- It runs acceptably on a real mid-range Android phone, in a desktop browser and on each desktop OS.
+- People who played these games recognise them or tell the author how theirs differed, and the About page invites that.
 
-## 7. Repository layout
+These are observations to record in playtests, not numeric targets: there are no players yet to measure.
 
-```text
-GuliBatto/
-├── game/        Godot project (scenes, scripts, resources, tests)
-├── web/         the website (Next.js), with the content pages and the browser game
-├── content/     (planned) the shared words and diagrams: how to play, the games, about
-├── design/      tokens.json, the one source of colours
-├── scripts/     tokens, checks, version bump, concept renders
-├── docs/        this specification and the design images
-├── Makefile     command surface
-└── VERSION      source of truth for releases
-```
+## 11. Status
 
-Details are in [`README_ARCHITECTURE.md`](README_ARCHITECTURE.md).
+| Area                                   | State                                                                                                                                                       |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Shot, physics, settling, camera, input | Built and tested (65 automated tests, real input through the whole stack); **not played by hand on a phone**                                                |
+| Kep                                    | Complete: scoring, rounds, computer sides, the full screen set in light and dark                                                                            |
+| Batto, Guli Khela, Quick Dan           | Not built                                                                                                                                                   |
+| Site                                   | Live at the address above: Home, How to play, About, Download, Privacy, Play, share image, theme toggle                                                     |
+| Releases                               | `v0.0.1` published with all five platforms and checksums; the site rebuilds on each release through a deploy hook                                           |
+| Checks                                 | Lint, token and colour checks, file size, game and site tests, a smoke test of every page, and a CI pipeline that passes on `main`                          |
+| Not done                               | Playing on real devices; running the Windows, macOS and Linux builds; checking the rules with people who played; sound, saved settings and the shared pages |
 
-## 8. Decisions and open questions
+The order of work is in [`README_ROADMAP.md`](README_ROADMAP.md) and the checklist in [`../TODO.md`](../TODO.md).
 
-| Topic           | Current decision                                                             | Needs                                                       |
-| --------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| Project name    | "Guli & Batto" is a working label                                            | Name, spelling and cultural fit                             |
-| Modes           | Kep, Batto, Guli Khela, Quick Dan; all four to be complete                   | Rules checked with at least one more person who played each |
-| Platforms       | Android, web, Windows, macOS, Linux; iOS and a store listing are not planned | Whether to add either later                                 |
-| Desktop signing | Unsigned at first; the OS will warn                                          | Apple and Windows signing if people complain                |
-| Orientation     | Portrait on phones; desktop and web resize                                   | Playtests on real devices                                   |
-| Language        | English, with the games' own words (_jalla_, _kep_, _dan_, _baad_)           | None planned                                                |
-| Opponents       | One to three computer sides using the same shot interface                    | Whether the AI is good enough in each mode                  |
-| Rendering       | Compatibility renderer for every platform                                    | Performance on real phones and in browsers                  |
-| Physics         | Jolt, set explicitly; works in the browser export we played                  | Check on every platform                                     |
-| Site hosting    | Not chosen; any static or Node host                                          | A choice, and the Contact details to publish                |
-| Persistence     | Local save only                                                              | Browser storage behaviour and a clear reset                 |
+## 12. Decisions and open questions
 
-## 9. Documentation map
+| Topic                 | Decision                                                | Needs                                                                                         |
+| --------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Name                  | "Guli & Batto" is a working label                       | Name, spelling and cultural fit                                                               |
+| Modes                 | Kep, Batto, Guli Khela, Quick Dan, all four complete    | The rules checked with at least one more person who played each                               |
+| Platforms             | Android, web, Windows, macOS, Linux                     | Whether to add iOS or a store later (not planned)                                             |
+| Desktop signing       | Unsigned                                                | Signing if the warnings put people off                                                        |
+| Orientation           | Portrait on phones; desktop and web resize              | Playtests on real devices                                                                     |
+| Language              | English, with the games' own words                      | None planned                                                                                  |
+| Opponents             | One to three computer sides, same shot interface        | Whether they play each game convincingly                                                      |
+| Rendering and physics | Compatibility renderer, Jolt physics, on every platform | Performance on real phones and browsers; Jolt in the browser is only seen to behave correctly |
+| Site address          | `playgulibatto.vercel.app`                              | A custom domain later, if wanted                                                              |
+| Contact details       | Not chosen                                              | An email or form to publish                                                                   |
+| Persistence           | Local save only                                         | Browser storage behaviour and a clear reset                                                   |
 
-- [`README_ABOUT.md`](README_ABOUT.md) — the central About page: where the rules come from and what the author changed.
-- [`README_GAME_RULES.md`](README_GAME_RULES.md) — sources, the four modes, turn flow and scoring.
-- [`README_GAMEPLAY_FEATURES.md`](README_GAMEPLAY_FEATURES.md) — the player-facing behaviour contract.
-- [`README_ARCHITECTURE.md`](README_ARCHITECTURE.md) — scenes, systems, dependencies and data flow.
-- [`README_WEB_AND_APP_PLAN.md`](README_WEB_AND_APP_PLAN.md) — the pages on the web and in the app, the shared content, browser play and downloads.
-- [`README_VISUAL_DESIGN.md`](README_VISUAL_DESIGN.md) — environments, camera language, UI and performance constraints; [`design/SCREENS.md`](design/SCREENS.md) lists the screens and the site.
-- [`README_IMPLEMENTATION.md`](README_IMPLEMENTATION.md) — build sequence and technical acceptance checks.
-- [`README_ROADMAP.md`](README_ROADMAP.md) — phases and decision gates.
-- [`CI.md`](CI.md) — the pipeline, releases for every platform, tooling and secrets.
-- [`DEPLOY.md`](DEPLOY.md) — setting up the site on Vercel, the release files, and the signing key.
-- [`README_CODE_STANDARDS.md`](README_CODE_STANDARDS.md) — conventions and review checklist.
+## 13. Principles and documentation
 
-## 10. Research references
+**Principles.** Physics first. One simulation, several views. No people required. One game on every platform. Offline and private. Do the four games well before anything else. Be honest about tradition, in one place.
 
-- Banglapedia, "Folk Games", including the entry for Gulikhela: <https://en.banglapedia.org/index.php?title=Folk_Games>
-- Godot Engine, web export: <https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html>
-- Godot Engine, Android export: <https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html>
-- Godot Engine, desktop exports: <https://docs.godotengine.org/en/stable/tutorials/export/exporting_projects.html>
-- Godot Engine, `RigidBody3D`: <https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html>
+| Document                                                                                       | What it holds                                                         |
+| ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [`README_ABOUT.md`](README_ABOUT.md)                                                           | The About page: where the rules come from and what the author changed |
+| [`README_GAME_RULES.md`](README_GAME_RULES.md)                                                 | Sources, the four games, turn flow and scoring                        |
+| [`README_GAMEPLAY_FEATURES.md`](README_GAMEPLAY_FEATURES.md)                                   | The player-facing behaviour contract                                  |
+| [`README_ARCHITECTURE.md`](README_ARCHITECTURE.md)                                             | Scenes, systems, dependencies, data flow                              |
+| [`README_WEB_AND_APP_PLAN.md`](README_WEB_AND_APP_PLAN.md)                                     | The pages, the shared content, browser play, downloads                |
+| [`README_VISUAL_DESIGN.md`](README_VISUAL_DESIGN.md), [`design/SCREENS.md`](design/SCREENS.md) | Visual language, tokens, screens                                      |
+| [`README_IMPLEMENTATION.md`](README_IMPLEMENTATION.md)                                         | Build sequence and technical checks                                   |
+| [`README_ROADMAP.md`](README_ROADMAP.md)                                                       | Phases and gates                                                      |
+| [`CI.md`](CI.md), [`DEPLOY.md`](DEPLOY.md)                                                     | The pipeline, releases, and the Vercel setup                          |
+| [`README_CODE_STANDARDS.md`](README_CODE_STANDARDS.md)                                         | Conventions and review checklist                                      |
 
-Research review date: 2026-10-21. Platform details can change; verify the documentation again when pinning the exact Godot version.
+**References.** [Banglapedia, "Folk Games"](https://en.banglapedia.org/index.php?title=Folk_Games) (Gulikhela); Godot documentation for [web](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html), [Android](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html) and [desktop](https://docs.godotengine.org/en/stable/tutorials/export/exporting_projects.html) exports and [`RigidBody3D`](https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html). Reviewed 2026-10-21; check the documentation again when pinning a new Godot version.

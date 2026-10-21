@@ -9,14 +9,14 @@
 - The shot, settling and physics core, with tests (Phase 1) and the camera and input (Phase 2), checked headless and in rendered frames; **not played by hand on a phone**.
 - Kep, complete as a playable mode against two computer sides, with its scoring and match flow, and the menu, HUD, results, About, pause and settings screens in light and dark (Phase 3).
 - A first version of the website: home, how to play, about, download, privacy, and a play page that frames Godot's default page.
-- The web export of the game builds and plays in headless Chrome. Android, Windows, macOS and Linux exports are **not** built yet.
-- Checks: lint, token and colour checks, 62 game tests, site tests and a smoke test, and a CI pipeline that passes (the build and release jobs have never run).
+- All five platform builds (Android, web, Windows, macOS, Linux) are produced by CI and published in the release `v0.0.1`. Only the web export has been run, in a headless browser; the others have not been run on real devices.
+- The site is live at <https://playgulibatto.vercel.app>.
+- Checks: lint, token and colour checks, 65 game tests, site tests and a smoke test, and a CI pipeline that passes on `main` and has published a release.
 
 **Not built**
 
 - Batto, Guli Khela and Quick Dan.
 - The shared content source, the large Home, per-game and How to play pages, Contact, the in-app pages, the site-native browser loader, and the all-platform download page.
-- Builds for Android, Windows, macOS and Linux, and automatic releases for them.
 - Sound, saved settings, and checking the rules with people who played.
 
 ## Phase 0 — Five platforms build and run

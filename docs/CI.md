@@ -1,6 +1,6 @@
 # CI, tooling and releases
 
-> **Status: rebuilt to this design; not yet run on GitHub.** The workflow follows the same shape as the sibling project's: quality gates, a game job that runs headless Godot in a Docker image, a web job, one build job for the platforms, and a release job. Locally, `make check` and the lint, token, colour and size gates pass and `actionlint` is clean. The earlier version of this pipeline did run once on `main` and published an APK and a web export; this version adds the Windows, macOS and Linux builds and replaces its hand-written Godot setup with the Docker image, and has not run yet. Update this file in the same change as any workflow or tooling change.
+> **Status: ran on GitHub and passed.** On 2026-10-21 the pipeline ran on `main` after pull request #2 and every job succeeded: quality, web, game (in the Docker image), build for every platform, and release. It published `v0.0.1` and a rolling `latest` with the APK, Windows, macOS and Linux builds, the web export and checksums. The site rebuild hook (`VERCEL_DEPLOY_HOOK`) was added after that run, so its first real use is the next release. Update this file in the same change as any workflow or tooling change.
 
 ## Principles
 
@@ -101,9 +101,10 @@ Dependabot runs weekly for GitHub Actions and the pnpm workspace, with action bu
 
 ## Known limits to revisit
 
-- The pipeline has not run on GitHub since it was rebuilt. The first run may need fixes: the image tag, export templates, and the desktop presets.
+- The release currently includes a stray `gulibatto-debug.apk.idsig` file (an APK signing side file) because the file pattern matches it. It should be excluded.
+- The Android APK is signed with a throwaway key until `ANDROID_DEBUG_KEYSTORE_BASE64` is set, so a later build cannot be installed over this one.
 - Confirm what a Mac and Windows say when an unsigned build is opened, and write it on the download page.
 - A Windows export from Linux may keep the default icon unless an icon tool is available.
-- Each platform build has to be run by a person before it is called working; CI only proves it builds.
+- CI proves each platform builds; a person has to run each one. Only the web export has been run (in a headless browser); the APK and the desktop builds have not been run on real devices.
 - Whether the web export's physics uses Jolt in the browser was not checked directly; the physics behaves correctly there.
 - Each run pulls the Godot image; add caching if it becomes slow.
