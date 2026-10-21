@@ -1,0 +1,8 @@
+node_modules/
+pnpm-lock.yaml
+game/addons/
+game/.godot/
+.claude/
+graphify-out/
+web/.next/
+web/next-env.d.ts

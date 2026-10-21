@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3]
+
+[sub_resource type="BoxShape3D" id="ground_shape"]
+size = Vector3(10, 0.2, 10)
+
+[sub_resource type="BoxMesh" id="ground_mesh"]
+size = Vector3(10, 0.2, 10)
+
+[sub_resource type="StandardMaterial3D" id="ground_material"]
+albedo_color = Color(0.45, 0.33, 0.22, 1)
+roughness = 1.0
+
+[sub_resource type="SphereShape3D" id="marble_shape"]
+radius = 0.2
+
+[sub_resource type="SphereMesh" id="marble_mesh"]
+radius = 0.2
+height = 0.4
+
+[sub_resource type="StandardMaterial3D" id="marble_material"]
+albedo_color = Color(0.1, 0.4, 0.8, 1)
+roughness = 0.1
+
+[node name="Main" type="Node3D"]
+
+[node name="Light" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.8, 0.6, 0, -0.6, 0.8, 0, 4, 0)
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.8, 0.6, 0, -0.6, 0.8, 0, 3, 4)
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="Shape" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("ground_shape")
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("ground_mesh")
+surface_material_override/0 = SubResource("ground_material")
+
+[node name="Marble" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="Marble"]
+shape = SubResource("marble_shape")
+
+[node name="Mesh" type="MeshInstance3D" parent="Marble"]
+mesh = SubResource("marble_mesh")
+surface_material_override/0 = SubResource("marble_material")

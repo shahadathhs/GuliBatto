@@ -1,0 +1,15 @@
+.DS_Store
+.godot/
+android/
+export_credentials.cfg
+build/
+*.apk
+*.aab
+*.log
+.claude/
+graphify-out/
+node_modules/
+.husky/_/
+next-env.d.ts
+*.tsbuildinfo
+.next/

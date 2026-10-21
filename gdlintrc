@@ -1,0 +1,2 @@
+# gdlint config (gdtoolkit). Game code follows Godot's official style guide.
+max-line-length: 100

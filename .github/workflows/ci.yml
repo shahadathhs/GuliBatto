@@ -1,0 +1,159 @@
+# Pull requests and pushes run the checks. A push to main also builds the APK and the web
+# build and publishes them: a versioned release when VERSION is new, plus a rolling "latest".
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Keep in step with config/features in game/project.godot.
+  GODOT_VERSION: 4.7.2
+
+jobs:
+  game:
+    name: Game (load, lint, tests)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+      - name: Install Godot
+        run: |
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip
+          sudo mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" /usr/local/bin/godot
+      - run: make check
+
+  web:
+    name: Web (typecheck and build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6 # version comes from the root package.json packageManager
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter web typecheck
+      - run: pnpm --filter web build
+
+  build:
+    name: Build APK and web export
+    needs: [game, web]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      is-release: ${{ steps.ver.outputs.is-release }}
+      version: ${{ steps.ver.outputs.version }}
+    env:
+      # Optional repository secret: base64 of a fixed debug keystore (docs/README_RELEASE.md).
+      ANDROID_DEBUG_KEYSTORE_BASE64: ${{ secrets.ANDROID_DEBUG_KEYSTORE_BASE64 }}
+    steps:
+      - uses: actions/checkout@v7
+
+      # A main push becomes a versioned release when VERSION names a version that has no
+      # release yet; otherwise it is a rolling build.
+      - name: Resolve version
+        id: ver
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          FILE_VERSION=$(tr -d '[:space:]' < VERSION)
+          if gh release view "v${FILE_VERSION}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            VERSION="${FILE_VERSION}-${GITHUB_SHA::7}"
+            echo "is-release=false" >> "$GITHUB_OUTPUT"
+          else
+            VERSION="${FILE_VERSION}"
+            echo "is-release=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install Godot and export templates
+        run: |
+          base="https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable"
+          curl -fsSL -o godot.zip "${base}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          curl -fsSL -o templates.tpz "${base}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          unzip -q godot.zip
+          sudo mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" /usr/local/bin/godot
+          mkdir -p "$HOME/.local/share/godot/export_templates"
+          unzip -q templates.tpz -d templates
+          mv templates/templates "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          ./scripts/android-setup.sh
+
+      - name: Stamp the version
+        run: |
+          # Each build gets a higher version code, so a newer APK installs over an older one.
+          sed -i "s|^version/code=.*|version/code=${GITHUB_RUN_NUMBER}|" game/export_presets.cfg
+          sed -i "s|^version/name=.*|version/name=\"${VERSION}\"|" game/export_presets.cfg
+
+      - name: Build the APK
+        run: |
+          make apk
+          mv game/build/gulibatto-debug.apk "game/build/gulibatto-${VERSION}.apk"
+          cd game/build && sha256sum "gulibatto-${VERSION}.apk" > "gulibatto-${VERSION}.apk.sha256"
+
+      - name: Build the browser export
+        run: |
+          make web
+          tar -czf "game/build/gulibatto-web-${VERSION}.tar.gz" -C game/build/web .
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: gulibatto-build
+          path: |
+            game/build/gulibatto-*.apk
+            game/build/gulibatto-*.apk.sha256
+            game/build/gulibatto-web-*.tar.gz
+          if-no-files-found: error
+          retention-days: 30
+
+  release:
+    name: Release
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: gulibatto-build
+
+      # Rolling dev channel, refreshed on every main push. It never takes the "latest" flag;
+      # that belongs to versioned releases.
+      - name: Refresh the rolling latest build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --repo "${GITHUB_REPOSITORY}" --cleanup-tag --yes || true
+          gh release create latest gulibatto-*.apk gulibatto-*.apk.sha256 gulibatto-web-*.tar.gz \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "Latest build (main@${GITHUB_SHA::7})" \
+            --notes "Automatic build of commit ${GITHUB_SHA}. A rolling dev channel, not a versioned release." \
+            --latest=false
+
+      - name: Create the versioned release
+        if: needs.build.outputs.is-release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          gh release create "v${VERSION}" gulibatto-*.apk gulibatto-*.apk.sha256 gulibatto-web-*.tar.gz \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "Guli & Batto v${VERSION}" \
+            --generate-notes --latest

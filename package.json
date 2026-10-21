@@ -1,0 +1,27 @@
+{
+  "name": "guli-batto",
+  "private": true,
+  "description": "Guli & Batto: a small offline 3D marble game (Godot 4). Node is used only for commit hooks and formatting docs.",
+  "packageManager": "pnpm@11.5.3",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "commit": "cz"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "commitizen": "^4.3.2",
+    "cz-git": "^1.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-git"
+    }
+  }
+}
