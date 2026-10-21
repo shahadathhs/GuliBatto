@@ -11,11 +11,11 @@ config/version="0.0.1"
 
 [display]
 
-window/size/viewport_width=844
-window/size/viewport_height=390
+window/size/viewport_width=390
+window/size/viewport_height=844
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/handheld/orientation=0
+window/handheld/orientation=1
 
 [rendering]
 
