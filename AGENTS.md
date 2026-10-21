@@ -27,8 +27,11 @@ make format        # gdformat and prettier
 make tokens        # regenerate the Godot palette and web CSS from design/tokens.json
 make run           # play on this machine
 make web-dev       # the website at localhost:3000
-make apk           # debug APK (needs Android export templates and SDK)
-make web           # browser export (needs Web export templates)
+make game-docker-check   # load the project in the Godot container (what CI runs)
+make game-docker-test    # the game tests in the container
+make game-apk | game-web | game-windows | game-macos | game-linux   # exports, in the container
+make game-desktop        # all three desktop builds
+make workflows           # lint the GitHub workflow files
 make version v=X.Y.Z  # write a version into every file that carries it (no git)
 ```
 

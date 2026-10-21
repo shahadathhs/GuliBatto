@@ -72,7 +72,7 @@ Each mode section follows the same order so players can compare them. Rules in t
 
 The game in the browser is the same Godot project exported to the web.
 
-- **Build and delivery.** CI exports the web build and attaches it to the versioned release. When the site builds, a script downloads it into `web/public/play-build/<version>/` (git-ignored). The path carries the version so a browser cache never serves an old build against new files. A failed fetch never fails the site build; `/play` then says it is unavailable.
+- **Build and delivery.** CI exports the web build and attaches it to the release (the rolling `latest` and each versioned release). When the site builds, `scripts/fetch-play-build.mjs` downloads it into `web/public/play-build/` (git-ignored), and a Vercel deploy hook rebuilds the site after each release ([DEPLOY.md](DEPLOY.md)). The path carries the version so a browser cache never serves an old build against new files. A failed fetch never fails the site build; `/play` then says it is unavailable.
 - **The page loads the engine itself,** not Godot's default page in a frame. A client component creates its own canvas and starts the engine from the exported files, so the page controls the experience:
   - nothing downloads until the visitor presses **Play** (the export is about 40 MB); that press also unlocks audio;
   - a progress percentage while it loads;
@@ -90,9 +90,9 @@ A release publishes one file per platform plus a checksum file. The Download pag
 | Platform | File                                                 | Install note                                                          |
 | -------- | ---------------------------------------------------- | --------------------------------------------------------------------- |
 | Android  | `gulibatto-<version>.apk`                            | Allow installs from your browser once; not on a store                 |
-| Windows  | `gulibatto-<version>-windows.zip`                    | Unzip and run; Windows may warn because the build is not signed       |
-| macOS    | `gulibatto-<version>-macos.zip`                      | Unzip, then open with right-click and Open the first time; not signed |
-| Linux    | `gulibatto-<version>-linux.tar.gz`                   | Unzip, make executable if needed, run                                 |
+| Windows  | `gulibatto-windows-<version>.zip`                    | Unzip and run; Windows may warn because the build is not signed       |
+| macOS    | `gulibatto-macos-<version>.zip`                      | Unzip, then open with right-click and Open the first time; not signed |
+| Linux    | `gulibatto-linux-<version>.tar.gz`                   | Unzip, make executable if needed, run                                 |
 | Web      | played at `/play`; the export is also in the release | no install                                                            |
 
 `SHA256SUMS` lists every file. The page shows each checksum and the commands to check it on each OS. If a release is missing a platform, that row says it is not in this release and shows no button. It never links to an unverified file. There is no device detection; every platform is shown.

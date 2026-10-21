@@ -108,6 +108,7 @@ Details are in [`README_ARCHITECTURE.md`](README_ARCHITECTURE.md).
 - [`README_IMPLEMENTATION.md`](README_IMPLEMENTATION.md) — build sequence and technical acceptance checks.
 - [`README_ROADMAP.md`](README_ROADMAP.md) — phases and decision gates.
 - [`CI.md`](CI.md) — the pipeline, releases for every platform, tooling and secrets.
+- [`DEPLOY.md`](DEPLOY.md) — setting up the site on Vercel, the release files, and the signing key.
 - [`README_CODE_STANDARDS.md`](README_CODE_STANDARDS.md) — conventions and review checklist.
 
 ## 10. Research references

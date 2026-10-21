@@ -14,10 +14,13 @@ The goal is the four modes, represented properly, on five platforms, with the sa
 
 ## Phase 0 — five platforms build and run
 
-- [ ] Replace the hand-written Godot action and the extra CI jobs with the simple flow in `docs/CI.md`: `check-game` and `check-web`, one `build` per platform in the Godot container, and `release` only when `VERSION` changes; no rolling "latest"
-- [ ] Export presets for Windows, macOS and Linux (Android and Web exist); confirm the container image has all five templates
-- [ ] Build each platform in CI; run each on a real target: an Android phone, a desktop browser, Windows, macOS, Linux
+- [x] CI and infra follow the sibling project's flow: the Godot Docker image (`docker/`, `compose.yaml`), `make game-docker-*` and one export target per platform, quality / web / game / build / release jobs, rolling `latest` plus versioned releases, the Vercel deploy hook, and `docs/DEPLOY.md` (rewritten, **not yet run on GitHub**)
+- [x] Export presets for Windows, macOS and Linux (Android and Web existed)
+- [ ] Run the Docker image locally: `make game-docker-check`, `make game-docker-test`, and each export; confirm the image tag exists and has all five templates
+- [ ] First run of the pipeline on GitHub; fix whatever it needs
+- [ ] Run each build on a real target: an Android phone, a desktop browser, Windows, macOS, Linux
 - [ ] Write down what an unsigned Windows and macOS build makes the OS say, for the download page
+- [ ] Set up Vercel and the `VERCEL_DEPLOY_HOOK` secret; create the fixed Android key secret
 - [ ] Check Jolt in the web export directly
 
 ## Phase 1 and 2 — hand checks

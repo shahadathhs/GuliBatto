@@ -1,0 +1,11 @@
+# Keep the build context small and builds reproducible. Only docker/ is copied into the image.
+.git
+.github
+.husky
+**/node_modules
+**/.next
+web
+docs
+game
+**/.DS_Store
+.claude

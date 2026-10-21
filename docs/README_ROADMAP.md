@@ -26,7 +26,7 @@
 Deliverables:
 
 - pinned Godot version and export presets for all five platforms;
-- a simple CI that builds each platform ([`CI.md`](CI.md));
+- a CI that builds each platform in the Godot container, with the site rebuild hook and releases ([`CI.md`](CI.md), [`DEPLOY.md`](DEPLOY.md));
 - each build tried on a real target: an Android phone, a desktop browser, and each desktop OS (a virtual machine or a friend's machine is fine);
 - a note of what each OS shows for an unsigned build.
 
