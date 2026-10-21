@@ -3,6 +3,7 @@
 
 export type Release = {
   version: string;
+  apkName: string;
   notesUrl: string;
   apk: { url: string; sizeMb: number };
   checksumUrl: string | null;
@@ -23,8 +24,15 @@ export function parseRelease(json: unknown): Release | null {
   const sum = assets.find((a) => typeof a.name === "string" && a.name.endsWith(".apk.sha256"));
   return {
     version: json.tag_name.slice(1),
+    apkName: apk.name as string,
     notesUrl: json.html_url,
     apk: { url: apk.browser_download_url, sizeMb: Math.round(apk.size / 1e6) },
     checksumUrl: sum && isHttps(sum.browser_download_url) ? sum.browser_download_url : null,
   };
+}
+
+// A `sha256sum` file reads "<64 hex digits>  <file name>". Anything else is refused.
+export function parseChecksum(text: string): string | null {
+  const m = /^([0-9a-fA-F]{64})\s/.exec(text.trim() + " ");
+  return m ? m[1].toLowerCase() : null;
 }

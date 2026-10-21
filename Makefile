@@ -8,7 +8,7 @@ GDPATHS   := $(GAME)/scripts $(GAME)/tests
 
 .DEFAULT_GOAL := help
 .PHONY: help setup import check lint format test game-check game-test tokens tokens-check colors-check size-check \
-        web-lint web-typecheck web-test web-build web-smoke web-dev run apk web version release
+        web-lint web-typecheck web-test web-build web-smoke web-dev web-play run apk web version release
 
 help: ## Show this help
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-14s %s\n", $$1, $$2}'
@@ -73,6 +73,10 @@ web: import ## Browser export to game/build/web/ (needs Web export templates)
 
 web-dev: ## Run the site at http://localhost:3000
 	pnpm --filter web dev
+
+web-play: web ## Export the game for the browser and put it in the site's /play page
+	rm -rf web/public/play-build && mkdir -p web/public/play-build
+	cp -R $(GAME)/build/web/. web/public/play-build/
 
 web-lint: ## oxlint (type-aware) on the site and scripts
 	pnpm exec oxlint --type-aware web scripts

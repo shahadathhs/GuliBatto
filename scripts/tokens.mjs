@@ -68,7 +68,8 @@ static func get_color(token: StringName, scheme: Scheme) -> Color:
 }
 
 function css() {
-  const vars = (theme) => data.tokens.map((t) => `  --${t.name}: ${t[theme]};`).join("\n");
+  const cssTokens = [...data.tokens, ...data.arena];
+  const vars = (theme) => cssTokens.map((t) => `  --${t.name}: ${t[theme]};`).join("\n");
   return `/* Generated from design/tokens.json by scripts/tokens.mjs. Do not edit. */
 :root {
 ${vars("light")}
@@ -87,9 +88,24 @@ ${vars("dark")}
 `;
 }
 
+function tsColors() {
+  const map = (theme) => all.map((t) => `  "${t.name}": "${t[theme]}",`).join("\n");
+  return `// Generated from design/tokens.json by scripts/tokens.mjs. Do not edit.
+// For places that cannot use CSS variables, such as the share image.
+export const LIGHT = {
+${map("light")}
+} as const;
+
+export const DARK = {
+${map("dark")}
+} as const;
+`;
+}
+
 const outputs = [
   ["game/scripts/generated/palette.gd", palette()],
   ["web/src/app/tokens.css", css()],
+  ["web/src/lib/token-colors.generated.ts", tsColors()],
 ];
 
 for (const [file, content] of outputs) {

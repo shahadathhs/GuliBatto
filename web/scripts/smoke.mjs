@@ -15,6 +15,8 @@ const PAGES = [
   ["/about", "About these games", "Nothing here is invented from nothing"],
   ["/download", "Download", "direct download"],
   ["/privacy", "Privacy", "collects nothing"],
+  // Without an export the page must say so; with one it offers Play. Either way it is real content.
+  ["/play", "Play in your browser", "Android app"],
 ];
 // Links out are allowed (a visitor chooses to follow them); resources the page loads are not.
 const LOADS = /(?:src|srcset|data-href)="(https?:\/\/[^"]+)"|<link[^>]+href="(https?:\/\/[^"]+)"/g;

@@ -13,3 +13,5 @@ node_modules/
 next-env.d.ts
 *.tsbuildinfo
 .next/
+
+web/public/play-build/

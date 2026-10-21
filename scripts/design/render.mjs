@@ -7,7 +7,6 @@ import { fileURLToPath } from "node:url";
 import { tmpdir } from "node:os";
 import { screenSvg, screenList, screenBody, viewsSvg, W, H } from "./screens.mjs";
 import { THEMES } from "./tokens.mjs";
-import { landing, download } from "./web.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const out = join(root, "docs/design");
@@ -68,35 +67,5 @@ for (const theme of Object.keys(THEMES)) {
     sh,
     join(out, `overview-${theme}.png`),
   );
-}
-for (const theme of Object.keys(THEMES)) {
-  for (const [name, fn] of [
-    ["landing", landing],
-    ["download", download],
-  ]) {
-    for (const [kind, w, h] of [
-      ["desktop", 1280, name === "landing" ? 1100 : 780],
-      ["mobile", 500, name === "landing" ? 1500 : 900],
-    ]) {
-      const file = join(tmp, `${theme}-${name}-${kind}.html`);
-      writeFileSync(file, fn(theme, kind === "mobile"));
-      const dest = join(out, "web", theme, `${name}-${kind}.png`);
-      mkdirSync(dirname(dest), { recursive: true });
-      execFileSync(
-        CHROME,
-        [
-          "--headless=new",
-          "--disable-gpu",
-          "--hide-scrollbars",
-          `--screenshot=${dest}`,
-          `--window-size=${w},${h}`,
-          `--force-device-scale-factor=${kind === "mobile" ? 2 : 1}`,
-          `file://${file}`,
-        ],
-        { stdio: "ignore" },
-      );
-      // Chrome will not make a window narrower than about 500 px, so mobile renders are 500 px wide.
-    }
-  }
 }
 console.log("done");

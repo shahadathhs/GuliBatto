@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseRelease } from "./release.ts";
+import { parseChecksum, parseRelease } from "./release.ts";
 
 const asset = (name: string, size = 48_000_000) => ({
   name,
@@ -17,6 +17,7 @@ const release = (over: Record<string, unknown> = {}) => ({
 test("reads a valid release", () => {
   const r = parseRelease(release());
   assert.equal(r?.version, "1.2.3");
+  assert.equal(r?.apkName, "gulibatto-1.2.3.apk");
   assert.equal(r?.apk.sizeMb, 48);
   assert.match(r?.apk.url ?? "", /\.apk$/);
   assert.match(r?.checksumUrl ?? "", /\.apk\.sha256$/);
@@ -48,4 +49,13 @@ test("garbage in, null out", () => {
 
 test("a zero-byte or missing size is refused", () => {
   assert.equal(parseRelease(release({ assets: [asset("a.apk", 0)] })), null);
+});
+
+test("a checksum file is read, and only a real one", () => {
+  const hex = "ab".repeat(32);
+  assert.equal(parseChecksum(`${hex}  gulibatto-1.2.3.apk\n`), hex);
+  assert.equal(parseChecksum(hex.toUpperCase()), hex);
+  assert.equal(parseChecksum("not a checksum"), null);
+  assert.equal(parseChecksum("abc123  file"), null);
+  assert.equal(parseChecksum(""), null);
 });

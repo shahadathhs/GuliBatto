@@ -6,10 +6,10 @@ export const metadata: Metadata = {
     "Where the rules of Guli & Batto come from, and what the author changed for play on a phone.",
 };
 
-// The text mirrors docs/README_ABOUT.md; change both together.
+// The text mirrors docs/README_ABOUT.md and game/data/copy.json; change all three together.
 export default function AboutPage() {
   return (
-    <main>
+    <main className="page prose">
       <h1>About these games</h1>
 
       <h2>These are childhood games</h2>

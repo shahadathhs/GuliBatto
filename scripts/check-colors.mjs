@@ -25,6 +25,7 @@ const SKIP_DIRS = new Set(["node_modules", ".next", ".godot", "build", "addons"]
 const ALLOWED = new Map([
   ["game/scripts/generated/palette.gd", "generated from the tokens"],
   ["web/src/app/tokens.css", "generated from the tokens"],
+  ["web/src/lib/token-colors.generated.ts", "generated from the tokens"],
   ["scripts/tokens.mjs", "the generator and contrast check; it writes Color(...) and reads hex"],
   ["scripts/design/tokens.mjs", "converts 8-digit tokens to rgba() for SVG"],
   ["scripts/check-colors.mjs", "this file describes the patterns"],
