@@ -20,12 +20,20 @@ export default function HowToPlayPage() {
       </p>
       <h2>Modes</h2>
       <p>
-        <strong>Guli Khela</strong> (adapted): get target marbles to rest in the pit, or strike them
-        cleanly. A miss ends the turn.
+        <strong>Kep</strong>: toss a marble from behind the line toward the hole. In the hole or
+        closest scores.
       </p>
       <p>
-        <strong>Batto Challenge</strong> (provisional): knock the other side&apos;s marbles out of
-        the ring while keeping yours in.
+        <strong>Batto</strong>: race along three holes and back. Hit a rival&apos;s marble to earn
+        another shot. The last one to finish loses.
+      </p>
+      <p>
+        <strong>Guli Khela</strong>: stake marbles are scattered around the hole. Name one marble as
+        baad, then touch exactly one other marble. Touch the baad marble or more than one and you
+        pay a fine.
+      </p>
+      <p>
+        <strong>Quick Dan</strong>: one round of Guli Khela.
       </p>
     </main>
   );

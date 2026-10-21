@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { parseRelease, type Release } from "@/lib/release";
 
 export const metadata: Metadata = { title: "Download" };
 
@@ -7,16 +8,13 @@ export const revalidate = 3600;
 
 const REPO = process.env.GITHUB_REPOSITORY ?? "shahadathhs/GuliBatto";
 
-type Asset = { name: string; browser_download_url: string; size: number };
-type Release = { tag_name: string; html_url: string; assets: Asset[] };
-
 async function latestRelease(): Promise<Release | null> {
   try {
     const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, {
       headers: { Accept: "application/vnd.github+json" },
       next: { revalidate: 3600 },
     });
-    return res.ok ? ((await res.json()) as Release) : null;
+    return res.ok ? parseRelease(await res.json()) : null;
   } catch {
     return null;
   }
@@ -24,30 +22,27 @@ async function latestRelease(): Promise<Release | null> {
 
 export default async function DownloadPage() {
   const release = await latestRelease();
-  const apk = release?.assets.find((a) => a.name.endsWith(".apk"));
-  const sum = release?.assets.find((a) => a.name.endsWith(".apk.sha256"));
 
   return (
     <main>
       <h1>Download</h1>
-      {apk && release ? (
+      {release ? (
         <>
           <p>
-            Version {release.tag_name.replace(/^v/, "")} for Android ({(apk.size / 1e6).toFixed(0)}{" "}
-            MB).
+            Version {release.version} for Android ({release.apk.sizeMb} MB).
           </p>
           <p>
-            <a className="button" href={apk.browser_download_url}>
+            <a className="button" href={release.apk.url}>
               Download APK
             </a>
           </p>
-          {sum && (
+          {release.checksumUrl && (
             <p>
-              <a href={sum.browser_download_url}>SHA-256 checksum</a>
+              <a href={release.checksumUrl}>SHA-256 checksum</a>
             </p>
           )}
           <p>
-            <a href={release.html_url}>Release notes</a>
+            <a href={release.notesUrl}>Release notes</a>
           </p>
         </>
       ) : (

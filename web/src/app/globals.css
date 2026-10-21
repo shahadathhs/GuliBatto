@@ -1,22 +1,4 @@
-:root {
-  --ground: #f4ece0;
-  --ink: #2a2118;
-  --soft: #6b5a48;
-  --earth: #8a5a36;
-  --marble: #1f5fbf;
-  --line: #d9c9b4;
-  color-scheme: light dark;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ground: #1d1812;
-    --ink: #f1e8da;
-    --soft: #b9a68f;
-    --earth: #c58a5a;
-    --marble: #6aa3ff;
-    --line: #3a3126;
-  }
-}
+/* Colours come from tokens.css, generated from design/tokens.json. */
 * {
   box-sizing: border-box;
 }
@@ -31,7 +13,7 @@ body {
     sans-serif;
 }
 a {
-  color: var(--marble);
+  color: var(--glaze);
 }
 main,
 header,
@@ -64,25 +46,25 @@ h2 {
   margin-top: 2rem;
 }
 .lede {
-  color: var(--soft);
+  color: var(--mute);
   font-size: 1.15rem;
 }
 .button {
   display: inline-block;
   padding: 0.7rem 1.2rem;
-  background: var(--marble);
-  color: var(--ground);
+  background: var(--glaze);
+  color: var(--on-glaze);
   border-radius: 0.5rem;
   text-decoration: none;
   font-weight: 600;
 }
 .note {
-  border-left: 3px solid var(--earth);
+  border-left: 3px solid var(--amber);
   padding-left: 1rem;
-  color: var(--soft);
+  color: var(--mute);
 }
 footer {
-  color: var(--soft);
+  color: var(--mute);
   border-top: 1px solid var(--line);
   margin-top: 3rem;
   font-size: 0.9rem;

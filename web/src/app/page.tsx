@@ -18,15 +18,18 @@ export default function HomePage() {
       <ul>
         <li>Real rolling, friction and collisions, so every shot can be learned.</li>
         <li>Drag back to aim, release to shoot, and orbit the camera to judge distance.</li>
-        <li>Two modes: an adapted pit-and-strike Guli Khela, and a provisional Batto Challenge.</li>
+        <li>
+          Four modes, each a modernised version of a game people played: Kep, Batto, Guli Khela and
+          Quick Dan.
+        </li>
         <li>Plays offline. Progress stays on your device.</li>
       </ul>
 
-      <h2>About the rules</h2>
+      <h2>Childhood games, remembered</h2>
       <p className="note">
-        Guli Khela here is an adaptation of a published description, not a claim of exact
-        traditional rules. Batto is a custom mode while we check how people actually play it. If you
-        know the game, we would like to hear how you play it.
+        Nothing here is invented from nothing: each mode starts with a game people played, and I
+        changed some rules to work on a phone.{" "}
+        <Link href="/about">Read where the rules come from and what I changed.</Link>
       </p>
     </main>
   );
