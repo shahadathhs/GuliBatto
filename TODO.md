@@ -48,15 +48,24 @@ The plan and the reasons are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md)
 - [ ] Record issues and the final export settings in `docs/README_IMPLEMENTATION.md`
 - [ ] Decide the Android minimum SDK and target device tier; decide where the web build is hosted
 
-## Next: Milestone 1, marble test bench
+## Built: a playable Kep match (Milestones 1 to 3 in part)
 
-The modes are locked (2026-10-21): Kep, Batto, Guli Khela, and Quick Dan (optional); build order Kep, Batto, Guli Khela. See `docs/README_GAME_RULES.md`.
+Press Play, choose Kep, drag back from your marble and release. You play three sides (you and two computer sides) over five rounds. `make run` to try it; `make check` for the gates (62 game tests).
 
-- [ ] `ShotCommand`, `SettleDetector` and `BoardSnapshot` in `game/scripts/core/` with GUT tests
-- [ ] Test scene: flat ground, boundaries, two or three marbles, reset layout
-- [ ] Shot applier, friction and bounce calibration, debug readout
-- [ ] Test cases listed in the implementation plan (straight, head-on, glancing, wall, trapped, low and max power, rapid restart)
-- [ ] Record tuned settle thresholds and tick rate in `docs/README_ARCHITECTURE.md`
+- [x] Core: `ShotCommand`, `ShotReport`, `BoardSnapshot`, `SettleDetector`, `RuleProfile`, `GroundField`, `Tuning`
+- [x] Physics: `Board`, `Marble` (with side marks), `Arena` with a real dish at the kep (Jolt physics, heightmap ground), `ShotApplier`
+- [x] Rules: `KepRules` scoring (in the kep 3, closest 2, next 1, ties share) and `MatchController` (turns, rounds, worst-first order, round result, match over); `TossAI` (about half its tosses land in the kep)
+- [x] Input: drag-to-aim (slingshot, world-space, dead zone, cancel), orbit, wheel and pinch zoom; tested through the real input path
+- [x] Camera: `CameraRig` with angled, top-down and low views, reset, elevation and zoom limits
+- [x] UI as in the concept renders: menu, mode select, About, How to play, Settings (theme), HUD with the power meter and first-use prompt, round result, match over, pause; light and dark
+- [ ] **Played by hand on a phone:** nothing here has been played on a device. Feel (pull sensitivity, settle time of 3 to 5 s, how often the kep captures) needs a human
+- [ ] Shot-follow camera, sound, saved settings, Bangla text, UI polish against the renders at 360 × 640 and 412 × 915
+- [ ] Milestone 0 is still open: nothing has been exported to a device or browser (this machine has no Android export templates). Jolt's support in the web export is unverified
+
+## Next
+
+- [ ] Batto (three holes, route, hits, bonus shots), then Guli Khela (stake, scatter, baad, fines)
+- [ ] Hot-seat is not built; the match is you against computer sides
 
 ## Open decisions
 

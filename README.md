@@ -2,7 +2,7 @@
 
 A small, tactile, offline 3D marble game made from the traditional marble games of Bangladesh: Kep, Batto, Guli Khela and Quick Dan. The author remembered and modified the rules for the phone; see [docs/README_ABOUT.md](docs/README_ABOUT.md).
 
-**Status:** Milestone 0. A test scene loads and its tests pass headless. Nothing has been exported to a device or browser yet.
+**Status:** Kep is playable: a match against two computer sides, drag-to-aim, camera, and the planned UI in light and dark. Batto and Guli Khela are next. It has been tested headless and rendered, not played on a phone, and nothing has been exported to a device or browser yet.
 
 ```sh
 make setup   # once: hooks, lint tooling, Godot cache
