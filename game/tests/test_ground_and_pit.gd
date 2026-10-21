@@ -1,4 +1,4 @@
-extends GutTest
+extends PhysicsTest
 ## The ground height function and the physical kep: slow shots drop in, hard shots skip over.
 
 var board: Board
@@ -29,9 +29,58 @@ func test_the_ground_is_flat_away_from_holes_and_deepest_at_the_centre() -> void
 	)
 
 
-func test_the_grid_has_one_height_per_point() -> void:
-	var data := GroundField.sample_grid(1.0, 0.5, PackedVector2Array(), 0.45, 0.04)
-	assert_eq(data.size(), GroundField.grid_size(1.0, 0.5) * GroundField.grid_size(1.0, 0.5))
+func test_a_patch_has_one_height_per_sample() -> void:
+	var rect := Rect2(-0.5, -0.5, 1.0, 1.0)
+	var data := GroundField.sample_rect(rect, 0.5, PackedVector2Array(), 0.45, 0.04)
+	assert_eq(
+		data.size(), GroundField.samples_along(1.0, 0.5) * GroundField.samples_along(1.0, 0.5)
+	)
+
+
+func test_a_patch_is_flat_at_its_edges_so_it_meets_the_boxes() -> void:
+	var holes := PackedVector2Array([Vector2(0.0, -0.3)])
+	for patch in GroundField.patch_rects(holes, Tuning.DISH_RADIUS, Tuning.GROUND_CELL):
+		var data := GroundField.sample_rect(
+			patch, Tuning.GROUND_CELL, holes, Tuning.DISH_RADIUS, Tuning.DISH_DEPTH
+		)
+		var nx := GroundField.samples_along(patch.size.x, Tuning.GROUND_CELL)
+		for col in nx:
+			assert_eq(data[col], 0.0, "top edge is flat")
+			assert_eq(data[data.size() - 1 - col], 0.0, "bottom edge is flat")
+		assert_gt(patch.size.x, Tuning.DISH_RADIUS * 2.0, "wider than the dish")
+
+
+func _area(rects: Array[Rect2]) -> float:
+	var total := 0.0
+	for r in rects:
+		total += r.get_area()
+	return total
+
+
+func test_the_boxes_and_patches_tile_the_whole_ground_with_no_overlap() -> void:
+	var half := 3.0
+	var holes := PackedVector2Array([Vector2(0.0, -0.3), Vector2(1.0, 0.8), Vector2(-1.5, 1.6)])
+	var patches := GroundField.patch_rects(holes, Tuning.DISH_RADIUS, Tuning.GROUND_CELL)
+	var free := GroundField.free_rects(half, patches)
+	assert_almost_eq(
+		_area(free) + _area(patches), 6.0 * 6.0, 0.001, "nothing missing, nothing doubled"
+	)
+	for i in free.size():
+		for j in range(i + 1, free.size()):
+			assert_false(
+				free[i].grow(-0.0005).intersects(free[j].grow(-0.0005)),
+				"boxes %d and %d overlap" % [i, j]
+			)
+		for patch in patches:
+			assert_false(
+				free[i].grow(-0.0005).intersects(patch.grow(-0.0005)), "box %d overlaps a patch" % i
+			)
+
+
+func test_flat_ground_is_one_box() -> void:
+	var free := GroundField.free_rects(3.0, [] as Array[Rect2])
+	assert_eq(free.size(), 1)
+	assert_almost_eq(_area(free), 36.0, 0.001)
 
 
 func test_a_well_aimed_shot_of_the_right_power_drops_into_the_kep_and_stays() -> void:

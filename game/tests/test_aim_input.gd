@@ -1,4 +1,4 @@
-extends GutTest
+extends PhysicsTest
 ## Pointer input through the whole stack: press on the marble, pull back, release, and the shot is
 ## fired the right way. Pressing elsewhere turns the camera and never fires.
 
@@ -8,12 +8,14 @@ var _gut_layer: CanvasLayer
 
 ## GUT draws its results panel over the window, which would swallow the pointer events. Hide it.
 func before_all() -> void:
+	super.before_all()
 	_gut_layer = get_tree().root.get_node_or_null("GutRunner/GutLayer")
 	if _gut_layer != null:
 		_gut_layer.visible = false
 
 
 func after_all() -> void:
+	super.after_all()
 	if _gut_layer != null:
 		_gut_layer.visible = true
 

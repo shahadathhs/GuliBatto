@@ -7,6 +7,7 @@ extends Node3D
 const WALL_SEGMENTS := 36
 const RIM_SEGMENTS := 96
 const RING_STEP := 0.05
+const GROUND_THICKNESS := 0.5
 
 var profile: RuleProfile
 var scheme: Palette.Scheme = Palette.Scheme.LIGHT
@@ -27,20 +28,43 @@ func _ready() -> void:
 	_build_jalla()
 
 
+## The ground is plain boxes, plus a small heightmap patch around each hole for the dish. A box
+## is cheap and exact; a heightmap is only used where the ground is not flat.
 func _build_ground_collision() -> void:
 	var half := Tuning.ARENA_RADIUS + Tuning.WALL_THICKNESS + 0.1
-	var n := GroundField.grid_size(half, Tuning.GROUND_CELL)
+	var patches := GroundField.patch_rects(profile.holes, profile.dish_radius, Tuning.GROUND_CELL)
+	for rect in GroundField.free_rects(half, patches):
+		_add_ground_box(rect)
+	for rect in patches:
+		_add_ground_patch(rect)
+
+
+func _add_ground_box(rect: Rect2) -> void:
+	var body := StaticBody3D.new()
+	body.physics_material_override = _material(Tuning.MARBLE_FRICTION, 0.0)
+	var collider := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	# A hair of overlap so no seam can catch a marble.
+	box.size = Vector3(rect.size.x + 0.02, GROUND_THICKNESS, rect.size.y + 0.02)
+	collider.shape = box
+	body.add_child(collider)
+	body.position = Vector3(rect.get_center().x, -GROUND_THICKNESS / 2.0, rect.get_center().y)
+	add_child(body)
+
+
+func _add_ground_patch(rect: Rect2) -> void:
 	var shape := HeightMapShape3D.new()
-	shape.map_width = n
-	shape.map_depth = n
-	shape.map_data = GroundField.sample_grid(
-		half, Tuning.GROUND_CELL, profile.holes, profile.dish_radius, profile.dish_depth
+	shape.map_width = GroundField.samples_along(rect.size.x, Tuning.GROUND_CELL)
+	shape.map_depth = GroundField.samples_along(rect.size.y, Tuning.GROUND_CELL)
+	shape.map_data = GroundField.sample_rect(
+		rect, Tuning.GROUND_CELL, profile.holes, profile.dish_radius, profile.dish_depth
 	)
 	var body := StaticBody3D.new()
 	body.physics_material_override = _material(Tuning.MARBLE_FRICTION, 0.0)
 	var collider := CollisionShape3D.new()
 	collider.shape = shape
 	body.add_child(collider)
+	body.position = Vector3(rect.get_center().x, 0.0, rect.get_center().y)
 	body.scale = Vector3(Tuning.GROUND_CELL, 1.0, Tuning.GROUND_CELL)
 	add_child(body)
 

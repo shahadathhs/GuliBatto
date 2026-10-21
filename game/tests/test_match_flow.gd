@@ -1,4 +1,4 @@
-extends GutTest
+extends PhysicsTest
 ## A whole Kep match through the real physics, with computer sides, must finish and score.
 
 var board: Board

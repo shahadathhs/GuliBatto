@@ -1,4 +1,4 @@
-extends GutTest
+extends PhysicsTest
 ## Real physics, broad outcomes with margins: the Milestone 1 cases from the implementation plan.
 ## `make game-test` runs Godot with --fixed-fps, which drops real-time pacing but keeps the
 ## physics step, so these run fast. Do not use Engine.time_scale: it changes the physics.

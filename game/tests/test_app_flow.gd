@@ -1,4 +1,4 @@
-extends GutTest
+extends PhysicsTest
 ## The shell moves from the menu to a match without errors and the player can start a toss.
 
 var app: App
