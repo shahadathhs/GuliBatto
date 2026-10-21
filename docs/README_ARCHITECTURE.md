@@ -2,7 +2,7 @@
 
 > **Rules:** what counts as a legal shot, a score, or a win is in [README_GAME_RULES.md](README_GAME_RULES.md); the player-facing behaviour is in [README_GAMEPLAY_FEATURES.md](README_GAMEPLAY_FEATURES.md). This document covers structure only.
 >
-> **Architecture goal:** one small Godot game with one simulation, one camera rig, and two rulesets that share a match lifecycle. Everything runs offline on the device.
+> **Architecture goal:** one small Godot game with one simulation, one camera rig, and four modes (Kep, Batto, Guli Khela, and Quick Dan as a profile of Guli Khela) built on three rulesets that share a match lifecycle for two to four sides. Everything runs offline on the device.
 >
 > **Status:** proposed. Values marked _initial_ are starting points to tune in Milestone 1, not measured facts.
 
@@ -15,7 +15,7 @@ GuliBatto/
 │   ├── scripts/
 │   │   ├── core/              # pure logic, no nodes: shot command, settle check, board snapshot
 │   │   ├── match/             # match state machine, turn ownership, rule evaluation
-│   │   ├── rules/             # one script per ruleset; they read a profile and a snapshot
+│   │   ├── rules/             # one script per ruleset (Kep, Batto, Guli Khela); they read a profile, a snapshot and a shot report
 │   │   ├── physics/           # marble body, arena colliders, shot applier
 │   │   ├── camera/            # CameraRig and view presets
 │   │   ├── input/             # gesture arbiter, aim controller
@@ -28,6 +28,7 @@ GuliBatto/
 │   ├── addons/gut/            # test framework
 │   └── tests/                 # GUT tests
 ├── web/                       # marketing site (Next.js): home, how to play, download, privacy
+├── design/                    # tokens.json, the one source of colours (generates the Godot palette and web CSS)
 ├── scripts/                   # version bump, Android CI setup
 ├── docs/
 ├── VERSION                    # source of truth for releases
@@ -51,8 +52,8 @@ Dependencies point downward only. A lower layer never imports a higher one.
        physics                (RigidBody3D marbles, colliders, applying a shot)
 ```
 
-- **`core`** holds plain `RefCounted` classes with no scene tree access, so GUT tests can run them without loading a scene. `ShotCommand`, `BoardSnapshot`, `SettleDetector` and `RuleResult` live here.
-- **`rules`** never touches nodes. A ruleset takes a `RuleProfile` and a `BoardSnapshot` and returns a `RuleResult`. UI scripts never contain scoring logic.
+- **`core`** holds plain `RefCounted` classes with no scene tree access, so GUT tests can run them without loading a scene. `ShotCommand`, `BoardSnapshot`, `ShotReport`, `SettleDetector` and `RuleResult` live here.
+- **`rules`** never touches nodes. A ruleset takes a `RuleProfile`, a `BoardSnapshot` and a `ShotReport` and returns a `RuleResult`. UI scripts never contain scoring logic.
 - **`match`** is the only place that changes turn, score, or phase.
 - **`physics`** is the only place that applies impulses. Camera, UI, and AI never call `apply_impulse`.
 - **`ui`** reads match state through signals and draws it. It sends intent (aim released, restart pressed) and never edits state.
@@ -64,34 +65,43 @@ Dependencies point downward only. A lower layer never imports a higher one.
 A shot is a value, not an event in a script:
 
 ```text
-ShotCommand { side, marble_id, direction: Vector2 (unit, ground plane), power: float (0..1) }
+ShotCommand { side, marble_id, direction: Vector2 (unit, ground plane), power: float (0..1), baad_marble_id: int (Guli Khela only, else -1) }
 ```
 
-- Built by the aim controller or the AI. Validated by the match (state is `WAITING_FOR_SHOT`, side is current, power inside bounds, direction is normalised).
+- Built by the aim controller or the AI. In Guli Khela the side names the _baad_ marble first and the command carries it; the match refuses a Guli Khela shot with no _baad_ named. Validated by the match (state is `WAITING_FOR_SHOT`, side is current, power inside bounds, direction is normalised).
 - Converted to an impulse in one place (`shot_applier.gd`) from `power` and tuning constants on the marble.
 - The command has no camera or screen data. The aim controller converts a pointer position to a ground-plane point and then to a direction before it makes the command, so the same aim from any view gives the same command.
 
-### Board snapshot
+### Board snapshot and shot report
 
-`BoardSnapshot` is a plain record of every marble (id, owner, position, resting state) taken once, after the board settles. Rule evaluation reads only the snapshot, never live nodes. This is what makes "evaluate once" testable: tests build a snapshot by hand and check the result without running physics.
+`BoardSnapshot` is a plain record of every marble (id, side, position, resting state) taken once, after the board settles. `ShotReport` is a plain record of what the shot's marble touched during its own shot, in order (for example `[marble_of_side_2, marble_of_side_3]`). Contact callbacks in `physics/` only append to the report; they never score. Rule evaluation reads the snapshot and the report, never live nodes. This is what makes "evaluate once" testable: tests build both by hand and check the result without running physics.
+
+A **hit** is "the shooter's marble touched another side's marble" as read from the report. A marble that is only nudged by a third marble is not a hit by the shooter.
 
 ### Rule profile
 
-`RuleProfile` is a `Resource` with the data a mode needs: layout (marble ids, owners, start positions), pit position and radius, boundary shape and radius, turn limit, score values, whether a success keeps the turn, the tie-break policy. A profile holds data only. The decision code is in `rules/`.
+`RuleProfile` is a `Resource` with the data a mode needs: number of sides, layout (marble ids, sides, start positions), the jalla and the holes (positions and radii), the **route** as an ordered list of hole indices (Batto: `[0, 1, 2, 1, 0]`), kep points and round count (Kep), purse size, stake size, scatter radius, fine size and dan limit (Guli Khela), boundary shape and radius, turn limit and per-side turn cap, bonus-shot rules (a hit grants one, reaching a hole grants one, the chain cap of three), the number of passes before the scatterer keeps the ground, score values, the tie-break policy. A profile holds data only. The decision code is in `rules/`.
 
-Two rulesets exist: `GuliKhelaRules` and `BattoChallengeRules`. They share one interface (`evaluate(profile, snapshot, last_shot) -> RuleResult`). Do not build a generic rules engine.
+Three rulesets exist: `KepRules` (toss and points), `BattoRules` (route race) and `GuliKhelaRules` (stake, _baad_, fines, purses). Quick Dan is a `RuleProfile` for `GuliKhelaRules` that ends after the first dan. They share one interface: `evaluate(profile, snapshot, report, state) -> RuleResult`, where `state` is what the match keeps between shots: per-side progress (route index, score, finished), per-side purse and the pot (Guli Khela). The result says what changed (progress, score, a bonus shot, a win, a fine, a finish, a new pass) and who plays next. Do not build a generic rules engine.
+
+### Sides and turn order
+
+A side is an index with an owner (human or AI), a marble colour and mark, and its own progress record (and, in Guli Khela, its purse). The match keeps an ordered list of sides. The order comes from the opening toss (closest to the first hole or the kep first) for every mode; the toss is repeated at the start of each Guli Khela dan. A side that has finished is skipped. Every side, human or AI, acts through the same `ShotCommand`.
 
 ### Match state machine
 
 ```text
-MENU → SETUP → WAITING_FOR_SHOT → SHOT_IN_FLIGHT → SETTLING → EVALUATING → RESULT_CUE ─┬→ WAITING_FOR_SHOT
-                                                                                       └→ MATCH_OVER
+MENU → SETUP → OPENING_TOSS → (SCATTER → CALLING_BAAD, Guli Khela only) → WAITING_FOR_SHOT → SHOT_IN_FLIGHT → SETTLING → EVALUATING → RESULT_CUE ─┬→ WAITING_FOR_SHOT (same side: bonus shot; or next side)
+                                                                                                                                              ├→ OPENING_TOSS (next dan)
+                                                                                                                                              └→ MATCH_OVER
                                          PAUSED (from any state except MATCH_OVER; resumes the previous state)
 ```
 
-- Only `WAITING_FOR_SHOT` accepts a shot or an aim gesture.
+- Only `WAITING_FOR_SHOT` accepts a shot or an aim gesture, and only from the side whose turn it is.
+- `OPENING_TOSS` collects one toss per side, then orders the sides by closeness to the first hole or the kep.
+- `SCATTER` (Guli Khela) moves the stake marbles from the purses to the ground and places them around the kep with a seeded layout; no side plays a shot. `CALLING_BAAD` waits for the active side to name the _baad_ marble.
 - `SETTLING` ends when the settle detector reports stable or the timeout fires.
-- `EVALUATING` runs once per shot. A guard flag makes a second call a no-op, so a shot can never score twice.
+- `EVALUATING` runs once per shot. A guard flag makes a second call a no-op, so a shot can never score or advance twice. A bonus shot is a new `WAITING_FOR_SHOT` for the same side, with a counter checked against the chain cap.
 - Restart builds a fresh match from the profile. It never reuses partial turn state.
 
 ### Settle detector
@@ -130,9 +140,9 @@ One `Node3D` rig with a `Camera3D` child. A view preset is data (yaw, pitch, dis
 
 The aim handle is a screen-space circle larger than the visible marble (_initial:_ about 56 px radius) so a small or distant striker is still easy to grab. Pause, lost focus, or a state change cancels the active gesture and resets the aim preview.
 
-## 6. Opponent
+## 6. Opponents
 
-`ai/` produces a `ShotCommand` for the current side and submits it through the same path as the player. It generates a few candidate directions toward targets, scores them with simple distance and angle heuristics, picks one, then adds a configurable error to direction and power. It reads the board snapshot only, and no network, model, or search is involved.
+One to three AI sides can play (Batto uses up to three). `ai/` produces a `ShotCommand` for the current side and submits it through the same path as the player. It generates a few candidate directions toward targets, scores them with simple distance and angle heuristics, picks one, then adds a configurable error to direction and power. It reads the board snapshot only, and no network, model, or search is involved. In Batto the main candidate is a shot at the side's next hole; a shot at a rival marble is considered when it is close and a hit looks worthwhile, since a hit gives a bonus shot and sends the rival away. Each AI side has its own configurable error.
 
 ## 7. Local save
 
@@ -156,6 +166,13 @@ Export presets exclude `tests/` and `addons/`. Pin the exact Godot version in `p
 - **Physics tests** run a short real simulation and assert broad outcomes with tolerances (the marble stopped, did not escape the boundary, head-on transfers more momentum than glancing). They are slower and kept few.
 - **Input and camera** are checked by hand on a phone and a desktop against the Milestone 2 list in [README_IMPLEMENTATION.md](README_IMPLEMENTATION.md). Do not claim a device or browser test that was not run.
 
-## 10. What this architecture deliberately does not have
+## 10. Web, tokens and releases
+
+- **`web/`** is a Next.js site (home, how to play, download, privacy). It never imports game code and holds no rules; it describes them. Its download page reads the latest GitHub release at build time and revalidates hourly. Plan: [README_WEB_PLAN.md](README_WEB_PLAN.md).
+- **Design tokens** live in `design/tokens.json`. `scripts/tokens.mjs` generates the Godot palette (`Palette.get_color(&"glaze", Palette.Scheme.LIGHT)`) and the web CSS variables; CI fails on drift, on a failing contrast pair, and on any hand-written colour. Nothing in `core`, `rules`, `match` or `physics` reads a colour.
+- **Releases:** `VERSION` is the source of truth; CI builds the APK and the web export from `main`. See [CI.md](CI.md).
+- **Concept renders** are generated by `scripts/design/` from the token values; they are design targets, not game captures.
+
+## 11. What this architecture deliberately does not have
 
 A server, accounts, analytics, a generic rules engine, a scripting layer for user-made rules, a second camera, per-view physics settings, animation-driven scoring. Each would need an explicit decision recorded in [README_ROADMAP.md](README_ROADMAP.md) first.

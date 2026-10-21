@@ -1,121 +1,143 @@
-# Game Rules: Evidence and Proposed Modes
+# Game Rules: Where They Come From and the Four Modes
 
-## 1. Important distinction
+> **Status:** direction set on 2026-10-21; the Batto and Guli Khela rules were settled the same day. Every mode starts from a game that people actually played. The author modified the rules for play on a phone, and those modifications are listed openly in each mode ("Changed for digital play"). There are no per-mode labels in the game; the honesty lives in one central page, [README_ABOUT.md](README_ABOUT.md). Values marked _initial_ are starting numbers to tune, and "To confirm with players" lists what could change after talking to people who played.
 
-This project draws inspiration from Bangladeshi marble play, but it must not claim that a proposed game rule is a historically authentic version unless it has been checked against reliable sources and people familiar with local play.
+## 1. Where the rules come from
 
-Banglapedia's “Folk Games” entry describes **Gulikhela** as a marble game. It describes players standing roughly nine to ten feet from a hole, throwing marbles toward the hole, keeping marbles that reach it, and then trying to hit other marbles; failure can cost a marble and the turn. This is a published description, not proof that every community used those exact dimensions or penalties.
+| Source                          | What it is                                                                                                                                                                                                                                                               | Used for                   |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------- |
+| **A. The author's memory**      | The author's own account of the three-hole game, recorded 2026-10-21                                                                                                                                                                                                     | Batto                      |
+| **B. A written Bangla account** | A written description of a game with a line (_jalla_ or _joi_), a hole (_kep_), a stake of marbles, a _baad_ marble and a fine. The author provided it on 2026-10-21; its rules are paraphrased in this document, never quoted                                           | Kep, Guli Khela            |
+| **C. Banglapedia**              | "Folk Games", the Gulikhela entry: <https://en.banglapedia.org/index.php?title=Folk_Games>. Players stand roughly nine to ten feet from a hole, throw marbles toward it, keep those that reach it, then try to hit other marbles; failure can cost a marble and the turn | Cross-check for Guli Khela |
 
-As of the research review on 2026-10-21, the public sources checked did **not** establish a standard set of rules under the exact game name **“Batto”**. That is not proof that the local game does not exist: it may be known orally, have a regional spelling/name, or have rules poorly represented online. Treat it as a research question, not a blank to fill with invented facts.
+These are accounts, not a single authority. The same game is played differently from place to place, so none of them is called "the rules", and the game never claims to be official or authentic. It says where each game comes from on the About page, and it uses the words the accounts use: _jalla_ (line), _kep_ (hole), _dan_ (a round), _baad_ (the excluded marble), _fine_.
 
-Source: Banglapedia, “Folk Games”: <https://en.banglapedia.org/index.php?title=Folk_Games>
+## 2. The four modes
 
-## 2. Mode A — Guli Khela (adapted pit-and-strike)
+|                              | **Kep**                                  | **Batto**                                                     | **Guli Khela**                                     | **Quick Dan**                               |
+| ---------------------------- | ---------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------- |
+| Comes from                   | Account B (the opening toss)             | Account A                                                     | Accounts B and C                                   | Account B (one round)                       |
+| Shape                        | Toss at the hole; closest wins           | Race along three holes and back                               | Stake marbles; touch exactly one, never the _baad_ | One round of Guli Khela                     |
+| Sides                        | 2 to 4 (you plus 1 to 3 AI)              | 2 to 4                                                        | 2 to 4                                             | 2 to 4                                      |
+| Key decision                 | Judging distance and power               | Hole or hit: aim ahead, or send a rival away for a bonus shot | Which marble is _baad_, and a clean single touch   | The same, with no long-term stakes          |
+| Keeps marbles between rounds | No, it is scored                         | No, it is ranked                                              | **Yes**, play for keeps                            | No, one stake, one winner                   |
+| Ends when                    | After a set number of rounds             | All but one have finished                                     | One side is out of marbles or surrenders           | The round is won                            |
+| Result                       | Points, then ranking                     | Finishing order; the last loses                               | Marble counts; the last with marbles wins          | The winner takes the pot                    |
+| Role                         | Quick, simplest, shares the opening toss | The race                                                      | The full traditional game                          | A short session of the full game (optional) |
 
-**Status:** a playable adaptation based on the published Gulikhela description, not a claim of exact traditional fidelity.
+Order of building: **Kep** (smallest, and its toss is the opening of the other two), then **Batto**, then **Guli Khela**, then **Quick Dan** if short sessions need it. The modes must ask for different decisions. If two of them feel like the same rule, cut the weaker one rather than adding a fifth.
 
-### Equipment and arena
+## 3. Shared rules
 
-- One striker marble for the active side.
-- A small set of target marbles.
-- A shallow pit/hole or clearly readable target recess in a bounded dirt play surface.
-- A marked starting line at a configurable distance. A real-world reference of approximately nine to ten feet appears in the cited source, but the digital arena can use a scaled distance chosen for readability and validated game feel.
+- A shot may be taken only when the match state accepts one, and only by the side whose turn it is. A shot has a ground-plane direction and a bounded power. Releasing inside a small dead zone cancels instead of firing.
+- Once fired, no aim input is accepted until the board settles and the shot is evaluated. The marble cannot be moved by the player after release.
+- **Evaluation happens once, on the settled board.** A ruleset reads a `BoardSnapshot` (where every marble rests) and a `ShotReport` (which marbles the shooter's marble touched, in order). Contact callbacks only feed the report; they never score.
+- **Touch and hit.** A _touch_ is the shooter's marble contacting another marble during its own shot, as recorded in the report. A marble that is only nudged by a third marble is not touched by the shooter. In Batto a touch of a rival's marble is a _hit_.
+- **In the kep (or a hole)** means the settled board shows the marble resting with its centre inside the hole radius. Rolling through and out is not in.
+- Marbles that leave the bounded arena are put back where they left it, on the boundary. (_Changed for digital play._)
+- Camera position and mode never affect the shot, the physics or the result.
+- A restart builds a fresh match; it never reuses partial turn state.
+- The arena has a **jalla** (a drawn line to stand behind) and one or more holes, drawn on bare earth.
 
-### Proposed turn flow
+### Opening toss (Kep, Batto, Guli Khela)
 
-1. The active player receives a striker and sees the current board.
-2. The player aims and chooses shot power.
-3. Releasing the aim gesture fires one shot.
-4. All relevant marbles roll until the board is settled.
-5. The ruleset checks whether a target marble entered the pit/goal and whether a target marble was struck according to the chosen mode configuration.
-6. Score and turn continuation are resolved once, then the next turn begins.
+Every side tosses one marble from behind the jalla toward the first hole. When the board settles, sides are ordered by distance to that hole, closest first, and a marble resting in the hole counts as closest. This order starts the match (or the round). Tosses are not touches.
 
-### MVP scoring proposal
+## 4. Kep — the toss
 
-For clarity and quick play, use the following as an initial digital rule profile; it is a design choice, not a claim about all traditional play:
+**From:** Account B. The toss that decides who goes first becomes a short mode of its own.
 
-- A target marble that comes to rest in the pit/goal is claimed for one point.
-- A clean legal hit on a target marble outside the pit earns one point if the mode's “strike to claim” option is enabled.
-- A miss ends the turn.
-- The match ends when all target marbles are claimed or the configured turn limit is reached. The highest score wins; a tie is a tie.
-- Until the AI exists (Implementation Milestone 3), the mode runs as a single-side score attack: one player takes every turn until the limit or until all targets are claimed, and the result is the final score.
-- "In the pit" means the board snapshot shows the marble resting with its centre inside the pit radius. A marble that rolls through the pit and out is not claimed.
+- **Arena:** the jalla and one kep, at a distance (_initial:_ about 4 to 5 hand-lengths, scaled for readability).
+- **Round:** every side tosses one marble from behind the jalla. After settling, a marble in the kep scores 3 points and otherwise the closest scores 2; the second closest scores 1. Ties share the higher score.
+- **Match:** a set number of rounds (_initial:_ 5). Highest total wins; ties are shared. Sides take the toss in order of the previous round's result, worst first (_changed for digital play_, so the leader does not get an edge).
+- **Changed for digital play:** the points and the number of rounds. The source only says that the closest goes first.
+- **To confirm with players:** how the toss is thrown (rolled, thrown or flicked), whether the toss may touch another marble, and whether a marble in the kep wins outright.
 
-Avoid combining every traditional variation at once. Initially expose at most one clearly named variant. Once local play research is complete, either change the defaults to reflect the chosen local variant or add a separately labelled “Classic-inspired” variant.
+## 5. Batto — the three-hole race
 
-### Questions to validate with real players
+**From:** Account A (the author's memory).
 
-- Are marbles thrown first and then struck, or are players required to use a particular shot technique?
-- Does a hole/pit exist in the remembered local variant? What size and distance are usual?
-- Are marbles won/kept physically, or is the purpose only to score?
-- What counts as a legal hit, a miss, a foul, or a lost turn?
-- Are there named regional variations the game should acknowledge?
+> Three holes. Players first toss from a distance toward a hole; everyone tries to get as close as possible. The closest goes first, then the order follows. Play goes from the first hole to the second, then the third, and then comes back toward the first in reverse. Along the way a player can try to hit another player's marble to knock it far away. If the hit connects, the hitter gets one more move toward the next hole. The last player who fails to reach the hole fails.
 
-Do not hard-code the disputed answers across multiple scripts. Keep the agreed version in a mode profile.
+- **Arena:** a jalla and three holes in a line, H1, H2 and H3.
+- **Start:** the opening toss toward H1 orders the sides.
+- **Route:** H1 → H2 → H3 → H2 → H1, five legs. Each side has a progress index naming the hole it must reach next. A side is **finished** when its marble rests in H1 on the last leg.
+- **Turn:** the side shoots its own marble from where it lies. A shot that ends with the marble resting in its target hole advances the progress index; resting in any other hole does nothing.
+- **Bonus shots:** the shooter takes **one more shot** after either of these, evaluated from the settled board:
+  - the shot was a **hit** (the shooter's marble touched a rival's marble), or
+  - the shot **reached the target hole**.
+    A bonus shot that earns a bonus shot chains. Chains are capped at three bonus shots in a turn (_changed for digital play_). A side that has just finished gets no bonus shot.
+- **A hit rival** is knocked away by the physics; there is no scripted penalty.
+- **End:** the match ends when all but one side have finished; the side still on the route is last. Finishing order is the result.
+- **Changed for digital play:** the bonus-shot cap, a turn cap per side (_initial:_ 40), the return of marbles that leave the arena to the boundary, and the fixed hole spacing.
+- **To confirm with players:** whether the route is really five legs; the hole layout and spacing; whether a marble resting in a hole can be hit.
 
-## 3. Mode B — Batto Challenge (provisional rules)
+## 6. Guli Khela — kep and baad
 
-**Status:** a custom digital mode intended to share the same marble-and-shooting system. Its name and traditional accuracy are not verified.
+**From:** Account B, with Account C as a cross-check.
 
-The prototype should differentiate it mechanically from Guli Khela without pretending the design proposal is historical. Before public release, ask local players who use the name “Batto” what objects are used, how a turn works, and what determines the winner. Record the source of the account and any disagreement between regions.
+- **Arena:** a jalla (the line to stand behind) and one kep (the hole), four to five hand-lengths away in the source, scaled here for readability.
+- **Purse:** each side starts with a purse of marbles (_initial:_ 10) and pays a stake to start each dan. Each side also has its own **throwing marble**, which is not part of the purse and always goes back to its owner after a throw.
+- **Dan** (one round, played in passes):
+  1. **Opening toss** from behind the jalla. The closest side (a marble in the kep counts as closest) is the **scatterer** and collects the stake from every side (_initial:_ 3 marbles each, configurable from 2 to 4).
+  2. **Scatter:** the stake marbles are placed gently around the kep. The game does this with a seeded layout; the scatterer plays no shot.
+  3. **A pass:** each other side, in turn order, gets **one attempt**. It first **names the baad marble** (tap one; a throw without a named baad is refused), then throws its marble from behind the jalla. The evaluated shot decides:
+     - **Exactly one other marble touched, and it is not the baad marble:** the side **wins the dan**.
+     - **The baad marble touched, or two or more marbles touched:** a **fine**. The side adds one marble from its purse to the ground. A side with an empty purse pays nothing. The attempt ends; it does not win.
+     - **No marble touched:** a plain miss. The attempt ends.
+  4. Marbles stay where they come to rest; the next attempt is played on the same ground, which now includes any fined marbles. A throw that ends with the throwing marble in the kep has no special effect.
+- **Winning a dan:** the winner takes **all the marbles on the ground**: the stake, every fine, and any other marbles in play. Their own throwing marble goes back to them. A new dan then begins with a new opening toss, and a new scatterer.
+- **If every other side fails:** the pass ends with no winner. A new pass starts on the same ground, now larger with any fines. After **three passes** (_initial_) with no winner, the **scatterer wins the dan** and takes the ground, because the ground was held against everyone. In a two-side match, this means the other side has three attempts to touch exactly one marble.
+- **End of the match:**
+  - A side that cannot pay the stake at the start of a dan, or that surrenders, is out.
+  - The match ends when one side remains, or at the dan limit (_initial:_ 20), when the side with the most marbles wins.
+- **Marbles that leave the arena** are put back on the boundary where they left.
+- **Changed for digital play:** the game scatters the marbles; the fine is exactly one marble; the winner takes the whole ground; the three-pass limit; the purse and stake sizes; the dan limit; and a Surrender button.
+- **To confirm with players:** what a fine costs where they played, the usual stake (2, 3 or 4), and whether the scatterer always keeps the ground when nobody touches.
 
-### Prototype rule proposal: circle knockout
+## 7. Quick Dan — one round
 
-- Each side has a coloured/marked set of marbles in a ring-shaped play area.
-- Sides alternate one shot at a time using their striker.
-- A shot aims to displace opposing marbles beyond the ring boundary while keeping one's own target marbles inside.
-- Each opposing marble that finishes fully outside the boundary scores one point for the active side.
-- A striker leaving the play area does not score; the active turn ends after all marbles settle.
-- A marble that crosses the line and rolls back inside is not out; status is evaluated after the board settles.
-- The mode ends when one side has no target marbles left or the turn limit is reached. Highest score wins.
+**From:** Account B, one dan on its own. It is a profile of Guli Khela, not a separate ruleset.
 
-This is a **gameplay proposal only**. It can be renamed if research shows that “Batto” refers to different play. Do not describe it as a preserved traditional ruleset in store copy until verified.
+- The same opening toss, stake, scatter, _baad_ call and fines, but the match ends after the first dan is won. Purses reset for the next match. It is built only if short sessions need it.
 
-## 4. Shared rules and legal shot definition
-
-- A human or local AI may take a shot only when the match state is `WAITING_FOR_SHOT` and the current side is valid.
-- A shot has a normalised ground-plane direction and a bounded power value.
-- The aim system has a dead zone; releasing within it cancels instead of applying a tiny accidental impulse.
-- Once fired, no new aim input is accepted until settlement and rule evaluation finish.
-- The game evaluates the whole final board once after settlement. Collision callbacks are evidence of contact, not a direct scoring instruction.
-- The striker may not be moved by the player after release.
-- Camera position and camera mode never affect the shot vector, power, collisions, or score.
-- A reset/restart restores the initial layout and score atomically; it does not reuse partial turn state.
-
-## 5. Round lifecycle
+## 8. Round lifecycle
 
 ```text
 New match
-  -> Create arena and place marbles
-  -> Show current side and objective
+  -> Create arena for the mode (jalla, kep or holes)
+  -> Opening toss; order sides by closeness
+  -> (Guli Khela) stake into the pot and scatter around the kep
+  -> Show whose turn it is and the objective
+  -> (Guli Khela) name the baad marble
   -> Player / AI aims
   -> Validate and commit one shot
   -> Simulate until settled
-  -> Snapshot board
-  -> Evaluate score, penalties, and end condition
+  -> Snapshot board + shot report
+  -> Evaluate score, progress, win, fine, bonus shot, end (once)
   -> Show short result cue
-  -> Next turn OR match result
+  -> Same side again OR next side OR next dan OR match result
 ```
 
-## 6. Rules data that should be configurable
+## 9. Rules data that should be configurable
 
-- Starting layout and player ownership.
-- Pit/goal position and size (for modes that need one).
-- Play boundary shape.
-- Shot and turn limits.
-- What counts as claimed, out, or fouled.
+- Number of sides, purse size and stake size.
+- Jalla position; hole positions and radii; boundary shape.
+- Route (an ordered list of hole indices) for Batto.
+- Kep points, number of rounds.
+- Bonus-shot and chain caps, fine size, dan limit, turn caps.
+- What counts as in a hole, a touch or a hit.
 - Score values and tie-break policy.
-- Whether a successful action retains the turn.
 
-Do not make a full generic rules engine. Keep two small, readable rulesets behind a shared match lifecycle.
+Do not build a generic rules engine. Keep four small, readable rulesets (Quick Dan is a profile) behind one shared match lifecycle.
 
-## 7. Research protocol before calling rules authentic
+## 10. Checking the rules with people
 
-1. Ask at least two people who have personally played the game, ideally from different localities or generations.
-2. Ask them to demonstrate or draw the play area and walk through a complete turn, including a miss and a foul.
-3. Record local names/spellings for pieces and actions; ask whether variants have different names.
-4. Compare accounts and distinguish consensus from disagreement.
-5. Where practical, record a short demonstration with consent; do not publish personal footage without permission.
-6. Update this document with a dated “verified local variant” section and clearly attribute the account (for example, locality and interview date, with permission), while retaining sources for broader claims.
+1. Show the written rules for a mode to at least two people who played it, ideally from different places or generations.
+2. Ask them to draw the play area and walk through a complete round, including a miss, a touch and a fine.
+3. Record local names and spellings of the line, hole, pieces and actions; ask whether variants have other names.
+4. Compare accounts and keep the author's choices separate from what people agree on.
+5. Where practical, record a short demonstration with consent; never publish footage of people without permission.
+6. Change the rules or the About page to reflect what was learned, and record who said it (locality and date, with permission).
 
-Until then, labels such as “adapted”, “inspired by”, and “provisional” are more accurate than “authentic original rules”.
+The game does not wait for this to ship, because it never claims to be the official rules; but each answer should make the game more faithful to the people who played it.

@@ -45,53 +45,66 @@ Deliverables:
 
 **Gate:** camera view changes must not affect physical outcomes. Accidental shots during camera use are release blockers.
 
-## Phase 3 — A complete match
+## Phase 3 — A complete match (Kep)
 
-**Goal:** turn the test bench into a small game. Guli Khela is a single-side score attack here; there is no opponent until Phase 4.
+**Goal:** turn the test bench into a small game with the simplest mode. Kep is a toss at a hole for 2 to 4 sides; it proves holes, settling, distance ranking and turn order, and its toss opens the other modes. This phase is tested with a debug hot-seat, because the AI comes in Phase 4.
 
 Deliverables:
 
-- match and turn state machine;
-- initial layout;
-- score/victory logic;
+- match and turn state machine for N sides;
+- the jalla and kep arena, the opening toss, Kep scoring and ranking;
 - minimal HUD and menus;
 - deterministic test setups;
 - restart/rematch.
 
-**Gate:** a full round can start, resolve, display a correct result, and restart without stuck states or double scoring.
+**Gate:** a full four-side Kep match can start, resolve, display a correct ranking, and restart without stuck states or double counting.
 
-## Phase 4 — Two modes, one foundation
+## Phase 4 — AI opponents and the race
 
-**Goal:** make the two modes distinct without duplicating the game.
+**Goal:** make the game playable alone, and add Batto on the same foundation.
 
 Deliverables:
 
-- adapted Guli Khela pit-and-strike mode;
-- provisional Batto Challenge circle-knockout mode;
+- one to three local AI sides using the same shot interface, with configurable error;
+- Batto: three holes, route progress, hits and bonus shots, finishing order;
 - shared physics, camera, and turn lifecycle;
-- rule profiles that separate mode data and scoring behaviour;
-- a first simple local AI so the second side can be played alone.
+- rule profiles that separate mode data and scoring behaviour.
 
-**Gate:** each mode should ask the player to make a different tactical decision. If the modes feel like the same rule with different labels, refine them before adding a third mode.
+**Gate:** a full Batto match against three AI sides finishes and ranks correctly, and the AI sometimes misses. If the AI takes too long, use a smaller heuristic rather than holding the release hostage.
 
-**Cultural validation:** interview people familiar with Batto and local Guli Khela variants. Keep the mode labelled provisional/inspired if standard rules cannot be verified.
+**Check with people:** ask at least one more person who played Batto about the points under "To confirm with players" in [README_GAME_RULES.md](README_GAME_RULES.md), section 5.
 
-## Phase 5 — Opponent tuning and polish
+## Phase 5 — The full game, one foundation
 
-**Goal:** make the game playable alone and understandable to a first-time player. The first AI is built in Phase 4 (Implementation Milestone 4); this phase tunes it.
+**Goal:** add Guli Khela, the full traditional-style game, and prove the modes are distinct.
+
+Deliverables:
+
+- Guli Khela: purses and stakes, the scatter, naming the _baad_ marble, fines, winning a dan, surrender;
+- the distinct-modes check from [README_GAME_RULES.md](README_GAME_RULES.md), section 2.
+
+**Gate:** each mode asks the player to make a different tactical decision. If two feel alike, cut the weaker one before adding anything.
+
+**Checking with people:** ask people who played these games how they played them, and update the rules and the About page. See [README_GAME_RULES.md](README_GAME_RULES.md), section 10.
+
+## Phase 6 — Polish and tuning
+
+**Goal:** make the game understandable to a first-time player.
 
 Deliverables:
 
 - AI difficulty and error tuning;
+- Quick Dan, only if short sessions need it;
+- the About page in the game and on the site;
 - first-use controls prompt;
 - scoring cues and turn transitions;
 - basic sound and restrained impact feedback;
 - settings and local save;
 - reset-save path.
 
-**Gate:** the AI should make legal, plausible shots and occasionally miss. If it takes too long to build, use a smaller heuristic rather than holding the whole release hostage.
+**Gate:** a first-time player completes a match without being told how, and the AI makes legal, plausible shots.
 
-## Phase 6 — Device and browser hardening
+## Phase 7 — Device and browser hardening
 
 **Goal:** confirm the actual target builds are comfortable to play.
 
@@ -105,15 +118,15 @@ Deliverables:
 
 **Gate:** do not call it shipped until there are successful tests on a real phone and a real browser. Editor playback alone does not prove export quality.
 
-## Phase 7 — Release and observe
+## Phase 8 — Release and observe
 
 **Goal:** publish a small, stable first release.
 
 Deliverables:
 
-- the marketing site live with a working download page (see [README_RELEASE.md](README_RELEASE.md));
+- the marketing site live with a working download page (see [CI.md](CI.md));
 - app icons, store/web description, screenshots, privacy statement appropriate to the actual data collection (ideally none beyond local storage);
-- final rules labels that do not overclaim authenticity;
+- the About page matching the rules and listing what the author changed;
 - versioned build and backup of signing credentials;
 - basic issue-reporting route that does not require an in-game account.
 
