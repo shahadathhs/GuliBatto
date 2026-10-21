@@ -56,7 +56,7 @@ game-check: import ## Load the project headless; fails on parse or script errors
 	$(GODOT) --headless --path $(GAME) --quit-after 1
 
 game-test: import ## Run the game tests (GUT)
-	$(GODOT) --headless --path $(GAME) -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
+	$(GODOT) --headless --path $(GAME) --fixed-fps 60 -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
 
 run: ## Play on this machine
 	$(GODOT) --path $(GAME)

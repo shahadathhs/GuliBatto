@@ -28,7 +28,6 @@ const ALLOWED = new Map([
   ["scripts/tokens.mjs", "the generator and contrast check; it writes Color(...) and reads hex"],
   ["scripts/design/tokens.mjs", "converts 8-digit tokens to rgba() for SVG"],
   ["scripts/check-colors.mjs", "this file describes the patterns"],
-  ["game/scenes/main.tscn", "Milestone 0 smoke scene, until the real arena and theme exist"],
 ]);
 
 const HEX = /#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/;
