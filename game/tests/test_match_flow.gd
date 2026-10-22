@@ -52,7 +52,7 @@ func test_a_human_toss_is_taken_and_the_next_side_follows() -> void:
 	assert_true(match_controller.submit_shot(shot))
 	assert_eq(match_controller.phase, MatchController.Phase.SHOT_IN_FLIGHT)
 	assert_false(match_controller.submit_shot(shot), "no second shot while it rolls")
-	await wait_for_signal(match_controller.toss_resolved, 30.0)
+	await wait_for_signal(match_controller.shot_judged, 30.0)
 	await wait_for_signal(match_controller.turn_started, 5.0)
 	assert_eq(match_controller.current_side(), 1, "the next side is up")
 	assert_false(match_controller.is_human_turn())

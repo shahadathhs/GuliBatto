@@ -5,7 +5,7 @@
 #   make release v=0.2.0    the same, then commit and push (you run this; it is never automatic)
 #
 # VERSION is the source of truth. The script also updates the Godot project, the export
-# presets (Android and macOS) and the web package so they never drift. On the next merge to main, CI sees a VERSION
+# preset (Android) and the web package so they never drift. On the next merge to main, CI sees a VERSION
 # with no release yet and publishes vX.Y.Z with the APK (docs/CI.md).
 set -euo pipefail
 
@@ -33,7 +33,7 @@ fi
 
 printf '%s\n' "$v" > VERSION
 sed -i.bak "s|^config/version=.*|config/version=\"${v}\"|" game/project.godot && rm game/project.godot.bak
-sed -i.bak -e "s|^version/name=.*|version/name=\"${v}\"|" -e "s|^application/short_version=.*|application/short_version=\"${v}\"|" -e "s|^application/version=.*|application/version=\"${v}\"|" game/export_presets.cfg && rm game/export_presets.cfg.bak
+sed -i.bak -e "s|^version/name=.*|version/name=\"${v}\"|" game/export_presets.cfg && rm game/export_presets.cfg.bak
 sed -i.bak "s|^  \"version\": .*|  \"version\": \"${v}\",|" web/package.json && rm web/package.json.bak
 
 echo "Version ${current} -> ${v}"

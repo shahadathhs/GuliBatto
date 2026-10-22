@@ -27,30 +27,29 @@ Official references:
 
 | Implementation milestone                           | Roadmap phase                                  |
 | -------------------------------------------------- | ---------------------------------------------- |
-| Milestone 0 — five platforms build and run         | Phase 0 — Five platforms build and run         |
+| Milestone 0 — Android and web build and run        | Phase 0 — Android and web build and run        |
 | Milestone 1 — marble test bench                    | Phase 1 — The shot must feel good              |
 | Milestone 2 — camera and input                     | Phase 2 — Camera and gesture quality           |
 | Milestone 3 — match, sides, and Kep                | Phase 3 — Kep, complete                        |
 | Milestone 4 — Batto                                | Phase 4 — Batto, complete                      |
 | Milestone 5 — Guli Khela and Quick Dan             | Phase 5 — Guli Khela and Quick Dan             |
 | Milestone 6 — the pages, on the web and in the app | Phase 6 — The pages, on the web and in the app |
-| Milestone 7 — release on every platform            | Phase 7 — Release on every platform            |
+| Milestone 7 — release                              | Phase 7 — Release                              |
 
 Concrete starting values for settling, the aim handle size, tick rate and the test approach are in [README_ARCHITECTURE.md](README_ARCHITECTURE.md). Tune them in Milestone 1 and record the final numbers there.
 
-## 3. Milestone 0 — five platforms build and run
+## 3. Milestone 0 — Android and web build and run
 
-**Build:** export presets for Android, Web, Windows, macOS and Linux, and a CI that builds each from the pinned Godot container ([CI.md](CI.md)). The project and its checks already exist; this milestone is about the exports.
+**Build:** export presets for Android and Web, and a CI that builds each from the pinned Godot container ([CI.md](CI.md)). The project and its checks already exist; this milestone is about the exports.
 
-**Verify, one platform at a time, by a person:**
+**Verify, one build at a time, by a person:**
 
 - Android: the debug APK installs and plays a toss on a real phone.
 - Web: the export loads in a desktop browser with WebGL 2 and plays a toss, without console errors. (Played in headless Chrome so far.)
-- Windows, macOS and Linux: the build starts and plays a toss on each OS; write down what an unsigned build makes the OS say.
-- Touch and mouse focus and resize behaviour are understood on each.
-- The project uses the Compatibility renderer and Jolt physics on every platform.
+- Touch and mouse focus and resize behaviour are understood on both.
+- The project uses the Compatibility renderer and Jolt physics on both.
 
-**Exit gate:** every platform's build launches and a toss can be played. Pin the exact Godot version and export settings, and record issues. If a platform cannot be built or run, decide whether to drop it now.
+**Exit gate:** both builds launch and a toss can be played. Pin the exact Godot version and export settings, and record issues.
 
 ## 4. Milestone 1 — physical marble test bench
 
@@ -143,20 +142,20 @@ Concrete starting values for settling, the aim handle size, tick rate and the te
 
 - the shared `content/` source and the diagram format, and the check that the game and the site match;
 - on the site: the large Home, a page for each game, the very large How to play, About, Contact and Privacy;
-- in the app: How to play, mode info, About, Contact, Privacy, and the links to the web and to the other platforms;
+- in the app: How to play, mode info, About, Contact, Privacy, and the links to the web version and to the Android download;
 - the site-native browser loader (progress, WebGL and WebAssembly checks, failure and retry, sharp sizing, fullscreen) replacing the framed Godot page;
-- the download page for every platform, reading the release;
+- the download page for the APK and the browser version, reading the release;
 - the basics finished: sound, locally saved settings with a reset (versioned, validated, defaults on failure), and the quality fallback if profiling shows it is needed.
 
 **Performance:** low-cost materials and textures, restrained shadows, no expensive post-processing, and profiling on real devices instead of guessing from editor frame rate.
 
 **Exit gate:** a visitor can learn all four games from the site alone; the app teaches the same, from the same words, and a check proves the content matches.
 
-## 9a. Milestone 7 — release on every platform
+## 9a. Milestone 7 — release
 
-**Build:** the release job ([CI.md](CI.md)) publishes an APK, a Windows build, a macOS build, a Linux build, the web export and `SHA256SUMS` when the version changes, and the site's download page lists them.
+**Build:** the release job ([CI.md](CI.md)) publishes an APK, the web export and `SHA256SUMS` when the version changes, and the site's download page lists them.
 
-**Test, by a person, on:** a real Android phone, a desktop browser (and another engine where practical), and each desktop OS. Check loading time, input latency, restart stability, save recovery, readable UI at common sizes, window resize and fullscreen, lost focus and reload, and no internet connection after install.
+**Test, by a person, on:** a real Android phone, and a desktop browser (and another engine where practical). Check loading time, input latency, restart stability, save recovery, readable UI at common sizes, window resize and fullscreen, lost focus and reload, and no internet connection after install.
 
 **Then:** check the rules with people who played and update the About page; write a known-limitations note.
 
@@ -178,7 +177,7 @@ Concrete starting values for settling, the aim handle size, tick rate and the te
 - **Distinct modes gate:** each mode asks for a different tactical decision (Milestone 5).
 - **Honesty gate:** the About page matches the rules, lists what the author changed, and no mode, screen, or store text claims the rules are official or authentic.
 - **Pages gate:** the site and the app teach all four games from one source of content (Milestone 6).
-- **Release gate:** every platform has been run by a person; the download page lists a verified file for each; a known-limitations note exists (Milestone 7).
+- **Release gate:** both builds have been run by a person; the download page lists a verified file for each; a known-limitations note exists (Milestone 7).
 
 ## 12. Testing checklist by risk
 

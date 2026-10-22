@@ -6,6 +6,7 @@ extends Node
 var _layer: CanvasLayer
 var _screen: Control
 var _match: MatchScene
+var _mode: StringName = &"kep"
 var _pause: Control
 
 
@@ -58,7 +59,7 @@ func _show_modes() -> void:
 	s.about_pressed.connect(
 		func() -> void: _show_text("About these games", Copy.about(), _show_modes)
 	)
-	s.start_pressed.connect(func(_mode: StringName) -> void: _start_match())
+	s.start_pressed.connect(func(mode_id: StringName) -> void: _start_match(mode_id))
 	_show(s)
 
 
@@ -75,12 +76,15 @@ func _show_settings(back: Callable) -> void:
 	_show(s)
 
 
-func _start_match() -> void:
+## Starts a match of `mode_id`, or of the last mode played when none is given (restart, rematch).
+func _start_match(mode_id: StringName = &"") -> void:
+	if mode_id != &"":
+		_mode = mode_id
 	_end_match()
 	_clear_screen()
 	_match = MatchScene.new()
 	add_child(_match)
-	_match.start(RuleProfile.kep(), KepRules.new())
+	_match.start(ModeRegistry.profile(_mode), ModeRegistry.rules(_mode))
 	_match.pause_requested.connect(_open_pause)
 	_match.round_finished.connect(_on_round_finished)
 	_match.match_finished.connect(_on_match_finished)
@@ -105,9 +109,9 @@ func _on_round_finished(result: RuleResult, totals: Array[int], round_no: int, r
 	_show(s)
 
 
-func _on_match_finished(ranking: Array[int], totals: Array[int]) -> void:
-	var s := MatchOverScreen.new(ranking, totals, _match.human_side)
-	s.rematch_pressed.connect(_start_match)
+func _on_match_finished(ranking: Array[int], details: Array[String]) -> void:
+	var s := MatchOverScreen.new(ranking, details, _match.human_side)
+	s.rematch_pressed.connect(func() -> void: _start_match())
 	s.modes_pressed.connect(_show_modes)
 	s.menu_pressed.connect(_show_menu)
 	_show(s)
@@ -118,7 +122,7 @@ func _open_pause() -> void:
 		return
 	var s := PauseScreen.new()
 	s.resume_pressed.connect(_close_pause)
-	s.restart_pressed.connect(_start_match)
+	s.restart_pressed.connect(func() -> void: _start_match())
 	s.menu_pressed.connect(_show_menu)
 	_pause = s
 	_layer.add_child(s)
@@ -151,9 +155,15 @@ func _debug_screen(name: String) -> void:
 			r.placing = sample_placing
 			_show(RoundResultScreen.new(r, [6, 5, 2] as Array[int], 0, 2, 5))
 		"over":
-			_show(MatchOverScreen.new([0, 2, 1] as Array[int], [13, 9, 11] as Array[int], 0))
-		"match", "aim", "pause":
-			_start_match()
+			_show(
+				MatchOverScreen.new(
+					[0, 2, 1] as Array[int],
+					["13 points", "11 points", "9 points"] as Array[String],
+					0
+				)
+			)
+		"match", "aim", "pause", "batto":
+			_start_match(&"batto" if name == "batto" else &"kep")
 			if name != "match":
 				await get_tree().create_timer(0.6, false).timeout
 			if name == "pause":

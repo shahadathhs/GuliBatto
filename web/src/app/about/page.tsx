@@ -56,6 +56,10 @@ export default function AboutPage() {
         <li>A marble that leaves the play area is put back where it left.</li>
         <li>Bonus shots and turns have limits, so a game always ends.</li>
         <li>
+          In Batto, a marble that finishes the route leaves the ground, and a first toss that lands
+          in the first hole counts as reaching it.
+        </li>
+        <li>
           The number of marbles in a stake, the size of a fine, and the number of rounds are set to
           make a good game on a small screen.
         </li>

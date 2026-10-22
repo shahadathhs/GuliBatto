@@ -1,4 +1,4 @@
-# Headless Godot for checks, tests and every export (Android, web, Windows, macOS, Linux).
+# Headless Godot for checks, tests and every export (Android and web).
 # barichello/godot-ci already contains Godot, the export templates and the Android SDK. It is a
 # bare Ubuntu image and lacks fontconfig, which Godot loads at startup.
 ARG GODOT_VERSION=4.7.2

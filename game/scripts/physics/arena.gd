@@ -26,6 +26,7 @@ func _ready() -> void:
 	_build_rim()
 	_build_walls()
 	_build_jalla()
+	_build_hole_numbers()
 
 
 ## The ground is plain boxes, plus a small heightmap patch around each hole for the dish. A box
@@ -159,6 +160,22 @@ func _build_jalla() -> void:
 		mesh.position = Vector3(x + box.size.x / 2.0, 0.006, profile.jalla_z)
 		add_child(mesh)
 		x += dash + gap
+
+
+## With more than one hole, each is numbered on the ground beside it, so the route can be read.
+func _build_hole_numbers() -> void:
+	if profile.holes.size() < 2:
+		return
+	for i in profile.holes.size():
+		var label := Label3D.new()
+		label.text = str(i + 1)
+		label.font_size = 96
+		label.pixel_size = 0.004
+		label.modulate = Palette.get_color(&"ink", scheme)
+		label.outline_size = 0
+		label.rotation_degrees = Vector3(-90.0, 0.0, 0.0)
+		label.position = Vector3(profile.holes[i].x + 0.75, 0.012, profile.holes[i].y)
+		add_child(label)
 
 
 func _material(friction: float, bounce: float) -> PhysicsMaterial:

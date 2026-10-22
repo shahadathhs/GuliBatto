@@ -8,8 +8,8 @@ extends Node
 signal turn_started(side: int, is_human: bool)
 ## A shot was fired and the marbles are rolling.
 signal shot_started(side: int)
-## A toss landed and the round goes on.
-signal toss_resolved(side: int)
+## A shot was judged and play goes on: the next toss, the next side, or a bonus shot.
+signal shot_judged(side: int, result: RuleResult)
 ## A round was scored (the last round of a match too). `match_over` follows for the last.
 signal round_scored(result: RuleResult, totals: Array[int])
 signal match_over(ranking: Array[int])
@@ -41,7 +41,7 @@ func start(
 	_ai.clear()
 	for side in profile.side_count:
 		if side != human:
-			_ai[side] = TossAI.new(seed_value + side * 7919 if seed_value != 0 else 0)
+			_ai[side] = _rules.make_ai(seed_value + side * 7919 if seed_value != 0 else 0)
 	if not _board.shot_resolved.is_connected(_on_shot_resolved):
 		_board.shot_resolved.connect(_on_shot_resolved)
 	state = _rules.start(profile, profile.side_count)
@@ -74,15 +74,16 @@ func continue_after_result() -> void:
 
 func _begin_turn() -> void:
 	var side := state.current_side()
-	var spawn := _rules.spawn_position(state, _profile, _board.snapshot())
-	_board.place(side, side, spawn)
+	# Kep starts each toss on the line; in Batto a marble stays where it came to rest.
+	if _board.marble(side) == null:
+		_board.place(side, side, _rules.spawn_position(state, _profile, _board.snapshot()))
 	phase = Phase.WAITING_FOR_SHOT
 	turn_started.emit(side, side == human_side)
 	if side != human_side:
 		await get_tree().create_timer(ai_delay, false).timeout
 		if phase == Phase.WAITING_FOR_SHOT and current_side() == side:
 			var ai: TossAI = _ai[side]
-			_fire(ai.choose_toss(side, side, spawn, _profile.holes[0]))
+			_fire(ai.choose(state, _profile, _board.snapshot(), side))
 
 
 func _fire(command: ShotCommand) -> bool:
@@ -98,16 +99,19 @@ func _on_shot_resolved(snapshot: BoardSnapshot, report: ShotReport, _timed_out: 
 		return
 	var side := state.current_side()
 	var result := _rules.evaluate(state, _profile, snapshot, report)
-	if result.kind == &"toss":
+	if result.kind == &"toss" or result.kind == &"turn":
 		phase = Phase.RESULT_CUE
-		toss_resolved.emit(side)
+		shot_judged.emit(side, result)
 		await get_tree().create_timer(cue_delay, false).timeout
+		# A side that finished the route leaves the board.
+		if result.finished_side >= 0:
+			_board.remove_marble(result.finished_side)
 		_begin_turn()
 		return
 	round_scored.emit(result, state.totals)
 	if result.kind == &"match":
 		phase = Phase.MATCH_OVER
-		match_over.emit(state.ranking())
+		match_over.emit(_rules.ranking(state))
 		return
 	phase = Phase.ROUND_RESULT
 	if auto_continue:

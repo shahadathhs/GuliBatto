@@ -5,9 +5,6 @@ extends RuleSet
 ## closest scores 2 and the next closest 1; ties share the higher score. A set number of rounds,
 ## and sides toss worst-first so the leader gets no edge.
 
-const SPAWN_SPREAD := 0.7
-const CLEARANCE := 0.45
-
 
 func start(profile: RuleProfile, side_count: int) -> MatchState:
 	var s := MatchState.new()
@@ -21,19 +18,7 @@ func start(profile: RuleProfile, side_count: int) -> MatchState:
 
 
 func spawn_position(state: MatchState, profile: RuleProfile, snapshot: BoardSnapshot) -> Vector2:
-	var side := state.current_side()
-	var z := profile.jalla_z + Tuning.MARBLE_RADIUS + 0.08
-	var x := (float(side) - float(state.side_count - 1) / 2.0) * SPAWN_SPREAD
-	# Nudge sideways if an earlier toss came to rest on the spot.
-	for attempt in 6:
-		var clear := true
-		for id in snapshot.ids():
-			if snapshot.position_of(id).distance_to(Vector2(x, z)) < CLEARANCE:
-				clear = false
-		if clear:
-			break
-		x += CLEARANCE
-	return Vector2(x, z)
+	return TossLine.spawn(state.current_side(), state.side_count, profile, snapshot)
 
 
 func evaluate(
@@ -41,6 +26,7 @@ func evaluate(
 ) -> RuleResult:
 	state.tossed.append(report.shooter_id)
 	var result := RuleResult.new()
+	result.shooter = report.shooter_id
 	if not state.is_last_turn_of_round():
 		state.turn_index += 1
 		result.kind = &"toss"
@@ -99,6 +85,19 @@ static func score_round(
 			points[side] = 0
 			placing[side] = &"none"
 	return {"points": points, "placing": placing}
+
+
+func caption(state: MatchState, profile: RuleProfile) -> String:
+	return "%s · round %d of %d" % [profile.title, state.round_index + 1, state.rounds]
+
+
+func turn_text(_state: MatchState, is_human: bool) -> String:
+	return "Your toss" if is_human else "Their toss"
+
+
+func cue_text(result: RuleResult, profile: RuleProfile, snapshot: BoardSnapshot) -> String:
+	var d := snapshot.position_of(result.shooter).distance_to(profile.holes[0])
+	return "In the kep" if d <= Tuning.KEP_RADIUS else "%.1f m from the kep" % d
 
 
 func _begin_round(state: MatchState) -> void:

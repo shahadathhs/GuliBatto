@@ -10,7 +10,7 @@
     ],
     [
       "WHAT I CHANGED",
-      "I changed some rules so the games work well on a phone. Those are my decisions, not the tradition's. The game scatters the marbles for you, a marble that leaves the play area is put back, and bonus shots and turns have limits so a game always ends."
+      "I changed some rules so the games work well on a phone. Those are my decisions, not the tradition's. The game scatters the marbles for you, a marble that leaves the play area is put back, and bonus shots and turns have limits so a game always ends. In Batto, a marble that finishes leaves the ground, and a first toss that lands in the first hole counts as reaching it."
     ],
     [
       "WHAT THIS IS NOT",
@@ -33,6 +33,10 @@
     [
       "KEP",
       "Toss a marble from behind the line toward the hole. A marble resting in the hole scores 3. Of the rest, the closest scores 2 and the next closest 1. After five rounds the highest total wins."
+    ],
+    [
+      "BATTO",
+      "Everyone tosses once toward the first hole, and the closest goes first. Then each side shoots its own marble from where it lies, going from the first hole to the second, the third, and back to the first. Reach the hole you are heading for, or hit a rival's marble, and you shoot again (up to three extra shots in a turn). The last one to finish loses."
     ]
   ]
 }

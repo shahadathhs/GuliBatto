@@ -68,8 +68,10 @@ Every side tosses one marble from behind the jalla toward the first hole. When t
   - the shot **reached the target hole**.
     A bonus shot that earns a bonus shot chains. Chains are capped at three bonus shots in a turn (_changed for digital play_). A side that has just finished gets no bonus shot.
 - **A hit rival** is knocked away by the physics; there is no scripted penalty.
-- **End:** the match ends when all but one side have finished; the side still on the route is last. Finishing order is the result.
-- **Changed for digital play:** the bonus-shot cap, a turn cap per side (_initial:_ 40), the return of marbles that leave the arena to the boundary, and the fixed hole spacing.
+- **End:** the match ends when all but one side have finished; the side still on the route is last. Finishing order is the result. A side that finishes leaves the ground, so it cannot block the last hole or be hit.
+- **Opening toss counts:** a toss that comes to rest in H1 has reached H1, so that side starts the race heading for H2. A toss gives no bonus shot, and touching another marble during it changes nothing.
+- **Turn cap:** after every unfinished side has taken its turn cap, the race stops and the sides still on the route are ranked by how far along the route they are, then by how close their marble is to the hole they were heading for.
+- **Changed for digital play:** the bonus-shot cap, a turn cap per side (_initial:_ 40) and how it ends a race, finished marbles leaving the ground, a first toss in H1 counting as reaching it, the return of marbles that leave the arena to the boundary, and the fixed hole spacing (about 1.25 m apart in a line, H1 nearest the jalla).
 - **To confirm with players:** whether the route is really five legs; the hole layout and spacing; whether a marble resting in a hole can be hit.
 
 ## 6. Guli Khela — kep and baad
