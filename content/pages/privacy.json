@@ -1,0 +1,21 @@
+{
+  "title": "Privacy",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Guli & Batto collects nothing."
+    },
+    {
+      "type": "paragraph",
+      "text": "There are no accounts, no analytics, no ads and no network calls in the game. Your settings (the theme, sound and camera choices) and which tips you have seen are saved on your device, and are removed when you uninstall the app or reset them in Settings."
+    },
+    {
+      "type": "heading",
+      "text": "The website"
+    },
+    {
+      "type": "paragraph",
+      "text": "The website sets no cookies and uses no trackers. If you choose a light or dark theme there, that choice is kept in your browser on your device and is never sent anywhere. The download page asks GitHub for the latest release, and GitHub's own privacy policy applies when you download from it. The browser version of the game runs entirely in your browser and sends nothing."
+    }
+  ]
+}

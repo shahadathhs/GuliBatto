@@ -10,7 +10,7 @@ const CLEARANCE := 0.45
 static func spawn(
 	side: int, side_count: int, profile: RuleProfile, snapshot: BoardSnapshot
 ) -> Vector2:
-	var z := profile.jalla_z + Tuning.MARBLE_RADIUS + 0.08
+	var z := profile.jalla_z + profile.marble_radius + 0.08
 	var x := (float(side) - float(side_count - 1) / 2.0) * SPREAD
 	for attempt in 6:
 		var clear := true

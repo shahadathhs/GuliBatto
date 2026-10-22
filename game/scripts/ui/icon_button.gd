@@ -5,7 +5,7 @@ extends Control
 
 signal pressed
 
-enum Glyph { PAUSE, ANGLED, TOP, LOW, RESET, BACK }
+enum Glyph { PAUSE, ANGLED, TOP, LOW, RESET, BACK, HELP }
 
 const SIZE := 48.0
 
@@ -24,6 +24,7 @@ func _init(which: Glyph = Glyph.PAUSE) -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		Sfx.play(Sfx.Event.TAP)
 		pressed.emit()
 		accept_event()
 
@@ -65,6 +66,10 @@ func _draw() -> void:
 				2.0,
 				true
 			)
+		Glyph.HELP:
+			draw_arc(c + Vector2(0, -4), 6.0, deg_to_rad(180), deg_to_rad(450), 16, line, 2.5, true)
+			draw_line(c + Vector2(0, 2), c + Vector2(0, 5), line, 2.5, true)
+			draw_circle(c + Vector2(0, 10), 1.8, line)
 		Glyph.BACK:
 			var chevron := [Vector2(4, -9), Vector2(-5, 0), Vector2(4, 9)]
 			draw_polyline(

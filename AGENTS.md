@@ -25,6 +25,8 @@ make lint          # gdlint, gdformat, prettier, oxlint, tokens, colours, file s
 make test          # GUT tests and the site's unit tests
 make format        # gdformat and prettier
 make tokens        # regenerate the Godot palette and web CSS from design/tokens.json
+make sounds        # regenerate the sound effects in game/audio from scripts/sounds.mjs
+make content       # regenerate game/data/content.json from content/
 make run           # play on this machine
 make web-dev       # the website at localhost:3000
 make game-docker-check   # load the project in the Godot container (what CI runs)
@@ -62,13 +64,13 @@ Follow `docs/README_IMPLEMENTATION.md`: build the riskiest slice first. Do not b
 
 ## Web and app pages
 
-`web/` teaches and distributes the game: Home, the four game pages, How to play, Play, Download, About, Contact, Privacy. The app carries the same information. Both render the shared `content/` (planned) and must not drift apart. No backend, accounts, cookies or trackers. Copy follows `docs/README_ABOUT.md`. Run `make check` after changes; see `docs/README_WEB_AND_APP_PLAN.md`.
+`web/` teaches and distributes the game: Home, the four game pages, How to play, Play, Download, About, Contact, Privacy. The app carries the same information. Both render the shared `content/` and must not drift apart: `content/` holds the pages, rules cards, diagrams and links as data, `make content` writes `game/data/content.json` from it, and `make content-check` (part of `make lint`) fails when that file is stale, a link or diagram is broken, a mode page uses a history label, or About differs from `docs/README_ABOUT.md`. The site renders the same `content/` (copied to `web/src/lib/content.generated.json` by `make content`) through `Blocks` and `Diagram` in `web/src/components/`; only the Home, Download and Play pages hold their own words. No backend, accounts, cookies or trackers. Copy follows `docs/README_ABOUT.md`. Run `make check` after changes; see `docs/README_WEB_AND_APP_PLAN.md`.
 
 ## Visual rules (the house style: Drawn Ground)
 
 Full rules are in `docs/README_VISUAL_DESIGN.md`. When touching UI or the site:
 
-- Exactly one primary action per screen: a solid glaze-blue disc (a full-round button on the web). Secondary actions are outlined rounded rectangles; tertiary are underlined text.
+- Exactly one primary action per screen: a solid glaze-blue disc (a rounded rectangle when the label is longer than six letters, and a full-round button on the web). Secondary actions are outlined rounded rectangles; tertiary are underlined text.
 - No gradients, glow, drop shadows, glass or blur in the UI; no card inside a card; no taglines, exclamation marks, emoji or folk-motif decoration.
 - Marbles carry colour **and** a mark: player = blue ring, opponent = amber dot, neutral target = bone bar. Colour is never the only signal.
 - Both themes (light and dark) are first-class; check every screen in both. Colours come only from the token table, never hand-written.

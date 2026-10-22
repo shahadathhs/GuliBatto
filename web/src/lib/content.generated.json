@@ -1,0 +1,1141 @@
+{
+ "pages": {
+  "about": {
+   "title": "About these games",
+   "blocks": [
+    {
+     "type": "heading",
+     "text": "These are childhood games"
+    },
+    {
+     "type": "paragraph",
+     "text": "I grew up playing marble games on bare ground: a line drawn with a stick, a small hole, a handful of marbles, and no rulebook. The rules lived in our heads and changed a little from street to street. I made this game to bring those afternoons back."
+    },
+    {
+     "type": "heading",
+     "text": "Where the rules come from"
+    },
+    {
+     "type": "paragraph",
+     "text": "Nothing here is invented from nothing. Each mode starts with a game people really played:"
+    },
+    {
+     "type": "list",
+     "items": [
+      "Kep is the toss at the hole that decided who went first.",
+      "Batto is the three-hole race as I remember it: along the holes and back, hitting a rival's marble to earn another shot.",
+      "Guli Khela is the game of the line, the hole, the stake, and the marble you must not touch. It follows a written Bangla account of the jalla, the kep, the dan, the baad marble and the fine, and it agrees with the short description in Banglapedia.",
+      "Quick Dan is one round of Guli Khela, for when you have a few minutes."
+     ]
+    },
+    {
+     "type": "paragraph",
+     "text": "I use the words those accounts use. Where you grew up, the line, the hole or the game itself may have another name."
+    },
+    {
+     "type": "heading",
+     "text": "What I changed"
+    },
+    {
+     "type": "paragraph",
+     "text": "I changed some rules so the games work well on a phone. These are my decisions, not the tradition's:"
+    },
+    {
+     "type": "list",
+     "items": [
+      "The game scatters the marbles around the hole for you.",
+      "A marble that leaves the play area is put back where it left.",
+      "Bonus shots and turns have limits, so a game always ends.",
+      "In Batto, a marble that finishes the route leaves the ground, a first toss that lands in the first hole counts as reaching it, and a marble resting in a hole is shot from the edge of the hole.",
+      "The number of marbles in a stake, the size of a fine, and the number of rounds are set to make a good game on a small screen.",
+      "In Guli Khela, every side including the scatterer pays the stake, a fine is one marble that the game sets down by the hole, and giving up ends the match with you last.",
+      "You can play against computer players, and you can surrender."
+     ]
+    },
+    {
+     "type": "heading",
+     "text": "What this is not"
+    },
+    {
+     "type": "paragraph",
+     "text": "It is not an official or complete rulebook, and it does not claim to be how the game was played everywhere. If you remember it differently, you are not wrong. Your way might be the one I never saw."
+    },
+    {
+     "type": "heading",
+     "text": "Tell me how you played"
+    },
+    {
+     "type": "paragraph",
+     "text": "If you know these games, I would like to hear how you played them: the names you used, the distances, what happened when someone missed. I will keep learning from you, and the rules will change as I do."
+    },
+    {
+     "type": "link",
+     "label": "Contact",
+     "target": "page:contact"
+    },
+    {
+     "type": "link",
+     "label": "Privacy",
+     "target": "page:privacy"
+    },
+    {
+     "type": "link",
+     "label": "How to play",
+     "target": "page:how_to_play"
+    }
+   ]
+  },
+  "contact": {
+   "title": "Contact",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "If you know these games, I would like to hear how you played them: the names you used, the distances, what happened when someone missed."
+    },
+    {
+     "type": "paragraph",
+     "text": "The best way to reach me is to open an issue on the project's page on GitHub. Say which game it is and what you remember. A short note is plenty."
+    },
+    {
+     "type": "link",
+     "label": "Tell me how you played",
+     "target": "url:issues"
+    },
+    {
+     "type": "heading",
+     "text": "Elsewhere"
+    },
+    {
+     "type": "link",
+     "label": "Play on the web",
+     "target": "url:play",
+     "hide_on": "web"
+    },
+    {
+     "type": "link",
+     "label": "Get it on Android",
+     "target": "url:download",
+     "hide_on": "android"
+    },
+    {
+     "type": "link",
+     "label": "About these games",
+     "target": "page:about"
+    }
+   ]
+  },
+  "game_batto": {
+   "title": "Batto",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "Race your marble along three holes and back. Hit a rival's marble, or reach a hole, and you shoot again. The last side to finish loses."
+    },
+    {
+     "type": "diagram",
+     "id": "batto_route",
+     "caption": "Out through holes 1, 2 and 3, then back through 2 to 1."
+    },
+    {
+     "type": "heading",
+     "text": "The board"
+    },
+    {
+     "type": "paragraph",
+     "text": "A large rectangular board with the jalla at one end and three deep holes in a line, numbered 1, 2 and 3. The marbles are small and the holes are only a few marbles wide. A marble that drops in stays in. The camera follows the marble about to shoot."
+    },
+    {
+     "type": "heading",
+     "text": "The turns"
+    },
+    {
+     "type": "steps",
+     "items": [
+      "Everyone tosses once from behind the jalla toward hole 1. The side closest to it goes first, and a marble resting in the hole counts as closest.",
+      "Then each side shoots its own marble from where it lies. A marble resting in a hole is set down at the edge of the hole, on the side facing its next hole, and shot from there.",
+      "A shot that ends with your marble in the hole you are heading for takes you on to the next. The route is hole 1, 2, 3, then back through 2 to 1.",
+      "Reach the hole you are heading for, or hit a rival's marble, and you shoot again. Another hit or hole earns another shot, up to three extra shots in one turn.",
+      "A side that comes to rest in the last hole has finished. Its marble leaves the board and it gets no extra shot."
+     ]
+    },
+    {
+     "type": "paragraph",
+     "text": "The match ends when all but one side have finished. The side still on the route is last. If the turns run out first, the sides still racing are ranked by how far along the route they are, then by how close they are to their next hole."
+    },
+    {
+     "type": "diagram",
+     "id": "batto_hit",
+     "caption": "A hit: B's marble is knocked away and A shoots again."
+    },
+    {
+     "type": "paragraph",
+     "text": "A toss that comes to rest in hole 1 counts as reaching it, so that side starts the race heading for hole 2. Touching another marble during the opening toss changes nothing."
+    },
+    {
+     "type": "heading",
+     "text": "A worked example"
+    },
+    {
+     "type": "paragraph",
+     "text": "Three sides toss at hole 1. B's marble rests in the hole and counts as closest, then A's, then C's. B goes first and is already heading for hole 2. B's shot drops into hole 2, so B shoots again. The second shot hits C's marble, which rolls away, so B shoots again. The third shot misses and the turn passes to A."
+    },
+    {
+     "type": "heading",
+     "text": "What to look for"
+    },
+    {
+     "type": "list",
+     "items": [
+      "A hit does not move you along the route. It earns a shot, and it can send a rival away from the hole it was heading for.",
+      "A fast shot rolls over a hole. A slow one drops in.",
+      "The holes are further apart than a hard shot rolls, so most legs take more than one shot."
+     ]
+    }
+   ]
+  },
+  "game_guli": {
+   "title": "Guli Khela",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "Every side pays a stake of marbles. The stake is scattered round a hole, and everyone but the side that scattered it tries to touch exactly one marble, and never the one they named as baad. The winner takes every marble on the ground."
+    },
+    {
+     "type": "diagram",
+     "id": "guli_scatter",
+     "caption": "The stake is scattered round the kep. A has named the marble with the cross as baad, and aims at the one beside it."
+    },
+    {
+     "type": "heading",
+     "text": "A dan"
+    },
+    {
+     "type": "steps",
+     "items": [
+      "Each side still in pays the stake into the dan, and every side tosses once from behind the jalla toward the kep.",
+      "The side whose toss is closest is the scatterer. The tossed marbles go back to their owners, and the stake is set down round the kep.",
+      "Every other side gets one attempt, in turn. First tap the marble you must not touch: the baad. You can tap another to change it. Then throw your marble from behind the jalla.",
+      "When the throw has stopped, it is judged. Your marble then goes back to you."
+     ]
+    },
+    {
+     "type": "heading",
+     "text": "What an attempt can do"
+    },
+    {
+     "type": "list",
+     "items": [
+      "It touches exactly one marble, and not the baad: you win the dan and every marble on the ground.",
+      "It touches the baad, or two or more marbles: you pay a fine of one marble from your purse, which is set down on the ground. A side with an empty purse pays nothing. The attempt is over.",
+      "It touches nothing: the attempt is over."
+     ]
+    },
+    {
+     "type": "paragraph",
+     "text": "The marbles stay where they come to rest, and the next attempt is played on the same ground, including any fines."
+    },
+    {
+     "type": "heading",
+     "text": "Passes"
+    },
+    {
+     "type": "paragraph",
+     "text": "When every other side has had its attempt and nobody has won, a new pass starts on the same ground. After three passes with no winner, the scatterer wins the dan and takes the ground, because it held out against everyone."
+    },
+    {
+     "type": "heading",
+     "text": "The match"
+    },
+    {
+     "type": "list",
+     "items": [
+      "A side that cannot pay the stake at the start of a dan is out.",
+      "The match ends when one side is left, or after 20 dans, when the side with the most marbles wins.",
+      "You can surrender from the pause menu. That ends the match with you last."
+     ]
+    },
+    {
+     "type": "heading",
+     "text": "A worked example"
+    },
+    {
+     "type": "paragraph",
+     "text": "Three sides have 10 marbles each and the stake is 3. Everyone pays 3, so each side has 7 and 9 marbles are scattered. B throws first. B names a marble beside the one it aims at as the baad, throws, and touches only the one it aimed at. B wins the dan and takes all 9, so B has 16. The next dan starts and everyone pays 3 again."
+    },
+    {
+     "type": "paragraph",
+     "text": "Had B touched the baad instead, B would pay a fine: one marble from its 7, set down on the ground. C would then throw with 10 marbles on the ground."
+    },
+    {
+     "type": "link",
+     "label": "Quick Dan",
+     "target": "page:game_quick"
+    }
+   ]
+  },
+  "game_kep": {
+   "title": "Kep",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "Toss a marble from behind the line at a hole. A marble in the hole scores most, and the closest marbles score next."
+    },
+    {
+     "type": "diagram",
+     "id": "kep_toss",
+     "caption": "Three sides toss. A is in the kep, B is the closest outside it, C is next."
+    },
+    {
+     "type": "heading",
+     "text": "A round"
+    },
+    {
+     "type": "steps",
+     "items": [
+      "Each side stands behind the jalla and tosses one marble toward the kep.",
+      "When everything has stopped, the round is scored from where the marbles rest.",
+      "A marble in the kep scores 3. Of the rest, the closest scores 2 and the next closest scores 1. Marbles tied for a place share its score.",
+      "The next round starts with the side that has scored least, so the leader tosses last."
+     ]
+    },
+    {
+     "type": "paragraph",
+     "text": "A marble is in the kep when it rests with its middle inside the hole. One that rolls through and out is not."
+    },
+    {
+     "type": "paragraph",
+     "text": "A match is five rounds. The highest total wins."
+    },
+    {
+     "type": "heading",
+     "text": "A worked example"
+    },
+    {
+     "type": "paragraph",
+     "text": "A rests in the kep and scores 3. B rests 0.9 m from the kep and C rests 1.5 m from it. B is closer, so B scores 2 and C scores 1. In the next round C tosses first, then B, then A."
+    },
+    {
+     "type": "heading",
+     "text": "What to look for"
+    },
+    {
+     "type": "list",
+     "items": [
+      "A slow toss drops into the kep. A fast one rolls over it.",
+      "Every marble is still on the ground when the round is scored, so a toss can knock another marble into the kep or out of it."
+     ]
+    }
+   ]
+  },
+  "game_quick": {
+   "title": "Quick Dan",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "One dan of Guli Khela, for when you have a few minutes. The same stake, scatter, baad and fines, and the match ends when the dan is won."
+    },
+    {
+     "type": "diagram",
+     "id": "guli_scatter",
+     "caption": "The stake is scattered round the kep. A has named the marble with the cross as baad, and aims at the one beside it."
+    },
+    {
+     "type": "heading",
+     "text": "How it goes"
+    },
+    {
+     "type": "steps",
+     "items": [
+      "Everyone pays the stake and tosses toward the kep. The closest side scatters the stake.",
+      "Every other side throws in turn: tap the baad, then throw.",
+      "Touch exactly one marble, and not the baad, and you win the ground. The baad, or two or more marbles, costs a fine of one marble.",
+      "If nobody wins in three passes, the scatterer takes the ground."
+     ]
+    },
+    {
+     "type": "paragraph",
+     "text": "The match ends when the dan is won. The winner is first and the others are ranked by the marbles they have left."
+    },
+    {
+     "type": "link",
+     "label": "The full game",
+     "target": "page:game_guli"
+    }
+   ]
+  },
+  "how_to_play": {
+   "title": "How to play",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "Guli & Batto has four marble games. They all work the same way. You take a shot, everything rolls under real physics until it stops, and the shot is judged once, from where the marbles rest."
+    },
+    {
+     "type": "heading",
+     "text": "Taking a shot"
+    },
+    {
+     "type": "steps",
+     "items": [
+      "Press your marble. A ring under it shows it is your turn.",
+      "Drag back, away from where you want it to go, like a slingshot.",
+      "A short arrow shows the direction and a bar shows the power. A longer pull means more power.",
+      "Release to shoot. To change your mind, pull back to where you started or tap Cancel before you release."
+     ]
+    },
+    {
+     "type": "diagram",
+     "id": "slingshot",
+     "caption": "Pull back from the marble. It goes the other way."
+    },
+    {
+     "type": "paragraph",
+     "text": "The arrow shows only the direction. How hard to shoot is for you to judge."
+    },
+    {
+     "type": "heading",
+     "text": "The camera"
+    },
+    {
+     "type": "list",
+     "items": [
+      "Drag empty ground to turn the view.",
+      "Scroll, or pinch with two fingers, to zoom.",
+      "The three buttons at the bottom change the view: angled, from above, and low. The round arrow puts the view back.",
+      "The camera never changes your shot. Your aim is worked out on the ground, not on the screen.",
+      "On a big board the camera follows the marble about to shoot, and follows a shot while it rolls. You can turn that off in Settings, and a tap skips it for one shot."
+     ]
+    },
+    {
+     "type": "heading",
+     "text": "After a shot"
+    },
+    {
+     "type": "paragraph",
+     "text": "When everything has stopped, the game judges the shot once, from where the marbles rest, and a short note says what happened and why. Only a marble your own marble reaches counts as touched by you. A marble pushed by a third marble does not."
+    },
+    {
+     "type": "heading",
+     "text": "The sides"
+    },
+    {
+     "type": "paragraph",
+     "text": "You play against two computer sides. Each side has its own colour and its own mark on the marble: a ring, a dot, a bar or a triangle, so colour is never the only way to tell them apart. Marbles that belong to no side, the stake in Guli Khela, are bone-coloured with a bar."
+    },
+    {
+     "type": "heading",
+     "text": "The four games"
+    },
+    {
+     "type": "paragraph",
+     "text": "Each game has a page with its rules, a worked example and a picture."
+    },
+    {
+     "type": "link",
+     "label": "Kep",
+     "target": "page:game_kep"
+    },
+    {
+     "type": "link",
+     "label": "Batto",
+     "target": "page:game_batto"
+    },
+    {
+     "type": "link",
+     "label": "Guli Khela",
+     "target": "page:game_guli"
+    },
+    {
+     "type": "link",
+     "label": "Quick Dan",
+     "target": "page:game_quick"
+    },
+    {
+     "type": "heading",
+     "text": "Words you will see"
+    },
+    {
+     "type": "term",
+     "term": "jalla",
+     "text": "The line scratched on the ground. You stand behind it to toss or throw."
+    },
+    {
+     "type": "term",
+     "term": "kep",
+     "text": "The hole. In Kep it is the target, and in Guli Khela the stake is scattered round it."
+    },
+    {
+     "type": "term",
+     "term": "dan",
+     "text": "One round of Guli Khela, from paying the stake to a side taking the ground."
+    },
+    {
+     "type": "term",
+     "term": "baad",
+     "text": "The marble you name before you throw in Guli Khela, and must not touch."
+    },
+    {
+     "type": "term",
+     "term": "stake",
+     "text": "The marbles each side pays into a dan."
+    },
+    {
+     "type": "term",
+     "term": "purse",
+     "text": "The marbles a side holds. Each side starts with 10."
+    },
+    {
+     "type": "term",
+     "term": "scatterer",
+     "text": "The side whose toss was closest. It sets the stake down round the kep and does not throw in that dan."
+    },
+    {
+     "type": "term",
+     "term": "pass",
+     "text": "One go round the table: every side except the scatterer throws once."
+    },
+    {
+     "type": "term",
+     "term": "fine",
+     "text": "One marble from your purse, put on the ground, when you touch the baad or more than one marble."
+    },
+    {
+     "type": "term",
+     "term": "touch",
+     "text": "Your marble reaching another during your own shot."
+    },
+    {
+     "type": "term",
+     "term": "hit",
+     "text": "In Batto, a touch of a rival's marble."
+    },
+    {
+     "type": "heading",
+     "text": "Questions"
+    },
+    {
+     "type": "qa",
+     "q": "Why was my shot judged that way?",
+     "a": "The game looks only at where the marbles rest once everything has stopped, and at which marbles your marble touched. The note after the shot says which."
+    },
+    {
+     "type": "qa",
+     "q": "Can a marble leave the board?",
+     "a": "No. The board has walls, and the marbles stay in."
+    },
+    {
+     "type": "qa",
+     "q": "Can I change my mind after I start to pull?",
+     "a": "Yes. Pull back to where you started, or tap Cancel, before you release."
+    },
+    {
+     "type": "qa",
+     "q": "How do I leave a match?",
+     "a": "Pause with the button at the top right, then choose Restart or Back to menu. In Guli Khela and Quick Dan you can also surrender, which ends the match with you last."
+    },
+    {
+     "type": "qa",
+     "q": "Does it need the internet?",
+     "a": "No. The game runs without a connection and sends nothing."
+    },
+    {
+     "type": "qa",
+     "q": "My game was different when I played it.",
+     "a": "The rules come from games people played, and they differed from street to street. About these games says where each one comes from and what was changed. If you remember it differently, Contact says how to tell me."
+    },
+    {
+     "type": "link",
+     "label": "About these games",
+     "target": "page:about"
+    },
+    {
+     "type": "link",
+     "label": "Contact",
+     "target": "page:contact"
+    }
+   ]
+  },
+  "privacy": {
+   "title": "Privacy",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "Guli & Batto collects nothing."
+    },
+    {
+     "type": "paragraph",
+     "text": "There are no accounts, no analytics, no ads and no network calls in the game. Your settings (the theme, sound and camera choices) and which tips you have seen are saved on your device, and are removed when you uninstall the app or reset them in Settings."
+    },
+    {
+     "type": "heading",
+     "text": "The website"
+    },
+    {
+     "type": "paragraph",
+     "text": "The website sets no cookies and uses no trackers. If you choose a light or dark theme there, that choice is kept in your browser on your device and is never sent anywhere. The download page asks GitHub for the latest release, and GitHub's own privacy policy applies when you download from it. The browser version of the game runs entirely in your browser and sends nothing."
+    }
+   ]
+  }
+ },
+ "cards": {
+  "kep": {
+   "title": "Kep",
+   "diagram": "kep_toss",
+   "lines": [
+    "Toss from behind the line at the hole.",
+    "In the hole scores 3, closest scores 2, next closest 1.",
+    "Five rounds. The highest total wins."
+   ]
+  },
+  "batto": {
+   "title": "Batto",
+   "diagram": "batto_route",
+   "lines": [
+    "Everyone tosses at hole 1. The closest goes first.",
+    "Race to hole 1, 2, 3, then back through 2 to 1.",
+    "Reach the hole you are heading for, or hit a rival, and shoot again.",
+    "The last to finish loses."
+   ]
+  },
+  "guli": {
+   "title": "Guli Khela",
+   "diagram": "guli_scatter",
+   "lines": [
+    "Everyone pays a stake and tosses. The closest scatters the stake round the hole.",
+    "Tap the marble you must not touch: the baad. Then throw.",
+    "Touch exactly one other marble to win the ground.",
+    "Touch the baad, or more than one, and pay a fine of one marble."
+   ]
+  },
+  "quick": {
+   "title": "Quick Dan",
+   "diagram": "guli_scatter",
+   "lines": [
+    "One dan of Guli Khela.",
+    "Tap the baad, then touch exactly one other marble to win the ground.",
+    "The match ends when the dan is won."
+   ]
+  }
+ },
+ "diagrams": {
+  "slingshot": {
+   "half": [
+    2.2,
+    2.4
+   ],
+   "items": [
+    {
+     "kind": "arena",
+     "shape": "rect",
+     "half": [
+      2.2,
+      2.4
+     ]
+    },
+    {
+     "kind": "marble",
+     "at": [
+      0,
+      0.2
+     ],
+     "side": 0,
+     "r": 0.28
+    },
+    {
+     "kind": "line",
+     "from": [
+      0,
+      0.2
+     ],
+     "to": [
+      0,
+      1.7
+     ],
+     "style": "pull"
+    },
+    {
+     "kind": "finger",
+     "at": [
+      0,
+      1.7
+     ]
+    },
+    {
+     "kind": "arrow",
+     "from": [
+      0,
+      -0.2
+     ],
+     "to": [
+      0,
+      -1.7
+     ],
+     "style": "shot"
+    },
+    {
+     "kind": "label",
+     "at": [
+      0.35,
+      1.15
+     ],
+     "text": "pull back"
+    },
+    {
+     "kind": "label",
+     "at": [
+      -2.05,
+      -1
+     ],
+     "text": "it goes this way"
+    }
+   ]
+  },
+  "kep_toss": {
+   "half": [
+    3.2,
+    3.2
+   ],
+   "items": [
+    {
+     "kind": "arena",
+     "shape": "circle",
+     "r": 3
+    },
+    {
+     "kind": "line",
+     "from": [
+      -2.2,
+      2.2
+     ],
+     "to": [
+      2.2,
+      2.2
+     ],
+     "style": "jalla"
+    },
+    {
+     "kind": "label",
+     "at": [
+      -2.9,
+      2.55
+     ],
+     "text": "jalla"
+    },
+    {
+     "kind": "hole",
+     "at": [
+      0,
+      -0.3
+     ],
+     "r": 0.45
+    },
+    {
+     "kind": "label",
+     "at": [
+      0,
+      -1.15
+     ],
+     "text": "kep"
+    },
+    {
+     "kind": "marble",
+     "at": [
+      0.05,
+      -0.28
+     ],
+     "side": 0,
+     "r": 0.22,
+     "label": "A 3"
+    },
+    {
+     "kind": "marble",
+     "at": [
+      0.9,
+      -0.3
+     ],
+     "side": 1,
+     "r": 0.22,
+     "label": "B 2"
+    },
+    {
+     "kind": "marble",
+     "at": [
+      -1.5,
+      -0.3
+     ],
+     "side": 2,
+     "r": 0.22,
+     "label": "C 1"
+    }
+   ]
+  },
+  "batto_route": {
+   "half": [
+    3.2,
+    6.5
+   ],
+   "items": [
+    {
+     "kind": "arena",
+     "shape": "rect",
+     "half": [
+      3.2,
+      6.5
+     ]
+    },
+    {
+     "kind": "line",
+     "from": [
+      -2.8,
+      5.6
+     ],
+     "to": [
+      2.8,
+      5.6
+     ],
+     "style": "jalla"
+    },
+    {
+     "kind": "label",
+     "at": [
+      -2.95,
+      5.1
+     ],
+     "text": "jalla"
+    },
+    {
+     "kind": "hole",
+     "at": [
+      0,
+      3.5
+     ],
+     "r": 0.8,
+     "label": "1"
+    },
+    {
+     "kind": "hole",
+     "at": [
+      0,
+      -0.5
+     ],
+     "r": 0.8,
+     "label": "2"
+    },
+    {
+     "kind": "hole",
+     "at": [
+      0,
+      -4.5
+     ],
+     "r": 0.8,
+     "label": "3"
+    },
+    {
+     "kind": "arrow",
+     "from": [
+      -1.2,
+      3
+     ],
+     "to": [
+      -1.2,
+      -0.1
+     ],
+     "style": "route"
+    },
+    {
+     "kind": "arrow",
+     "from": [
+      -1.2,
+      -1
+     ],
+     "to": [
+      -1.2,
+      -4
+     ],
+     "style": "route"
+    },
+    {
+     "kind": "arrow",
+     "from": [
+      1.2,
+      -4
+     ],
+     "to": [
+      1.2,
+      -1
+     ],
+     "style": "route_back"
+    },
+    {
+     "kind": "arrow",
+     "from": [
+      1.2,
+      -0.1
+     ],
+     "to": [
+      1.2,
+      3
+     ],
+     "style": "route_back"
+    },
+    {
+     "kind": "label",
+     "at": [
+      -2.1,
+      1.4
+     ],
+     "text": "out"
+    },
+    {
+     "kind": "label",
+     "at": [
+      2,
+      1.4
+     ],
+     "text": "back"
+    },
+    {
+     "kind": "marble",
+     "at": [
+      0,
+      5.95
+     ],
+     "side": 0,
+     "r": 0.3
+    }
+   ]
+  },
+  "batto_hit": {
+   "half": [
+    3,
+    3
+   ],
+   "items": [
+    {
+     "kind": "arena",
+     "shape": "rect",
+     "half": [
+      3,
+      3
+     ]
+    },
+    {
+     "kind": "hole",
+     "at": [
+      0,
+      -2
+     ],
+     "r": 0.7,
+     "label": "2"
+    },
+    {
+     "kind": "marble",
+     "at": [
+      -1.5,
+      2
+     ],
+     "side": 0,
+     "r": 0.3,
+     "label": "A"
+    },
+    {
+     "kind": "arrow",
+     "from": [
+      -1.5,
+      1.6
+     ],
+     "to": [
+      0.2,
+      -0.5
+     ],
+     "style": "shot"
+    },
+    {
+     "kind": "marble",
+     "at": [
+      0.45,
+      -0.8
+     ],
+     "side": 1,
+     "r": 0.3,
+     "label": "B"
+    },
+    {
+     "kind": "arrow",
+     "from": [
+      0.8,
+      -1
+     ],
+     "to": [
+      2,
+      -2.4
+     ],
+     "style": "away"
+    },
+    {
+     "kind": "label",
+     "at": [
+      -0.2,
+      2.55
+     ],
+     "text": "hit: shoot again"
+    }
+   ]
+  },
+  "guli_scatter": {
+   "half": [
+    3.2,
+    3.4
+   ],
+   "items": [
+    {
+     "kind": "arena",
+     "shape": "circle",
+     "r": 3
+    },
+    {
+     "kind": "line",
+     "from": [
+      -2.2,
+      2.5
+     ],
+     "to": [
+      2.2,
+      2.5
+     ],
+     "style": "jalla"
+    },
+    {
+     "kind": "label",
+     "at": [
+      -2.9,
+      3.15
+     ],
+     "text": "jalla"
+    },
+    {
+     "kind": "hole",
+     "at": [
+      0,
+      -0.3
+     ],
+     "r": 0.45
+    },
+    {
+     "kind": "marble",
+     "at": [
+      1.5,
+      -0.3
+     ],
+     "side": -1,
+     "r": 0.2
+    },
+    {
+     "kind": "marble",
+     "at": [
+      1.06,
+      0.76
+     ],
+     "side": -1,
+     "r": 0.2
+    },
+    {
+     "kind": "marble",
+     "at": [
+      0,
+      1.2
+     ],
+     "side": -1,
+     "r": 0.2
+    },
+    {
+     "kind": "marble",
+     "at": [
+      -1.06,
+      0.76
+     ],
+     "side": -1,
+     "r": 0.2
+    },
+    {
+     "kind": "marble",
+     "at": [
+      -1.5,
+      -0.3
+     ],
+     "side": -1,
+     "r": 0.2
+    },
+    {
+     "kind": "marble",
+     "at": [
+      -1.06,
+      -1.36
+     ],
+     "side": -1,
+     "r": 0.2
+    },
+    {
+     "kind": "marble",
+     "at": [
+      0,
+      -1.8
+     ],
+     "side": -1,
+     "r": 0.2
+    },
+    {
+     "kind": "marble",
+     "at": [
+      1.06,
+      -1.36
+     ],
+     "side": -1,
+     "r": 0.2
+    },
+    {
+     "kind": "cross",
+     "at": [
+      -1.06,
+      0.76
+     ]
+    },
+    {
+     "kind": "label",
+     "at": [
+      -2,
+      1.45
+     ],
+     "text": "baad"
+    },
+    {
+     "kind": "marble",
+     "at": [
+      0,
+      3
+     ],
+     "side": 0,
+     "r": 0.25
+    },
+    {
+     "kind": "arrow",
+     "from": [
+      0,
+      2.7
+     ],
+     "to": [
+      0,
+      1.5
+     ],
+     "style": "shot"
+    }
+   ]
+  }
+ },
+ "links": {
+  "site": "https://playgulibatto.vercel.app",
+  "play": "https://playgulibatto.vercel.app/play",
+  "download": "https://playgulibatto.vercel.app/download",
+  "issues": "https://github.com/shahadathhs/GuliBatto/issues"
+ }
+}

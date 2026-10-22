@@ -2,11 +2,14 @@ class_name BattoRules
 extends RuleSet
 ## Batto: a race along three holes and back (the profile's route). Every side tosses once from the
 ## jalla toward the first hole; the closest goes first. Then each side shoots its own marble from
-## where it lies. A shot that ends with the marble in the hole it must reach next advances it,
-## and a hit on a rival or a hole reached earns one more shot (a chain of bonus shots is capped).
-## A side that rests in the last hole has finished and leaves the board. The match ends when one
-## side is left, and that side is last. After the turn cap the race is stopped and the sides are
-## ranked by how far they got.
+## where it lies, or from the edge of the hole when it rests in one. A shot that ends with the
+## marble in the hole it must reach next advances it, and a hit on a rival or a hole reached earns
+## one more shot (a chain of bonus shots is capped). A side that rests in the last hole has
+## finished and leaves the board. The match ends when one side is left, and that side is last.
+## After the turn cap the race is stopped and the sides are ranked by how far they got.
+
+## Gap between the edge of a hole's dish and the marble set down beside it.
+const RIM_GAP := 0.03
 
 
 func start(profile: RuleProfile, side_count: int) -> MatchState:
@@ -33,6 +36,25 @@ func evaluate(
 	if s.opening:
 		return _evaluate_toss(s, profile, snapshot, report)
 	return _evaluate_shot(s, profile, snapshot, report)
+
+
+## A marble resting in a hole is lifted to the edge of the hole, on the side facing the hole it is
+## heading for, and shot from there.
+func shot_start(
+	state: MatchState, profile: RuleProfile, snapshot: BoardSnapshot, side: int
+) -> Variant:
+	var s := state as BattoState
+	if s.opening:
+		return null
+	for hole in profile.holes:
+		if snapshot.is_inside(side, hole, profile.hole_radius):
+			return _rim_point(s, profile, snapshot, side, hole)
+	return null
+
+
+func aim_point(state: MatchState, profile: RuleProfile, side: int) -> Variant:
+	var s := state as BattoState
+	return profile.holes[profile.route[0] if s.opening else s.next_hole(side)]
 
 
 func ranking(state: MatchState) -> Array[int]:
@@ -96,6 +118,35 @@ func final_text(state: MatchState, side: int) -> String:
 	return "ON THE ROUTE AT H%d" % (s.next_hole(side) + 1)
 
 
+func _rim_point(
+	s: BattoState, profile: RuleProfile, snapshot: BoardSnapshot, side: int, hole: Vector2
+) -> Vector2:
+	var toward := profile.holes[s.next_hole(side)] - hole
+	var facing := toward.normalized() if toward.length() > 0.01 else Vector2.UP
+	var distance := profile.dish_radius + profile.marble_radius + RIM_GAP
+	var spot := hole + facing * distance
+	# Turn around the hole until the spot is clear of every other marble and on the floor.
+	for step in 12:
+		var sign := 1.0 if step % 2 == 0 else -1.0
+		var turn: float = ceil(step / 2.0) * deg_to_rad(30.0) * sign
+		spot = hole + facing.rotated(turn) * distance
+		if _spot_is_clear(profile, snapshot, side, spot):
+			break
+	return spot
+
+
+func _spot_is_clear(
+	profile: RuleProfile, snapshot: BoardSnapshot, side: int, spot: Vector2
+) -> bool:
+	var margin := profile.marble_radius * 2.0
+	if absf(spot.x) > profile.arena_size.x - margin or absf(spot.y) > profile.arena_size.y - margin:
+		return false
+	for id in snapshot.ids():
+		if id != side and snapshot.position_of(id).distance_to(spot) < margin + 0.05:
+			return false
+	return true
+
+
 func _evaluate_toss(
 	s: BattoState, profile: RuleProfile, snapshot: BoardSnapshot, report: ShotReport
 ) -> RuleResult:
@@ -150,6 +201,8 @@ func _evaluate_shot(
 	if done:
 		s.finished.append(side)
 		result.finished_side = side
+		# A side that finishes leaves the board, once the cue has been shown.
+		result.remove_marbles.append(side)
 	result.cue = _cue_for(hit, reached, done)
 	if (hit or reached) and not done:
 		if s.bonus_chain < profile.bonus_cap:

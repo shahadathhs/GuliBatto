@@ -81,7 +81,9 @@ export function ArenaArt({ variant = "hero", label }: { variant?: Variant; label
           <Marble side={2} x={120} y={120} />
           <Marble side={3} x={270} y={90} />
           <Marble side="pot" x={250} y={175} />
-          <Marble side={1} x={195} y={205} r={14} ring />
+          <g className="hero-shot">
+            <Marble side={1} x={195} y={205} r={14} ring />
+          </g>
         </>
       )}
       {variant === "kep" && (

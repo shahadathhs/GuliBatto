@@ -14,7 +14,7 @@ Character: warm, tactile, grounded, quiet. Not a candy-coloured casual game, not
 
 - **The disc.** A marble is a disc, the primary button is a disc, the kep is an ellipse, the ring is a circle. Controls that are not the primary action are round icon buttons or outlined rounded rectangles (radius 14). There are no sharp-cornered boxes.
 - **Drawn lines.** The play ring, the start line, and the aim line are drawn in the dirt: a 3 px line in `line`/ink at reduced opacity, dashed for lines you stand behind. The same line weight is used for UI outlines (2 px) and the selected mode (4 px).
-- **One accent: glaze blue.** It is the player's marble colour and the one primary action. The primary button is a solid glaze disc with `on-glaze` text. Glaze is not decoration: the player's marbles and the Play/Start/Rematch button are the same blue, so "the blue thing is mine and is what I do next".
+- **One accent: glaze blue.** It is the player's marble colour and the one primary action. The primary button is a solid glaze disc with `on-glaze` text; when the label is longer than six letters ("Rematch", "Back to match") it is a rounded rectangle instead, never a stretched pill. Glaze is not decoration: the player's marbles and the Play/Start/Rematch button are the same blue, so "the blue thing is mine and is what I do next".
 - **Marbles carry the colour, and a mark.** Up to four sides: side 1 (you) = glaze blue with a **ring** mark, side 2 = amber with a **dot**, side 3 = jade with a **bar**, side 4 = plum with a **triangle**. Stake and pot marbles in Guli Khela are plain bone with no mark. Colour is never the only signal; the mark is visible from top-down, angled and low views, and sides 2 to 4 are close in lightness, so the mark is what separates them in grayscale. The active marble also gets a ring on the ground beneath it.
 - **Earth is not a UI colour.** Arena materials (earth, rim, hole) are 3D materials chosen by the scene, listed in section 2 only to keep them close to the UI. UI never uses them as text or fills.
 - **Wordmark.** `GULI & BATTO`, heavy caps with a lighter ampersand. No logo mark until one earns its place.
@@ -181,7 +181,7 @@ One compact, slightly irregular patch of packed earth with a clear boundary. Che
 
 - ground with subtle low-frequency dirt variation and a little roughness noise, not high-frequency clutter;
 - low boundary stones or a shallow raised edge where needed;
-- the jalla and a readable kep with a visible lip, and, for Batto, three holes in a line that stay distinguishable from every supported view;
+- the jalla and a readable kep with a visible lip, and, for Batto, a large rectangular board with three big numbered holes in a line that stay distinguishable from every supported view;
 - restrained background props only when they establish scale, none tall enough to block likely camera paths;
 - a neutral horizon that keeps the arena silhouette readable.
 
@@ -215,7 +215,7 @@ The site uses the same tokens, wordmark and rules, so it reads as the same produ
 
 ## 11. Sound
 
-A small, original or properly licensed set: marble click and roll, a stronger collision, a soft dirt contact, button feedback, a concise score cue. Sound supports weight and result; every critical result also has a visual cue and works muted. Do not use a recording of a real person's voice or a recognisable cultural performance without permission and licence, and do not use stock "village" ambience to imply authenticity. Record the source and licence of every file beside it.
+A small, original set, written from code by `scripts/sounds.mjs` (so there is nothing to license; `make sounds` regenerates the files in `game/audio/` and `make sounds-check` fails if they drift): a marble striking a marble, a marble on the wall, a marble dropping into a hole, the shot leaving the finger, a button tap, and a win and a lose chime. Hard hits are louder, and the pitch of the repeating sounds varies a little. The sounds are synthetic and have not been judged by ear yet; recordings can replace the files (record their source and licence beside them). Sound supports weight and result; every critical result also has a visual cue and works muted. Do not use a recording of a real person's voice or a recognisable cultural performance without permission and licence, and do not use stock "village" ambience to imply authenticity. Record the source and licence of every file beside it.
 
 ## 12. Cultural visual integrity
 

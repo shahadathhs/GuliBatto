@@ -1,0 +1,40 @@
+{
+  "kep": {
+    "title": "Kep",
+    "diagram": "kep_toss",
+    "lines": [
+      "Toss from behind the line at the hole.",
+      "In the hole scores 3, closest scores 2, next closest 1.",
+      "Five rounds. The highest total wins."
+    ]
+  },
+  "batto": {
+    "title": "Batto",
+    "diagram": "batto_route",
+    "lines": [
+      "Everyone tosses at hole 1. The closest goes first.",
+      "Race to hole 1, 2, 3, then back through 2 to 1.",
+      "Reach the hole you are heading for, or hit a rival, and shoot again.",
+      "The last to finish loses."
+    ]
+  },
+  "guli": {
+    "title": "Guli Khela",
+    "diagram": "guli_scatter",
+    "lines": [
+      "Everyone pays a stake and tosses. The closest scatters the stake round the hole.",
+      "Tap the marble you must not touch: the baad. Then throw.",
+      "Touch exactly one other marble to win the ground.",
+      "Touch the baad, or more than one, and pay a fine of one marble."
+    ]
+  },
+  "quick": {
+    "title": "Quick Dan",
+    "diagram": "guli_scatter",
+    "lines": [
+      "One dan of Guli Khela.",
+      "Tap the baad, then touch exactly one other marble to win the ground.",
+      "The match ends when the dan is won."
+    ]
+  }
+}

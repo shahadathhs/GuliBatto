@@ -14,8 +14,8 @@ enum Mode { NONE, AIM, ORBIT, PINCH }
 
 ## Screen distance from the marble within which a press grabs it, much larger than the marble.
 const HANDLE_PIXELS := 56.0
-## How far (metres on the ground) the finger must be pulled back for full power.
-const MAX_PULL := 2.4
+## Screen distance within which a tap names a marble as baad.
+const BAAD_PIXELS := 40.0
 const ORBIT_DEGREES_PER_PIXEL := 0.3
 const ZOOM_STEP := 0.92
 
@@ -120,7 +120,13 @@ func _on_motion(event: InputEventMouseMotion) -> void:
 func _press(screen: Vector2) -> void:
 	if mode != Mode.NONE:
 		return
-	if _on_handle(screen):
+	var handle := _handle_distance(screen)
+	var pick := _baad_pick(screen)
+	# A tap on a marble that can be named names it, unless the shooter's own marble is nearer.
+	if not pick.is_empty() and pick["distance"] <= BAAD_PIXELS and pick["distance"] < handle:
+		match_controller.name_baad(pick["id"])
+		return
+	if handle <= HANDLE_PIXELS:
 		mode = Mode.AIM
 		_update_aim(screen)
 	else:
@@ -133,14 +139,29 @@ func _release() -> void:
 	mode = Mode.NONE
 
 
-func _on_handle(screen: Vector2) -> bool:
+## How far, on screen, a press is from the shooter's marble; infinite when it cannot be grabbed.
+func _handle_distance(screen: Vector2) -> float:
 	if not match_controller.is_human_turn():
-		return false
+		return INF
 	var m := _active_marble()
 	if m == null:
-		return false
-	var on_screen := rig.camera.unproject_position(m.global_position)
-	return on_screen.distance_to(screen) <= HANDLE_PIXELS
+		return INF
+	return rig.camera.unproject_position(m.global_position).distance_to(screen)
+
+
+## The marble that could be named as baad nearest the press: {"id", "distance"}, or empty.
+func _baad_pick(screen: Vector2) -> Dictionary:
+	if not match_controller.can_name_baad():
+		return {}
+	var best := {}
+	for id in match_controller.baad_choices():
+		var m := board.marble(id)
+		if m == null:
+			continue
+		var d := rig.camera.unproject_position(m.global_position).distance_to(screen)
+		if best.is_empty() or d < best["distance"]:
+			best = {"id": id, "distance": d}
+	return best
 
 
 func _active_marble() -> Marble:
@@ -153,7 +174,7 @@ func _active_marble() -> Marble:
 func _ground_point(screen: Vector2) -> Vector2:
 	var origin := rig.camera.project_ray_origin(screen)
 	var normal := rig.camera.project_ray_normal(screen)
-	var hit: Variant = Plane(Vector3.UP, Tuning.MARBLE_RADIUS).intersects_ray(origin, normal)
+	var hit: Variant = Plane(Vector3.UP, board.profile.marble_radius).intersects_ray(origin, normal)
 	if hit == null:
 		return Vector2.ZERO
 	return Vector2((hit as Vector3).x, (hit as Vector3).z)
@@ -166,14 +187,14 @@ func _update_aim(screen: Vector2) -> void:
 	var from := m.ground_position()
 	var pointer := _ground_point(screen)
 	var pull := pointer - from
-	_power = clampf(pull.length() / MAX_PULL, 0.0, 1.0)
+	_power = clampf(pull.length() / board.profile.max_pull, 0.0, 1.0)
 	if pull.length() > 0.001:
 		_direction = (-pull).normalized()
 	if _power < Tuning.AIM_DEAD_ZONE:
 		visual.clear()
 	else:
 		# The pull line ends at the finger, but no farther than full pull.
-		var shown := from + pull.limit_length(MAX_PULL)
+		var shown := from + pull.limit_length(board.profile.max_pull)
 		visual.show_aim(from, _direction, _power, shown)
 	aim_changed.emit(true, _power)
 

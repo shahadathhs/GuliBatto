@@ -10,3 +10,5 @@ web/src/app/tokens.css
 game/scripts/generated/
 web/public/play-build/
 web/src/lib/token-colors.generated.ts
+game/data/content.json
+web/src/lib/content.generated.json

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Reveal } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SITE_URL } from "@/lib/site";
 import { SiteHeader } from "@/components/site-header";
@@ -17,8 +18,9 @@ export const metadata: Metadata = {
 const THEME_SCRIPT = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // The theme script sets data-theme before React loads, so the attribute differs by design.
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
@@ -29,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <div id="main">{children}</div>
         <SiteFooter />
+        <Reveal />
       </body>
     </html>
   );

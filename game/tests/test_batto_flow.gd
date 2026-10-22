@@ -71,9 +71,10 @@ func test_the_computer_chooses_between_a_hole_and_a_hit() -> void:
 	var state := BattoRules.new().start(profile, 3) as BattoState
 	state.opening = false
 	var snap := BoardSnapshot.new()
-	snap.add(0, 0, Vector2(0.0, 2.2))
-	snap.add(1, 1, Vector2(0.9, 1.9))
-	snap.add(2, 2, Vector2(-2.4, -1.0))
+	snap.add(0, 0, Vector2(0.0, profile.jalla_z))
+	snap.add(1, 1, Vector2(1.0, 15.5))
+	snap.add(2, 2, Vector2(-3.0, -8.0))
+	state.progress[1] = 2
 	var at_hole := 0
 	var at_rival := 0
 	for i in 60:
@@ -87,3 +88,36 @@ func test_the_computer_chooses_between_a_hole_and_a_hit() -> void:
 	gut.p("AI choices over 60 turns: %d at the hole, %d at a rival" % [at_hole, at_rival])
 	assert_gt(at_hole, 0, "it goes for the hole")
 	assert_gt(at_rival, 0, "and sometimes for a hit")
+
+
+func test_the_computer_never_aims_at_a_marble_down_in_a_hole() -> void:
+	var ai := BattoAI.new(8)
+	var state := BattoRules.new().start(profile, 3) as BattoState
+	state.opening = false
+	state.progress[1] = 3
+	var snap := BoardSnapshot.new()
+	snap.add(0, 0, Vector2(2.0, 0.8))
+	snap.add(1, 1, profile.holes[1])
+	snap.add(2, 2, Vector2(-3.0, -9.0))
+	var to_hole := (profile.holes[0] - snap.position_of(0)).normalized()
+	for i in 40:
+		var cmd := ai.choose(state, profile, snap, 0)
+		assert_gt(cmd.direction.dot(to_hole), 0.9, "turn %d goes for its own hole" % i)
+
+
+func test_after_a_bonus_shot_the_computer_gets_on_with_the_route() -> void:
+	var ai := BattoAI.new(3)
+	var state := BattoRules.new().start(profile, 3) as BattoState
+	state.opening = false
+	state.progress[1] = 3
+	state.bonus_chain = 2
+	var snap := BoardSnapshot.new()
+	snap.add(0, 0, Vector2(0.0, 9.0))
+	snap.add(1, 1, Vector2(0.8, 8.0))
+	snap.add(2, 2, Vector2(-3.0, -9.0))
+	var to_hole := (profile.holes[0] - snap.position_of(0)).normalized()
+	var at_hole := 0
+	for i in 40:
+		if ai.choose(state, profile, snap, 0).direction.dot(to_hole) > 0.9:
+			at_hole += 1
+	assert_gt(at_hole, 34, "it mostly goes for the hole, not another hit")

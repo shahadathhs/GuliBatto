@@ -11,6 +11,8 @@ var _pause: Control
 
 
 func _ready() -> void:
+	Settings.load_from_disk()
+	add_child(Sfx.new())
 	_layer = CanvasLayer.new()
 	_layer.layer = 10
 	add_child(_layer)
@@ -22,7 +24,7 @@ func _ready() -> void:
 	_show_menu()
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--screen="):
-			_debug_screen(arg.trim_prefix("--screen="))
+			AppDebug.open(self, arg.trim_prefix("--screen="))
 
 
 func _show(screen: Control) -> void:
@@ -42,12 +44,8 @@ func _show_menu() -> void:
 	_end_match()
 	var s := MenuScreen.new()
 	s.play_pressed.connect(_show_modes)
-	s.how_to_play_pressed.connect(
-		func() -> void: _show_text("How to play", Copy.how_to_play(), _show_menu)
-	)
-	s.about_pressed.connect(
-		func() -> void: _show_text("About these games", Copy.about(), _show_menu)
-	)
+	s.how_to_play_pressed.connect(func() -> void: _show_page("how_to_play", _show_menu))
+	s.about_pressed.connect(func() -> void: _show_page("about", _show_menu))
 	s.settings_pressed.connect(func() -> void: _show_settings(_show_menu))
 	_show(s)
 
@@ -56,16 +54,54 @@ func _show_modes() -> void:
 	_end_match()
 	var s := ModesScreen.new()
 	s.back_pressed.connect(_show_menu)
-	s.about_pressed.connect(
-		func() -> void: _show_text("About these games", Copy.about(), _show_modes)
+	s.about_pressed.connect(func() -> void: _show_page("about", _show_modes))
+	s.rules_pressed.connect(
+		func(mode_id: StringName) -> void: _show_page(ModeRegistry.page_id(mode_id), _show_modes)
 	)
-	s.start_pressed.connect(func(mode_id: StringName) -> void: _start_match(mode_id))
+	s.start_pressed.connect(_play)
 	_show(s)
 
 
-func _show_text(title: String, sections: Array[Array], back: Callable) -> void:
-	var s := TextScreen.new(title, sections)
+## A page of the shared content. A link on it opens another page (and comes back to this one) or a
+## web address. `back` is where this page's back button goes.
+func _show_page(page_id: String, back: Callable) -> void:
+	_show(_page(page_id, back, _show))
+
+
+func _page(page_id: String, back: Callable, place: Callable) -> PageScreen:
+	var s := PageScreen.new(page_id)
 	s.back_pressed.connect(back)
+	s.link_pressed.connect(
+		func(target: String) -> void:
+			var here := func() -> void: place.call(_page(page_id, back, place))
+			_follow_link(target, here, place)
+	)
+	return s
+
+
+func _follow_link(target: String, back_here: Callable, place: Callable) -> void:
+	var parts := target.split(":", true, 1)
+	if parts[0] == "page":
+		place.call(_page(parts[1], back_here, place))
+	elif parts[0] == "url":
+		OS.shell_open(Content.link(parts[1]))
+
+
+## The first time a game is started its rules card comes first; after that it starts at once.
+func _play(mode_id: StringName) -> void:
+	if Settings.has_seen_rules(mode_id):
+		_start_match(mode_id)
+		return
+	var s := RulesCard.new(mode_id, "Start", true)
+	s.back_pressed.connect(_show_modes)
+	s.primary_pressed.connect(
+		func() -> void:
+			Settings.mark_rules_seen(mode_id)
+			_start_match(mode_id)
+	)
+	s.full_rules_pressed.connect(
+		func() -> void: _show_page(ModeRegistry.page_id(mode_id), _play.bind(mode_id))
+	)
 	_show(s)
 
 
@@ -86,6 +122,7 @@ func _start_match(mode_id: StringName = &"") -> void:
 	add_child(_match)
 	_match.start(ModeRegistry.profile(_mode), ModeRegistry.rules(_mode))
 	_match.pause_requested.connect(_open_pause)
+	_match.help_requested.connect(_open_help)
 	_match.round_finished.connect(_on_round_finished)
 	_match.match_finished.connect(_on_match_finished)
 
@@ -97,10 +134,12 @@ func _end_match() -> void:
 		_match = null
 
 
-func _on_round_finished(result: RuleResult, totals: Array[int], round_no: int, rounds: int) -> void:
+func _on_round_finished(
+	result: RuleResult, totals: Array[int], caption: String, total_word: String
+) -> void:
 	if result.kind == &"match":
 		return
-	var s := RoundResultScreen.new(result, totals, _match.human_side, round_no, rounds)
+	var s := RoundResultScreen.new(result, totals, _match.human_side, caption, total_word)
 	s.next_pressed.connect(
 		func() -> void:
 			_clear_screen()
@@ -120,7 +159,12 @@ func _on_match_finished(ranking: Array[int], details: Array[String]) -> void:
 func _open_pause() -> void:
 	if _pause != null or _match == null:
 		return
-	var s := PauseScreen.new()
+	var s := PauseScreen.new(_match.rules.can_surrender())
+	s.surrender_pressed.connect(
+		func() -> void:
+			_close_pause()
+			_match.controller.surrender()
+	)
 	s.resume_pressed.connect(_close_pause)
 	s.restart_pressed.connect(func() -> void: _start_match())
 	s.menu_pressed.connect(_show_menu)
@@ -129,62 +173,35 @@ func _open_pause() -> void:
 	get_tree().paused = true
 
 
+## The "?" in a match: the rules card over the paused match, with the full rules a tap away.
+func _open_help() -> void:
+	if _pause != null or _match == null:
+		return
+	_show_help_card()
+	get_tree().paused = true
+
+
+func _show_help_card() -> void:
+	var s := RulesCard.new(_mode, "Back to match")
+	s.primary_pressed.connect(_close_pause)
+	s.full_rules_pressed.connect(
+		func() -> void:
+			_put_overlay(_page(ModeRegistry.page_id(_mode), _show_help_card, _put_overlay))
+	)
+	_put_overlay(s)
+
+
+## Replaces the overlay over the match (the pause menu, the rules card, a page) with another.
+func _put_overlay(screen: Control) -> void:
+	screen.process_mode = Node.PROCESS_MODE_ALWAYS
+	if _pause != null:
+		_pause.queue_free()
+	_pause = screen
+	_layer.add_child(screen)
+
+
 func _close_pause() -> void:
 	get_tree().paused = false
 	if _pause != null:
 		_pause.queue_free()
 		_pause = null
-
-
-## Debug only: `godot --path game -- --screen=modes` opens one screen so it can be photographed.
-func _debug_screen(name: String) -> void:
-	var sample_points := {0: 3, 1: 2, 2: 1}
-	var sample_placing := {0: &"in_kep", 1: &"closest", 2: &"second"}
-	match name:
-		"modes":
-			_show_modes()
-		"about":
-			_show_text("About these games", Copy.about(), _show_menu)
-		"how":
-			_show_text("How to play", Copy.how_to_play(), _show_menu)
-		"settings":
-			_show_settings(_show_menu)
-		"result":
-			var r := RuleResult.new()
-			r.points = sample_points
-			r.placing = sample_placing
-			_show(RoundResultScreen.new(r, [6, 5, 2] as Array[int], 0, 2, 5))
-		"over":
-			_show(
-				MatchOverScreen.new(
-					[0, 2, 1] as Array[int],
-					["13 points", "11 points", "9 points"] as Array[String],
-					0
-				)
-			)
-		"match", "aim", "pause", "batto":
-			_start_match(&"batto" if name == "batto" else &"kep")
-			if name != "match":
-				await get_tree().create_timer(0.6, false).timeout
-			if name == "pause":
-				_open_pause()
-			if name == "aim":
-				_debug_aim()
-
-
-func _debug_aim() -> void:
-	MatchScene.coach_seen = true
-	var m := _match.board.marble(0)
-	var from := _match.rig.camera.unproject_position(m.global_position)
-	var to := from + Vector2(20.0, 110.0)
-	var transform := get_viewport().get_final_transform()
-	var press := InputEventMouseButton.new()
-	press.button_index = MOUSE_BUTTON_LEFT
-	press.pressed = true
-	press.position = transform * from
-	Input.parse_input_event(press)
-	await get_tree().create_timer(0.2, false).timeout
-	var drag := InputEventMouseMotion.new()
-	drag.position = transform * to
-	drag.relative = to - from
-	Input.parse_input_event(drag)

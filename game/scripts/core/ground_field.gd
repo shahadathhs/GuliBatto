@@ -25,14 +25,18 @@ static func patch_rects(holes: PackedVector2Array, dish_radius: float, cell: flo
 	return rects
 
 
-## The parts of the square [-half, half] on both axes that the patches do not cover, as rectangles
-## that do not overlap. Together with the patches they tile the whole ground.
-static func free_rects(half: float, patches: Array[Rect2]) -> Array[Rect2]:
+## The parts of `bounds` that the patches do not cover, as rectangles that do not overlap.
+## Together with the patches they tile the whole ground.
+static func free_rects(bounds: Rect2, patches: Array[Rect2]) -> Array[Rect2]:
 	var eps := 0.0001
-	var xs: Array[float] = [-half, half]
+	var x_min := bounds.position.x
+	var x_max := bounds.end.x
+	var z_min := bounds.position.y
+	var z_max := bounds.end.y
+	var xs: Array[float] = [x_min, x_max]
 	for p in patches:
-		xs.append(clampf(p.position.x, -half, half))
-		xs.append(clampf(p.end.x, -half, half))
+		xs.append(clampf(p.position.x, x_min, x_max))
+		xs.append(clampf(p.end.x, x_min, x_max))
 	xs.sort()
 	var out: Array[Rect2] = []
 	for i in xs.size() - 1:
@@ -44,16 +48,16 @@ static func free_rects(half: float, patches: Array[Rect2]) -> Array[Rect2]:
 		for p in patches:
 			if p.position.x < x1 - eps and p.end.x > x0 + eps:
 				covered.append(
-					Vector2(clampf(p.position.y, -half, half), clampf(p.end.y, -half, half))
+					Vector2(clampf(p.position.y, z_min, z_max), clampf(p.end.y, z_min, z_max))
 				)
 		covered.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.x < b.x)
-		var z := -half
+		var z := z_min
 		for c in covered:
 			if c.x - z > eps:
 				out.append(Rect2(x0, z, x1 - x0, c.x - z))
 			z = maxf(z, c.y)
-		if half - z > eps:
-			out.append(Rect2(x0, z, x1 - x0, half - z))
+		if z_max - z > eps:
+			out.append(Rect2(x0, z, x1 - x0, z_max - z))
 	return out
 
 

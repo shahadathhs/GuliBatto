@@ -11,13 +11,16 @@
 - A first version of the website: home, how to play, about, download, privacy, and a play page that frames Godot's default page.
 - The Android and web builds are produced by CI and published in the release `v0.0.1`. Only the web export has been run, in a headless browser; the APK has not been run on a real device.
 - The site is live at <https://playgulibatto.vercel.app>.
-- Checks: lint, token and colour checks, 87 game tests, site tests and a smoke test, and a CI pipeline that passes on `main` and has published a release.
+- Checks: lint, token and colour checks, 199 game tests, site tests and a smoke test, and a CI pipeline that passes on `main` and has published a release.
 
 **Not built**
 
-- Guli Khela and Quick Dan.
 - The shared content source, the large Home, per-game and How to play pages, Contact, the in-app pages, the site-native browser loader, and the all-platform download page.
 - Sound, saved settings, and checking the rules with people who played.
+
+## Order of the remaining app work
+
+Agreed 2026-10-22: saved settings and reset, the shot-follow camera for every mode, sound, then Guli Khela and Quick Dan (Phase 5), then the pages and per-game teaching (Phase 6, the app half), then the phone test, tuning and release (Phase 7). Settings come first because sound, the camera toggle and the teaching prompts all store a choice. Guli Khela comes before the pages so the pages are written once, with all four games in place. The checklist is in [`../TODO.md`](../TODO.md).
 
 ## Phase 0 — Android and web build and run
 
@@ -67,6 +70,8 @@ Deliverables: three holes in a line and the route, route progress on screen, hit
 **Gate:** the acceptance list for Batto; a full match against three computer sides ends and ranks correctly. Check the open points in [`README_GAME_RULES.md`](README_GAME_RULES.md) with at least one more person who played.
 
 ## Phase 5 — Guli Khela and Quick Dan, complete
+
+**Status:** built and tested (a full match with computer sides keeps every marble accounted for); the hand check on a phone and the check with players are open.
 
 **Goal:** the full stake game, properly, and its short form.
 

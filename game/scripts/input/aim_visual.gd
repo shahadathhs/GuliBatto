@@ -5,19 +5,24 @@ extends Node3D
 ## marble whose turn it is. It draws only; it never decides anything.
 
 const Y := 0.03
-const SHAFT_WIDTH := 0.07
-const HEAD_LENGTH := 0.36
-const HEAD_WIDTH := 0.3
-const MIN_LENGTH := 0.7
-const MAX_LENGTH := 3.0
+## A short arrow: it says which way, not how far, so a shot still has to be judged by eye.
+const SHAFT_WIDTH := 0.05
+const HEAD_LENGTH := 0.22
+const HEAD_WIDTH := 0.2
+const MIN_LENGTH := 0.35
+const MAX_LENGTH := 1.0
 
 var _mesh: ImmediateMesh = ImmediateMesh.new()
 var _ring: MeshInstance3D
 var _scheme: Palette.Scheme
+var _marble_radius: float
 
 
-func _init(scheme: Palette.Scheme = Palette.Scheme.LIGHT) -> void:
+func _init(
+	scheme: Palette.Scheme = Palette.Scheme.LIGHT, marble_radius: float = Tuning.MARBLE_RADIUS
+) -> void:
 	_scheme = scheme
+	_marble_radius = marble_radius
 	var lines := MeshInstance3D.new()
 	lines.mesh = _mesh
 	var m := StandardMaterial3D.new()
@@ -28,8 +33,8 @@ func _init(scheme: Palette.Scheme = Palette.Scheme.LIGHT) -> void:
 	add_child(lines)
 	_ring = MeshInstance3D.new()
 	var torus := TorusMesh.new()
-	torus.inner_radius = Tuning.MARBLE_RADIUS * 1.5
-	torus.outer_radius = Tuning.MARBLE_RADIUS * 1.75
+	torus.inner_radius = _marble_radius * 1.5
+	torus.outer_radius = _marble_radius * 1.75
 	_ring.mesh = torus
 	var rm := StandardMaterial3D.new()
 	rm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -61,7 +66,7 @@ func show_aim(from: Vector2, direction: Vector2, power: float, pointer: Vector2)
 	var glaze := Palette.get_color(&"glaze", _scheme)
 	_dashed(from, pointer, ink)
 	var length := lerpf(MIN_LENGTH, MAX_LENGTH, power)
-	var start := from + direction * (Tuning.MARBLE_RADIUS + 0.05)
+	var start := from + direction * (_marble_radius + 0.05)
 	var neck := from + direction * length
 	_quad(start, neck, SHAFT_WIDTH, glaze)
 	var side := Vector2(-direction.y, direction.x)
@@ -75,7 +80,7 @@ func _dashed(a: Vector2, b: Vector2, colour: Color) -> void:
 	if total < 0.05:
 		return
 	var dir := (b - a) / total
-	var d := Tuning.MARBLE_RADIUS + 0.1
+	var d := _marble_radius + 0.1
 	while d < total:
 		var end := minf(d + 0.12, total)
 		_quad(a + dir * d, a + dir * end, 0.035, colour)

@@ -1,55 +1,11 @@
-extends GutTest
-## Batto rules on hand-built boards, with no physics. Marble ids equal side indices.
-
-var profile: RuleProfile
-var rules: BattoRules
-var state: BattoState
-var h1: Vector2
-var h2: Vector2
-var h3: Vector2
-var far: Vector2 = Vector2(2.0, 1.5)
-
-
-func before_each() -> void:
-	profile = RuleProfile.batto()
-	rules = BattoRules.new()
-	state = rules.start(profile, profile.side_count) as BattoState
-	h1 = profile.holes[0]
-	h2 = profile.holes[1]
-	h3 = profile.holes[2]
-
-
-func _board(positions: Array) -> BoardSnapshot:
-	var snap := BoardSnapshot.new()
-	for i in positions.size():
-		if positions[i] != null:
-			snap.add(i, i, positions[i])
-	return snap
-
-
-func _report(shooter: int, touched: Array = []) -> ShotReport:
-	var r := ShotReport.new()
-	r.shooter_id = shooter
-	for id in touched:
-		r.add_touch(id)
-	return r
-
-
-## Plays the opening toss with every marble resting at `positions`, and starts the race.
-func _open(positions: Array) -> void:
-	var snap := _board(positions)
-	for side in positions.size():
-		rules.evaluate(state, profile, snap, _report(side))
-
-
-## Shoots for the side on turn: its marble ends at `at`, touching `touched`.
-func _shoot(positions: Array, touched: Array = []) -> RuleResult:
-	var side := state.current_side()
-	return rules.evaluate(state, profile, _board(positions), _report(side, touched))
+extends BattoTest
+## Batto rules on hand-built boards, with no physics.
 
 
 func test_the_opening_toss_orders_sides_closest_to_the_first_hole_first() -> void:
-	var snap := _board([h1 + Vector2(1.5, 0.0), h1 + Vector2(0.4, 0.0), h1 + Vector2(0.9, 0.0)])
+	var snap := _board(
+		[h1 + Vector2(2.5 * r, 0.0), h1 + Vector2(1.5 * r, 0.0), h1 + Vector2(2.0 * r, 0.0)]
+	)
 	var last: RuleResult
 	for side in 3:
 		last = rules.evaluate(state, profile, snap, _report(side))
@@ -60,7 +16,7 @@ func test_the_opening_toss_orders_sides_closest_to_the_first_hole_first() -> voi
 
 
 func test_a_toss_that_lands_in_the_first_hole_counts_as_closest_and_reaches_it() -> void:
-	_open([h1 + Vector2(0.9, 0.0), h1 + Vector2(0.05, 0.0), h1 + Vector2(0.3, 0.0)])
+	_open([h1 + Vector2(1.6 * r, 0.0), h1 + Vector2(0.05, 0.0), h1 + Vector2(0.9 * r, 0.0)])
 	assert_eq(state.order[0], 1, "the marble in the hole goes first")
 	assert_eq(state.progress[1], 1, "and has reached H1")
 	assert_eq(state.progress[2], 1, "inside the radius counts too")
@@ -241,8 +197,8 @@ func test_the_turn_cap_stops_the_race_and_ranks_by_progress_then_distance() -> v
 	state.progress[b] = 1
 	state.progress[c] = 1
 	var spots := [far, far, far]
-	spots[b] = h2 + Vector2(1.0, 0.0)
-	spots[c] = h2 + Vector2(0.5, 0.0)
+	spots[b] = h2 + Vector2(2.0 * r, 0.0)
+	spots[c] = h2 + Vector2(1.5 * r, 0.0)
 	var last: RuleResult
 	for i in 6:
 		last = _shoot(spots)

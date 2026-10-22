@@ -11,7 +11,13 @@ const BASE = `http://127.0.0.1:${PORT}`;
 // Each page: the heading it must contain, plus text that proves the body rendered.
 const PAGES = [
   ["/", "Line up the shot", "Kep"],
-  ["/how-to-play", "How to play", "baad"],
+  ["/games", "The games", "Four games with the same controls"],
+  ["/games/kep", "Kep", "At a glance"],
+  ["/games/batto", "Batto", "At a glance"],
+  ["/games/guli-khela", "Guli Khela", "baad"],
+  ["/games/quick-dan", "Quick Dan", "At a glance"],
+  ["/how-to-play", "How to play", "On this page"],
+  ["/contact", "Contact", "Tell me how you played"],
   ["/about", "About these games", "Nothing here is invented from nothing"],
   ["/download", "Download", "direct download"],
   ["/privacy", "Privacy", "collects nothing"],

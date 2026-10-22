@@ -20,3 +20,14 @@ var bonus: bool = false
 var capped: bool = false
 ## The side whose marble left the route this shot (it is taken off the board), or -1.
 var finished_side: int = -1
+## Guli Khela: the side that won the dan, and whether a fine was actually paid (a side with an
+## empty purse pays nothing).
+var winner: int = -1
+var fine_paid: bool = true
+## Guli Khela: each side's purse as the dan finished, before the next stake is paid. Empty means
+## use the match's totals.
+var totals: Array[int] = []
+## Marbles to take off the board, and marbles to put on it, once the cue has been shown. Each
+## placed marble is {"id": int, "side": int, "pos": Vector2}; a marble with no side is neutral.
+var remove_marbles: Array[int] = []
+var place_marbles: Array[Dictionary] = []

@@ -19,8 +19,16 @@ const FIELD_OF_VIEW := 46.0
 
 var camera: Camera3D
 var view: View = View.ANGLED
-## When set, the pivot eases toward this world position (shot-follow); else it rests mid-arena.
+## When set (a ground position), the pivot eases toward it, to follow a marble; else it rests on
+## `focus`.
 var follow_point: Variant = null
+## The ground point the camera looks at, and how far back it stands relative to the default.
+var focus: Vector2 = Vector2(0.0, 0.3)
+var scale_factor: float = 1.0
+## The top-down view's distance when it should show the whole floor (0: the default), and how far
+## the view may zoom out.
+var overview_distance: float = 0.0
+var max_distance: float = 0.0
 
 var _yaw: float = 0.0
 var _pitch: float = 52.0
@@ -43,12 +51,29 @@ func _ready() -> void:
 	_apply()
 
 
+## Frames a floor from its profile: where to look and how far back to stand. Applied at once,
+## without easing.
+func frame(profile: RuleProfile) -> void:
+	focus = profile.camera_focus
+	scale_factor = profile.camera_scale
+	overview_distance = profile.camera_overview
+	max_distance = profile.camera_max_distance
+	set_view(view)
+	_yaw = _target_yaw
+	_pitch = _target_pitch
+	_distance = _target_distance
+	position = Vector3(focus.x, 0.0, focus.y)
+	_apply()
+
+
 func set_view(new_view: View) -> void:
 	view = new_view
 	var p: Dictionary = PRESETS[new_view]
 	_target_yaw = p["yaw"]
 	_target_pitch = p["pitch"]
-	_target_distance = p["distance"]
+	_target_distance = float(p["distance"]) * scale_factor
+	if new_view == View.TOP_DOWN and overview_distance > 0.0:
+		_target_distance = overview_distance
 
 
 func reset() -> void:
@@ -63,7 +88,11 @@ func orbit(delta_yaw_degrees: float, delta_pitch_degrees: float) -> void:
 
 
 func zoom(factor: float) -> void:
-	_target_distance = clampf(_target_distance * factor, DISTANCE_MIN, DISTANCE_MAX)
+	_target_distance = clampf(
+		_target_distance * factor,
+		DISTANCE_MIN * scale_factor,
+		maxf(DISTANCE_MAX * scale_factor, max_distance)
+	)
 
 
 func _process(delta: float) -> void:
@@ -71,9 +100,10 @@ func _process(delta: float) -> void:
 	_yaw = lerpf(_yaw, _target_yaw, t)
 	_pitch = lerpf(_pitch, _target_pitch, t)
 	_distance = lerpf(_distance, _target_distance, t)
-	var goal := Vector3(0.0, 0.0, 0.3)
+	var goal := Vector3(focus.x, 0.0, focus.y)
 	if follow_point != null:
-		goal = (follow_point as Vector3) * 0.6
+		var at := follow_point as Vector2
+		goal = Vector3(at.x, 0.0, at.y)
 	position = position.lerp(goal, t)
 	_apply()
 

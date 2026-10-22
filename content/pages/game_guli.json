@@ -1,0 +1,80 @@
+{
+  "title": "Guli Khela",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Every side pays a stake of marbles. The stake is scattered round a hole, and everyone but the side that scattered it tries to touch exactly one marble, and never the one they named as baad. The winner takes every marble on the ground."
+    },
+    {
+      "type": "diagram",
+      "id": "guli_scatter",
+      "caption": "The stake is scattered round the kep. A has named the marble with the cross as baad, and aims at the one beside it."
+    },
+    {
+      "type": "heading",
+      "text": "A dan"
+    },
+    {
+      "type": "steps",
+      "items": [
+        "Each side still in pays the stake into the dan, and every side tosses once from behind the jalla toward the kep.",
+        "The side whose toss is closest is the scatterer. The tossed marbles go back to their owners, and the stake is set down round the kep.",
+        "Every other side gets one attempt, in turn. First tap the marble you must not touch: the baad. You can tap another to change it. Then throw your marble from behind the jalla.",
+        "When the throw has stopped, it is judged. Your marble then goes back to you."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "What an attempt can do"
+    },
+    {
+      "type": "list",
+      "items": [
+        "It touches exactly one marble, and not the baad: you win the dan and every marble on the ground.",
+        "It touches the baad, or two or more marbles: you pay a fine of one marble from your purse, which is set down on the ground. A side with an empty purse pays nothing. The attempt is over.",
+        "It touches nothing: the attempt is over."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The marbles stay where they come to rest, and the next attempt is played on the same ground, including any fines."
+    },
+    {
+      "type": "heading",
+      "text": "Passes"
+    },
+    {
+      "type": "paragraph",
+      "text": "When every other side has had its attempt and nobody has won, a new pass starts on the same ground. After three passes with no winner, the scatterer wins the dan and takes the ground, because it held out against everyone."
+    },
+    {
+      "type": "heading",
+      "text": "The match"
+    },
+    {
+      "type": "list",
+      "items": [
+        "A side that cannot pay the stake at the start of a dan is out.",
+        "The match ends when one side is left, or after 20 dans, when the side with the most marbles wins.",
+        "You can surrender from the pause menu. That ends the match with you last."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "A worked example"
+    },
+    {
+      "type": "paragraph",
+      "text": "Three sides have 10 marbles each and the stake is 3. Everyone pays 3, so each side has 7 and 9 marbles are scattered. B throws first. B names a marble beside the one it aims at as the baad, throws, and touches only the one it aimed at. B wins the dan and takes all 9, so B has 16. The next dan starts and everyone pays 3 again."
+    },
+    {
+      "type": "paragraph",
+      "text": "Had B touched the baad instead, B would pay a fine: one marble from its 7, set down on the ground. C would then throw with 10 marbles on the ground."
+    },
+    {
+      "type": "link",
+      "label": "Quick Dan",
+      "target": "page:game_quick"
+    }
+  ]
+}

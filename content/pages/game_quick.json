@@ -1,0 +1,36 @@
+{
+  "title": "Quick Dan",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "One dan of Guli Khela, for when you have a few minutes. The same stake, scatter, baad and fines, and the match ends when the dan is won."
+    },
+    {
+      "type": "diagram",
+      "id": "guli_scatter",
+      "caption": "The stake is scattered round the kep. A has named the marble with the cross as baad, and aims at the one beside it."
+    },
+    {
+      "type": "heading",
+      "text": "How it goes"
+    },
+    {
+      "type": "steps",
+      "items": [
+        "Everyone pays the stake and tosses toward the kep. The closest side scatters the stake.",
+        "Every other side throws in turn: tap the baad, then throw.",
+        "Touch exactly one marble, and not the baad, and you win the ground. The baad, or two or more marbles, costs a fine of one marble.",
+        "If nobody wins in three passes, the scatterer takes the ground."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The match ends when the dan is won. The winner is first and the others are ranked by the marbles they have left."
+    },
+    {
+      "type": "link",
+      "label": "The full game",
+      "target": "page:game_guli"
+    }
+  ]
+}

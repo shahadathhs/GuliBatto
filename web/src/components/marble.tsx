@@ -73,6 +73,15 @@ export function Marble({
       {side === 3 && (
         <rect x={x - r * 0.5} y={y - r * 0.12} width={r} height={r * 0.24} style={{ fill: mark }} />
       )}
+      {side === "pot" && (
+        <rect
+          x={x - r * 0.5}
+          y={y - r * 0.12}
+          width={r}
+          height={r * 0.24}
+          style={{ fill: "var(--ink)" }}
+        />
+      )}
       {side === 4 && (
         <polygon
           points={`${x},${y - r * 0.5} ${x + r * 0.5},${y + r * 0.38} ${x - r * 0.5},${y + r * 0.38}`}

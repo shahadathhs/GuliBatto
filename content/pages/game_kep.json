@@ -1,0 +1,54 @@
+{
+  "title": "Kep",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Toss a marble from behind the line at a hole. A marble in the hole scores most, and the closest marbles score next."
+    },
+    {
+      "type": "diagram",
+      "id": "kep_toss",
+      "caption": "Three sides toss. A is in the kep, B is the closest outside it, C is next."
+    },
+    {
+      "type": "heading",
+      "text": "A round"
+    },
+    {
+      "type": "steps",
+      "items": [
+        "Each side stands behind the jalla and tosses one marble toward the kep.",
+        "When everything has stopped, the round is scored from where the marbles rest.",
+        "A marble in the kep scores 3. Of the rest, the closest scores 2 and the next closest scores 1. Marbles tied for a place share its score.",
+        "The next round starts with the side that has scored least, so the leader tosses last."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "A marble is in the kep when it rests with its middle inside the hole. One that rolls through and out is not."
+    },
+    {
+      "type": "paragraph",
+      "text": "A match is five rounds. The highest total wins."
+    },
+    {
+      "type": "heading",
+      "text": "A worked example"
+    },
+    {
+      "type": "paragraph",
+      "text": "A rests in the kep and scores 3. B rests 0.9 m from the kep and C rests 1.5 m from it. B is closer, so B scores 2 and C scores 1. In the next round C tosses first, then B, then A."
+    },
+    {
+      "type": "heading",
+      "text": "What to look for"
+    },
+    {
+      "type": "list",
+      "items": [
+        "A slow toss drops into the kep. A fast one rolls over it.",
+        "Every marble is still on the ground when the round is scored, so a toss can knock another marble into the kep or out of it."
+      ]
+    }
+  ]
+}

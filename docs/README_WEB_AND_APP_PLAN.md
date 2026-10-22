@@ -2,7 +2,7 @@
 
 > **Purpose:** plan the pages and content that the website and the app share, how the game runs in the browser, and how people get it on Android and in the browser.  
 > **Replanned 2026-10-21.** The first version of this plan treated the site as a brochure for an Android file and the browser game as a try-out. The web and the app are now peers: both are the whole game, and both carry the same information.  
-> **Status:** the site is live at <https://playgulibatto.vercel.app> with the first version of Home, How to play, About, Download, Privacy and Play (the browser game, framed from Godot's default page), a share image, a theme toggle and the generated colour tokens; the download page reads the real `v0.0.1` release and shows its checksum. The shared content source, the large pages, Contact, the per-game pages, the in-app pages, the site-native browser loader and the all-platform download page are planned here and not yet built.
+> **Status:** the site is live at <https://playgulibatto.vercel.app> with the first version of Home, How to play, About, Download, Privacy and Play (the browser game, framed from Godot's default page), a share image, a theme toggle and the generated colour tokens; the download page reads the real `v0.0.1` release and shows its checksum. The shared content source, the large pages, Contact, the per-game pages, the in-app pages, the site-native browser loader and the all-platform download page are planned here and not yet built. **The app half of the pages is built (2026-10-22):** How to play, a page and a rules card for each game, About, Contact and Privacy, all from `content/`; the site still holds its own copy of About, How to play and Privacy and does not yet have the per-game pages, the large Home, Contact or the site-native loader.
 
 ## 1. Goal
 
@@ -135,3 +135,37 @@ A release publishes the APK and the web export plus a checksum file. The Downloa
 - **A custom domain,** if wanted; hosting is Vercel at `playgulibatto.vercel.app`.
 - **The author's review** of the How to play and games wording; the diagrams need the author's eye.
 - **Real captures** of each mode for the home page, once all four exist.
+
+## 12. Site redesign (planned 2026-10-22)
+
+**Why.** The first site is a brochure. Its text pages (About, How to play, Privacy) cap every block at `44em` inside a 1120 px page, so on a laptop the right half is empty, and the pages that could teach the game (a page per game, diagrams, a table of contents) do not exist. The site also still holds its own copy of the text.
+
+**Layout rules (fix the empty side everywhere).**
+
+- Every page uses one of three shells, never a bare narrow column: **Landing** (full-width bands, two-column sections), **Reading** (contents on the left, text in the middle, a diagram or fact panel on the right), **Tool** (Play, Download: the main object large, notes beside it).
+- Text measure stays about 62 characters, so the width goes to a second column, not longer lines. On a phone the columns stack.
+- Short pages get a real second column: Privacy shows "what is collected: nothing" as a fact list beside the text; Contact shows the questions worth answering ("what did you call it, how far was the line") beside the ways to reach the author.
+
+**Pages and what each shows.**
+
+| Page                      | Content from `content/`                                                  | Right column                                                  |
+| ------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------- |
+| Home                      | hero, three steps, four games, the pages, where to play, how it began    | arena drawing; real captures when they exist                  |
+| Games (`/games`)          | one row per game with its diagram                                        | the diagram                                                   |
+| Game page (`/games/<id>`) | the page's blocks, in the order Goal, Setup, A turn, Scoring, Tips       | its diagrams, sticky                                          |
+| How to play               | contents plus controls, reading a turn, the four games, words, questions | diagrams beside the section they teach                        |
+| Play                      | the site-native loader (section 6)                                       | notes: controls, saved settings, "better as an app" on phones |
+| Download                  | APK and browser version, checksums                                       | the install steps                                             |
+| About, Contact, Privacy   | the shared pages                                                         | fact panel                                                    |
+
+**How it is built.**
+
+1. A `Blocks` React renderer in `web/src/components/` reads `content/` the way `PageBlocks` does in the game (heading, paragraph, list, term, diagram, link, example), and a `Diagram` SVG component draws `content/diagrams.json` with the marble marks. The hand-copied About, How to play and Privacy are deleted; `make content-check` already guards the source.
+2. The three shells, plus a sticky contents list that follows headings.
+3. Home, `/games`, the four game pages, How to play and Contact.
+4. The site-native loader, then the all-platform download page.
+5. A visual pass in both themes at 1440, 1024 and 390 px wide (headless screenshots), and a smoke test that every route renders and has no horizontal scroll.
+
+The visual rules in [README_VISUAL_DESIGN.md](README_VISUAL_DESIGN.md) still apply: one primary action per page, no cards inside cards, no gradients, no decoration.
+
+**Built (first pass, 2026-10-22).** The `Blocks`, `Diagram` and contents components, the Reading and split layouts, a new Home, `/games` and four game pages, How to play with a contents list and diagrams, Contact, a two-column Download, and Play with the controls beside the game. `make content` writes `web/src/lib/content.generated.json` and the content check covers it. Checked as screenshots at 1440, 1024 and 390 px in dark mode and by the smoke test. Not yet done: the site-native loader, light-mode screenshots of every page, real captures on the Home, and the author's review of the wording.

@@ -8,10 +8,11 @@ export function SiteHeader() {
     <header className="site-header">
       <Wordmark />
       <nav aria-label="Main">
+        <Link href="/games">Games</Link>
         <Link href="/how-to-play">How to play</Link>
-        <Link href="/about">About</Link>
         {hasPlayBuild() && <Link href="/play">Play</Link>}
         <Link href="/download">Download</Link>
+        <Link href="/about">About</Link>
         <ThemeToggle />
       </nav>
     </header>

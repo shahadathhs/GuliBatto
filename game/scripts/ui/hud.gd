@@ -6,6 +6,7 @@ extends Control
 ## never decides anything.
 
 signal pause_pressed
+signal help_pressed
 signal view_selected(view: CameraRig.View)
 signal reset_pressed
 signal cancel_aim_pressed
@@ -25,6 +26,7 @@ var _banner: PanelContainer
 var _banner_label: Label
 var _coach: PanelContainer
 var _banner_token: int = 0
+var _hint: Label
 
 
 func _init() -> void:
@@ -90,6 +92,12 @@ func show_cue(text: String, seconds: float = 1.4) -> void:
 		_banner.visible = false
 
 
+## A quiet line above the camera buttons that stays until it is cleared (empty text clears it).
+func set_hint(text: String) -> void:
+	_hint.text = text
+	_hint.visible = text != ""
+
+
 func show_coach() -> void:
 	_coach.visible = true
 
@@ -128,6 +136,9 @@ func _build_top() -> void:
 	_chips_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_chips_row.add_theme_constant_override("separation", 14)
 	left.add_child(_chips_row)
+	var help := IconButton.new(IconButton.Glyph.HELP)
+	help.pressed.connect(func() -> void: help_pressed.emit())
+	row.add_child(help)
 	var pause := IconButton.new(IconButton.Glyph.PAUSE)
 	pause.pressed.connect(func() -> void: pause_pressed.emit())
 	row.add_child(pause)
@@ -180,6 +191,16 @@ func _build_bottom() -> void:
 	cancel.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	cancel.pressed.connect(func() -> void: cancel_aim_pressed.emit())
 	_aim_bar.add_child(cancel)
+	_hint = UiKit.label("", 14, &"ink", true)
+	_hint.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	_hint.offset_top = -126.0
+	_hint.offset_bottom = -92.0
+	_hint.offset_left = 24.0
+	_hint.offset_right = -24.0
+	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_hint.visible = false
+	_bottom.add_child(_hint)
 	_wait_label = UiKit.label("", 14, &"mute")
 	_wait_label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	_wait_label.offset_top = -64.0

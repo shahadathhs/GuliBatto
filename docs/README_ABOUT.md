@@ -26,8 +26,9 @@ I changed some rules so the games work well on a phone. These are my decisions, 
 - The game scatters the marbles around the hole for you.
 - A marble that leaves the play area is put back where it left.
 - Bonus shots and turns have limits, so a game always ends.
-- In Batto, a marble that finishes the route leaves the ground, and a first toss that lands in the first hole counts as reaching it.
+- In Batto, a marble that finishes the route leaves the ground, a first toss that lands in the first hole counts as reaching it, and a marble resting in a hole is shot from the edge of the hole.
 - The number of marbles in a stake, the size of a fine, and the number of rounds are set to make a good game on a small screen.
+- In Guli Khela, every side including the scatterer pays the stake, a fine is one marble that the game sets down by the hole, and giving up ends the match with you last.
 - You can play against computer players, and you can surrender.
 
 ### What this is not
@@ -40,7 +41,7 @@ If you know these games, I would like to hear how you played them: the names you
 
 ## Where it appears
 
-- **In the game:** a screen "About these games" linked from the menu (a text action, not a button), and from the mode list as a small "About" link. It is shown once, after the first mode is chosen, and is always reachable from the menu. It is plain text with the same layout as the Settings screen.
+- **In the game:** a screen "About these games" linked from the menu (a text action, not a button) and from the mode list as a small "About" link. It is built from `content/pages/about.json`, which `make content-check` compares with this file line for line. Contact and Privacy are linked from the end of the page.
 - **On the website:** `/about`, linked from the header and the footer. The landing page's note links to it.
 - **In the store listing and release notes:** one sentence and a link: "Inspired by the traditional marble games of Bangladesh. The rules were remembered and modified by the author; read how on the About page."
 

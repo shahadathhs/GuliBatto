@@ -5,6 +5,8 @@ extends RefCounted
 
 var shooter_id: int = -1
 var touched: Array[int] = []
+## Guli Khela: the marble the shooter named as baad for this shot, or -1.
+var baad_id: int = -1
 
 
 func add_touch(marble_id: int) -> void:
