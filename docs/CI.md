@@ -1,6 +1,6 @@
 # CI, tooling and releases
 
-> **Status: ran on GitHub and passed.** On 2026-10-21 the pipeline ran on `main` after pull request #2 and every job succeeded: quality, web, game (in the Docker image), build for every platform, and release. It published `v0.0.1` and a rolling `latest` with the APK, Windows, macOS and Linux builds, the web export and checksums. The site rebuild hook (`VERCEL_DEPLOY_HOOK`) was added after that run, so its first real use is the next release. Update this file in the same change as any workflow or tooling change.
+> **Status: ran on GitHub and passed.** On 2026-10-21 the pipeline ran on `main` after pull request #2 and every job succeeded: quality, web, game (in the Docker image), build, and release. It published `v0.0.1` and a rolling `latest` with the APK, the web export, the desktop builds (since dropped) and checksums. The site rebuild hook (`VERCEL_DEPLOY_HOOK`) was added after that run, so its first real use is the next release. Update this file in the same change as any workflow or tooling change.
 
 ## Principles
 
@@ -18,14 +18,14 @@ One workflow, `.github/workflows/ci.yml`, with `concurrency` per ref and least-p
 | `quality` | every push and PR    | Token drift and contrast, hand-written colours, file size, prettier and oxlint (`make lint`)                                                                               |
 | `web`     | every push and PR    | Type-check, unit tests, production build and a smoke test of every page                                                                                                    |
 | `game`    | every push and PR    | `gdlint` and `gdformat --check`, then headless Godot **in Docker** loads the project and runs the GUT tests                                                                |
-| `build`   | `main` and `v*` tags | Resolves the version, stamps it, builds the APK, the web export and the Windows, macOS and Linux builds in the Godot container, names the files and writes the checksums   |
+| `build`   | `main` and `v*` tags | Resolves the version, stamps it, builds the APK and the web export in the Godot container, names the files and writes the checksums                                        |
 | `release` | `main` and `v*` tags | Refreshes the rolling **latest** build, triggers the site rebuild (Vercel deploy hook), and publishes a versioned release when `VERSION` names a version without a release |
 
 A normal push to `main`: the gates, the builds, the rolling latest build, the site rebuild. A version bump does all of that plus the versioned release. Pull requests run only the gates; the exports are built when something reaches `main`.
 
 ### The Godot image
 
-`docker/godot.Dockerfile` is the `barichello/godot-ci` image pinned to the project's Godot version, which already contains Godot, the export templates for every platform and the Android SDK, plus `fontconfig` (which Godot loads at startup) and `zip`. `compose.yaml` defines it as the `godot` service in the `tools` profile and mounts `game/`. `docker/android-setup.sh` creates the Android debug key and points Godot's editor settings at the SDK and JDK; `docker/entrypoint.sh` starts `adb` quietly so exports do not print daemon warnings. The same image runs locally, so a local export matches CI.
+`docker/godot.Dockerfile` is the `barichello/godot-ci` image pinned to the project's Godot version, which already contains Godot, the export templates and the Android SDK, plus `fontconfig` (which Godot loads at startup) and `zip`. `compose.yaml` defines it as the `godot` service in the `tools` profile and mounts `game/`. `docker/android-setup.sh` creates the Android debug key and points Godot's editor settings at the SDK and JDK; `docker/entrypoint.sh` starts `adb` quietly so exports do not print daemon warnings. The same image runs locally, so a local export matches CI.
 
 ### What each gate enforces
 
@@ -48,7 +48,7 @@ A normal push to `main`: the gates, the builds, the rolling latest build, the si
 `VERSION` is the source of truth. Two make targets use `scripts/bump-version.sh`:
 
 ```sh
-make version v=0.2.0    # write the version into VERSION, game/project.godot, the Android and macOS presets and web/package.json (no git)
+make version v=0.2.0    # write the version into VERSION, game/project.godot, the Android preset and web/package.json (no git)
 make release v=0.2.0    # the same, then commit and push (you run this; nothing runs it automatically)
 ```
 
@@ -57,11 +57,8 @@ Both refuse the same or a lower version. `release` also refuses to run with unco
 | Platform  | File                                    | Notes                                                                                                                            |
 | --------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | Android   | `gulibatto-X.Y.Z.apk` and `.apk.sha256` | Debug-signed; the version code is the CI run number so a newer build installs over an older one when the signing key is the same |
-| Windows   | `gulibatto-windows-X.Y.Z.zip`           | Unsigned; Windows SmartScreen warns                                                                                              |
-| macOS     | `gulibatto-macos-X.Y.Z.zip`             | An unsigned `.app`; the first open needs right-click and Open                                                                    |
-| Linux     | `gulibatto-linux-X.Y.Z.tar.gz`          | x86-64                                                                                                                           |
 | Web       | `gulibatto-web-X.Y.Z.tar.gz`            | The export the site serves at `/play`                                                                                            |
-| Checksums | `SHA256SUMS`                            | One line for each platform file                                                                                                  |
+| Checksums | `SHA256SUMS`                            | One line for each file                                                                                                           |
 
 Rolling builds use `X.Y.Z-<commit>` in the names. The build job fails if any platform file is missing, so a partial release is never published.
 
@@ -74,7 +71,7 @@ Rolling builds use `X.Y.Z-<commit>` in the names. The build job fails if any pla
 | `SITE_URL`, `GITHUB_REPOSITORY`, `PLAY_BUILD_TAG` | Vercel environment  | the site's build; see [DEPLOY.md](DEPLOY.md)                                                           |
 | `GITHUB_API_URL`                                  | web env, tests only | point the site at a stand-in server to see a release without publishing one; leave unset in production |
 
-Create the signing key with `make -s android-key | gh secret set ANDROID_DEBUG_KEYSTORE_BASE64`: the target prints only the key on stdout, so the pipe is clean. The `build` job checks the secret before the long build and fails with a clear message if it is not a valid keystore. Changing the secret changes the signing key. Secrets are never committed. Desktop signing and store uploads are not part of this pipeline.
+Create the signing key with `make -s android-key | gh secret set ANDROID_DEBUG_KEYSTORE_BASE64`: the target prints only the key on stdout, so the pipe is clean. The `build` job checks the secret before the long build and fails with a clear message if it is not a valid keystore. Changing the secret changes the signing key. Secrets are never committed. Store uploads are not part of this pipeline.
 
 ## Local tooling
 
@@ -89,7 +86,7 @@ Create the signing key with `make -s android-key | gh secret set ANDROID_DEBUG_K
 | Docker                          | The Godot image for checks and every export          |
 | Next.js                         | The website                                          |
 
-Typical targets: `make check`, `make lint`, `make game-lint`, `make test`, `make run`, `make game-docker-check`, `make game-docker-test`, `make game-apk`, `make game-web`, `make game-desktop`, `make web-dev`, `make workflows`, `make version v=X.Y.Z`.
+Typical targets: `make check`, `make lint`, `make game-lint`, `make test`, `make run`, `make game-docker-check`, `make game-docker-test`, `make game-apk`, `make game-web`, `make web-dev`, `make workflows`, `make version v=X.Y.Z`.
 
 ## Branching and commits
 
@@ -101,10 +98,7 @@ Dependabot runs weekly for GitHub Actions and the pnpm workspace, with action bu
 
 ## Known limits to revisit
 
-- The release currently includes a stray `gulibatto-debug.apk.idsig` file (an APK signing side file) because the file pattern matches it. It should be excluded.
 - The Android APK is signed with a throwaway key until `ANDROID_DEBUG_KEYSTORE_BASE64` is set, so a later build cannot be installed over this one.
-- Confirm what a Mac and Windows say when an unsigned build is opened, and write it on the download page.
-- A Windows export from Linux may keep the default icon unless an icon tool is available.
-- CI proves each platform builds; a person has to run each one. Only the web export has been run (in a headless browser); the APK and the desktop builds have not been run on real devices.
+- CI proves each build exports; a person has to run each one. Only the web export has been run (in a headless browser); the APK has not been run on a real device.
 - Whether the web export's physics uses Jolt in the browser was not checked directly; the physics behaves correctly there.
 - Each run pulls the Godot image; add caching if it becomes slow.

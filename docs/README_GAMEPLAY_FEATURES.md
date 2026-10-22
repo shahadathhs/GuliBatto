@@ -25,7 +25,7 @@ The game must make it obvious whose turn it is, which marble is the striker, wha
 - Releasing commits the shot. A clear cancel action is available while aiming.
 - While aiming, the camera does not orbit. The active gesture owns the pointer until release/cancel.
 
-### Desktop
+### Mouse (the browser on a computer)
 
 - Left mouse drag beginning on the active striker aims and sets power.
 - Right or middle mouse drag on empty arena space orbits the camera.

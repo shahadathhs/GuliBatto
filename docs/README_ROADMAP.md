@@ -1,6 +1,6 @@
 # Roadmap
 
-> **Replanned 2026-10-21.** The goal is the four modes, each represented properly, on Android, the web, Windows, macOS and Linux, with the same information on the web and in the app, and nothing extra ([`README_PROJECT_OVERVIEW.md`](README_PROJECT_OVERVIEW.md)). Phases are numbered like the implementation milestones in [`README_IMPLEMENTATION.md`](README_IMPLEMENTATION.md): Phase _n_ is Milestone _n_. Each phase has a gate. Dates are omitted; the work is solo and calendar estimates would be false precision.
+> **Replanned 2026-10-21.** The goal is the four modes, each represented properly, on Android and the web, with the same information on the web and in the app, and nothing extra ([`README_PROJECT_OVERVIEW.md`](README_PROJECT_OVERVIEW.md)). Phases are numbered like the implementation milestones in [`README_IMPLEMENTATION.md`](README_IMPLEMENTATION.md): Phase _n_ is Milestone _n_. Each phase has a gate. Dates are omitted; the work is solo and calendar estimates would be false precision.
 
 ## Where things stand
 
@@ -9,7 +9,7 @@
 - The shot, settling and physics core, with tests (Phase 1) and the camera and input (Phase 2), checked headless and in rendered frames; **not played by hand on a phone**.
 - Kep and Batto, complete as playable modes against computer sides, with their rules and match flow, and the menu, HUD, results, About, pause and settings screens in light and dark (Phase 3).
 - A first version of the website: home, how to play, about, download, privacy, and a play page that frames Godot's default page.
-- All five platform builds (Android, web, Windows, macOS, Linux) are produced by CI and published in the release `v0.0.1`. Only the web export has been run, in a headless browser; the others have not been run on real devices.
+- The Android and web builds are produced by CI and published in the release `v0.0.1`. Only the web export has been run, in a headless browser; the APK has not been run on a real device.
 - The site is live at <https://playgulibatto.vercel.app>.
 - Checks: lint, token and colour checks, 87 game tests, site tests and a smoke test, and a CI pipeline that passes on `main` and has published a release.
 
@@ -19,18 +19,18 @@
 - The shared content source, the large Home, per-game and How to play pages, Contact, the in-app pages, the site-native browser loader, and the all-platform download page.
 - Sound, saved settings, and checking the rules with people who played.
 
-## Phase 0 — Five platforms build and run
+## Phase 0 — Android and web build and run
 
-**Goal:** one Godot project that exports, from CI, to Android, the web, Windows, macOS and Linux, and each export starts and plays a toss.
+**Goal:** one Godot project that exports, from CI, to Android and the web, and each export starts and plays a toss.
 
 Deliverables:
 
-- pinned Godot version and export presets for all five platforms;
-- a CI that builds each platform in the Godot container, with the site rebuild hook and releases ([`CI.md`](CI.md), [`DEPLOY.md`](DEPLOY.md));
-- each build tried on a real target: an Android phone, a desktop browser, and each desktop OS (a virtual machine or a friend's machine is fine);
+- pinned Godot version and export presets for Android and the web;
+- a CI that builds each in the Godot container, with the site rebuild hook and releases ([`CI.md`](CI.md), [`DEPLOY.md`](DEPLOY.md));
+- each build tried on a real target: an Android phone and a desktop browser;
 - a note of what each OS shows for an unsigned build.
 
-**Gate:** every platform's build launches and a toss can be played. If a platform cannot be built or run, decide now whether to drop it, not at the end. Status: the web export is built and played in headless Chrome; the rest are open.
+**Gate:** both builds launch and a toss can be played. Status: the web export is built and played in headless Chrome; the APK is open.
 
 ## Phase 1 — The shot must feel good
 
@@ -84,24 +84,24 @@ Deliverables ([`README_WEB_AND_APP_PLAN.md`](README_WEB_AND_APP_PLAN.md)):
 - the large Home page, a page for each game, the very large How to play, About, Contact and Privacy on the site;
 - the same How to play, mode info, About, Contact and Privacy in the app, and the links between the web and the apps;
 - the browser game loading on the site's own canvas, with progress, checks and retry;
-- the download page for every platform;
+- the download page for the APK and the browser version;
 - the basics finished: sound, saved settings and a reset.
 
 **Gate:** a visitor can learn all four games from the site alone and the app teaches the same, from the same words, and a check proves they match.
 
-## Phase 7 — Release on every platform
+## Phase 7 — Release
 
-**Goal:** a stable first release for all five platforms.
+**Goal:** a stable first release on Android and the web.
 
 Deliverables:
 
-- automatic release when the version changes: an APK, a Windows build, a macOS build, a Linux build, the web export and a checksum file ([`CI.md`](CI.md));
-- the site live, with the download page listing every platform;
-- hand testing on a real phone, a desktop browser and each desktop OS; a known-limitations note;
+- automatic release when the version changes: an APK, the web export and a checksum file ([`CI.md`](CI.md));
+- the site live, with the download page listing the APK and the browser version;
+- hand testing on a real phone and a desktop browser; a known-limitations note;
 - the rules checked with people who played, and the About page updated from what they said;
 - icons, a share image, and the privacy statement.
 
-**Gate:** do not call it shipped until each platform has been run by a person. Editor playback and headless tests do not prove it.
+**Gate:** do not call it shipped until each build has been run by a person. Editor playback and headless tests do not prove it.
 
 ## Not on the roadmap
 

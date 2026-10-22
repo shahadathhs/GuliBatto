@@ -7,7 +7,7 @@
 
 **Guli & Batto** is a 3D game of four traditional marble games from Bangladesh: **Kep**, **Batto**, **Guli Khela** and **Quick Dan**. They are the games the author played as a child on bare ground, with a line drawn in the dirt, a small hole and a few marbles. The game rebuilds them with real physics, so every shot can be learned: line up, pull back, release, watch the marbles roll and collide, and understand why the turn went the way it did.
 
-It is free, runs offline, and has no accounts, ads or tracking. One Godot project runs on **Android, the web, Windows, macOS and Linux**, and a website teaches the games and distributes the builds.
+It is free, runs offline, and has no accounts, ads or tracking. One Godot project runs on **Android and in the browser**, and a website teaches the games and distributes the Android build.
 
 - **Site:** <https://playgulibatto.vercel.app> (play in the browser, download, learn the games)
 - **Source and releases:** <https://github.com/shahadathhs/GuliBatto>
@@ -22,9 +22,9 @@ It is free, runs offline, and has no accounts, ads or tracking. One Godot projec
 
 1. A shot that feels physical and learnable, with results that are always explained.
 2. Four modes that each ask for a different decision, on one shared foundation.
-3. The same game on five platforms, and the same information on the web and in the app.
+3. The same game on Android and the web, and the same information on the web and in the app.
 4. Honest labelling in one place: the About page names the sources and what the author changed.
-5. A small, dependable release process: change the version, and every platform is built and published.
+5. A small, dependable release process: change the version, and the APK and the web build are built and published.
 
 ## 3. Who it is for
 
@@ -58,11 +58,8 @@ Build order: Kep, Batto, Guli Khela, Quick Dan. Each must ask for a different de
 | -------- | ------------------------------------------------------------------ | --------------------------------------------------------- |
 | Android  | APK from the releases page and the download page; no store listing | Built and published; not tried on a phone                 |
 | Web      | Played in the browser at `/play`; the same game                    | Built, published and served; played in a headless browser |
-| Windows  | Zip from the releases page; unsigned                               | Built and published; not run on Windows                   |
-| macOS    | Zip with an unsigned app                                           | Built and published; not run on a Mac                     |
-| Linux    | `tar.gz`, x86-64                                                   | Built and published; not run on Linux                     |
 
-A version change builds all five and publishes a release with a checksum file; a rolling "latest" build follows `main`. Hosting is **Vercel** for the site and **GitHub Releases** for the files ([`CI.md`](CI.md), [`DEPLOY.md`](DEPLOY.md)). iOS and store listings are not planned. Desktop code signing is not planned; the OS will warn on first open, and the download page says so.
+A version change builds both and publishes a release with a checksum file; a rolling "latest" build follows `main`. Hosting is **Vercel** for the site and **GitHub Releases** for the files ([`CI.md`](CI.md), [`DEPLOY.md`](DEPLOY.md)). iOS, store listings and desktop builds (Windows, macOS, Linux) are not planned: people on a computer play in the browser.
 
 ## 7. Content: the same pages on the web and in the app
 
@@ -70,7 +67,7 @@ The website and the app carry the same information from one source ([`README_WEB
 
 ## 8. Scope
 
-**In:** the four games, complete; one to three computer opponents in each; five platforms from one project; the pages above on the web and in the app; automatic releases; and the basics a game needs: menu and mode select, pause and restart, a theme setting, basic sound and locally saved settings.
+**In:** the four games, complete; one to three computer opponents in each; Android and the web from one project; the pages above on the web and in the app; automatic releases; and the basics a game needs: menu and mode select, pause and restart, a theme setting, basic sound and locally saved settings.
 
 **Not in:** pass-and-play on one device, other languages, statistics and achievements, extra arenas or skins, a campaign, online play, accounts, leaderboards, cloud saves or any backend, human characters, ads and monetisation, a dashboard or authoring tool. Adding any of these is a new decision recorded here first.
 
@@ -83,7 +80,7 @@ All six must hold for each of the four games.
 3. **The computer sides make the game's real decisions,** and sometimes miss.
 4. **The result is always explained** after every shot, from the settled board.
 5. **The game is explained to a first-time player,** in the app and on the site, from the same words and diagrams.
-6. **It works the same on all five platforms** and has been played by hand on at least a phone and a desktop browser.
+6. **It works the same on Android and the web** and has been played by hand on a phone and in a desktop browser.
 
 ## 10. Quality and success
 
@@ -91,23 +88,23 @@ All six must hold for each of the four games.
 - Changing the camera never changes the shot or the result.
 - Shots are repeatable enough that skill matters, and collisions still make interesting outcomes.
 - The four games feel different.
-- It runs acceptably on a real mid-range Android phone, in a desktop browser and on each desktop OS.
+- It runs acceptably on a real mid-range Android phone, and in a desktop browser.
 - People who played these games recognise them or tell the author how theirs differed, and the About page invites that.
 
 These are observations to record in playtests, not numeric targets: there are no players yet to measure.
 
 ## 11. Status
 
-| Area                                   | State                                                                                                                                                       |
-| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Shot, physics, settling, camera, input | Built and tested (87 automated tests, real input through the whole stack); **not played by hand on a phone**                                                |
-| Kep                                    | Complete: scoring, rounds, computer sides, the full screen set in light and dark                                                                            |
-| Batto                                  | Complete: opening toss, the three-hole race, bonus shots, finishing order and computer sides that choose between a hole and a hit; not played by hand       |
-| Guli Khela, Quick Dan                  | Not built                                                                                                                                                   |
-| Site                                   | Live at the address above: Home, How to play, About, Download, Privacy, Play, share image, theme toggle                                                     |
-| Releases                               | `v0.0.1` published with all five platforms and checksums; the site rebuilds on each release through a deploy hook                                           |
-| Checks                                 | Lint, token and colour checks, file size, game and site tests, a smoke test of every page, and a CI pipeline that passes on `main`                          |
-| Not done                               | Playing on real devices; running the Windows, macOS and Linux builds; checking the rules with people who played; sound, saved settings and the shared pages |
+| Area                                   | State                                                                                                                                                 |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Shot, physics, settling, camera, input | Built and tested (87 automated tests, real input through the whole stack); **not played by hand on a phone**                                          |
+| Kep                                    | Complete: scoring, rounds, computer sides, the full screen set in light and dark                                                                      |
+| Batto                                  | Complete: opening toss, the three-hole race, bonus shots, finishing order and computer sides that choose between a hole and a hit; not played by hand |
+| Guli Khela, Quick Dan                  | Not built                                                                                                                                             |
+| Site                                   | Live at the address above: Home, How to play, About, Download, Privacy, Play, share image, theme toggle                                               |
+| Releases                               | `v0.0.1` published with the APK, the web export and checksums; the site rebuilds on each release through a deploy hook                                |
+| Checks                                 | Lint, token and colour checks, file size, game and site tests, a smoke test of every page, and a CI pipeline that passes on `main`                    |
+| Not done                               | Playing on real devices; checking the rules with people who played; sound, saved settings and the shared pages                                        |
 
 The order of work is in [`README_ROADMAP.md`](README_ROADMAP.md) and the checklist in [`../TODO.md`](../TODO.md).
 
@@ -117,9 +114,8 @@ The order of work is in [`README_ROADMAP.md`](README_ROADMAP.md) and the checkli
 | --------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | Name                  | "Guli & Batto" is a working label                       | Name, spelling and cultural fit                                                               |
 | Modes                 | Kep, Batto, Guli Khela, Quick Dan, all four complete    | The rules checked with at least one more person who played each                               |
-| Platforms             | Android, web, Windows, macOS, Linux                     | Whether to add iOS or a store later (not planned)                                             |
-| Desktop signing       | Unsigned                                                | Signing if the warnings put people off                                                        |
-| Orientation           | Portrait on phones; desktop and web resize              | Playtests on real devices                                                                     |
+| Platforms             | Android and web                                         | Whether to add iOS, a store or desktop builds later (not planned)                             |
+| Orientation           | Portrait on phones; the web version resizes             | Playtests on real devices                                                                     |
 | Language              | English, with the games' own words                      | None planned                                                                                  |
 | Opponents             | One to three computer sides, same shot interface        | Whether they play each game convincingly                                                      |
 | Rendering and physics | Compatibility renderer, Jolt physics, on every platform | Performance on real phones and browsers; Jolt in the browser is only seen to behave correctly |
@@ -129,7 +125,7 @@ The order of work is in [`README_ROADMAP.md`](README_ROADMAP.md) and the checkli
 
 ## 13. Principles and documentation
 
-**Principles.** Physics first. One simulation, several views. No people required. One game on every platform. Offline and private. Do the four games well before anything else. Be honest about tradition, in one place.
+**Principles.** Physics first. One simulation, several views. No people required. One game, on the web and on Android. Offline and private. Do the four games well before anything else. Be honest about tradition, in one place.
 
 | Document                                                                                       | What it holds                                                         |
 | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
@@ -144,4 +140,4 @@ The order of work is in [`README_ROADMAP.md`](README_ROADMAP.md) and the checkli
 | [`CI.md`](CI.md), [`DEPLOY.md`](DEPLOY.md)                                                     | The pipeline, releases, and the Vercel setup                          |
 | [`README_CODE_STANDARDS.md`](README_CODE_STANDARDS.md)                                         | Conventions and review checklist                                      |
 
-**References.** [Banglapedia, "Folk Games"](https://en.banglapedia.org/index.php?title=Folk_Games) (Gulikhela); Godot documentation for [web](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html), [Android](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html) and [desktop](https://docs.godotengine.org/en/stable/tutorials/export/exporting_projects.html) exports and [`RigidBody3D`](https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html). Reviewed 2026-10-21; check the documentation again when pinning a new Godot version.
+**References.** [Banglapedia, "Folk Games"](https://en.banglapedia.org/index.php?title=Folk_Games) (Gulikhela); Godot documentation for [web](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html) and [Android](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html) exports and [`RigidBody3D`](https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html). Reviewed 2026-10-21; check the documentation again when pinning a new Godot version.

@@ -158,15 +158,12 @@ A single file at `user://save.json`, with `schema_version`, settings, and small 
 
 ## 8. Targets and exports
 
-One Godot project exports to five platforms. All use the Compatibility renderer and Jolt physics, and GDScript only (C# cannot export to the web).
+One Godot project exports to Android and the web. All use the Compatibility renderer and Jolt physics, and GDScript only (C# cannot export to the web).
 
 | Target  | Notes                                                                                                   |
 | ------- | ------------------------------------------------------------------------------------------------------- |
 | Android | The first target. arm64. Debug-signed APK.                                                              |
 | Web     | WebGL 2, single-threaded export (no special headers). The full game, run by the site on its own canvas. |
-| Windows | x86-64, unsigned.                                                                                       |
-| macOS   | Unsigned `.app` in a zip.                                                                               |
-| Linux   | x86-64.                                                                                                 |
 
 Export presets exclude `tests/` and `addons/`. Pin the exact Godot version in `project.godot`, the Makefile and CI together. The pipeline and release files are in [CI.md](CI.md).
 

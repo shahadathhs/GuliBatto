@@ -4,7 +4,7 @@ Instructions for AI coding agents working in this repository.
 
 ## Project
 
-Guli & Batto (working title): a 3D marble game of four modes (Kep, Batto, Guli Khela, Quick Dan), each a modernised version of a traditional marble game the author played as a child. One Godot 4 project (GDScript, Compatibility renderer, Jolt physics) exports to Android, the web, Windows, macOS and Linux; the web version is the full game, not a try-out. `web/` is the website (Next.js) and holds no game logic. The site and the app show the same pages from one source of content. The scope is the four modes represented properly and nothing extra (see the overview's "Not in" list). See `docs/CI.md` for versioning and releases.
+Guli & Batto (working title): a 3D marble game of four modes (Kep, Batto, Guli Khela, Quick Dan), each a modernised version of a traditional marble game the author played as a child. One Godot 4 project (GDScript, Compatibility renderer, Jolt physics) exports to Android and the web; the web version is the full game, not a try-out. `web/` is the website (Next.js) and holds no game logic. The site and the app show the same pages from one source of content. The scope is the four modes represented properly and nothing extra (see the overview's "Not in" list). See `docs/CI.md` for versioning and releases.
 
 - `docs/` is the specification and the source of truth; read the relevant file before changing behaviour.
 - Read `docs/README_PROJECT_OVERVIEW.md` for scope. Do not add anything from its "out of scope" list (online play, accounts, game backend, human avatars, monetisation).
@@ -29,8 +29,7 @@ make run           # play on this machine
 make web-dev       # the website at localhost:3000
 make game-docker-check   # load the project in the Godot container (what CI runs)
 make game-docker-test    # the game tests in the container
-make game-apk | game-web | game-windows | game-macos | game-linux   # exports, in the container
-make game-desktop        # all three desktop builds
+make game-apk | game-web   # exports, in the container
 make workflows           # lint the GitHub workflow files
 make version v=X.Y.Z  # write a version into every file that carries it (no git)
 ```

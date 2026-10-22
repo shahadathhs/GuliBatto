@@ -1,16 +1,16 @@
 # Deploying Guli & Batto (GitHub Releases + Vercel)
 
-> **Status: live.** The site is deployed at <https://playgulibatto.vercel.app> and serves the home page, how to play, about, download, privacy and play pages, the web export at `/play`, `robots.txt` and `sitemap.xml` (checked 2026-10-21). The Vercel deploy hook is stored as the GitHub secret `VERCEL_DEPLOY_HOOK`. The release `v0.0.1` was published by the pipeline on 2026-10-21 with an APK, Windows, macOS and Linux builds, the web export and checksums. Provider screens change; check each provider's current documentation and correct this file afterwards.
+> **Status: live.** The site is deployed at <https://playgulibatto.vercel.app> and serves the home page, how to play, about, download, privacy and play pages, the web export at `/play`, `robots.txt` and `sitemap.xml` (checked 2026-10-21). The Vercel deploy hook is stored as the GitHub secret `VERCEL_DEPLOY_HOOK`. The release `v0.0.1` was published by the pipeline on 2026-10-21 with the APK, the web export and checksums (it also had desktop builds, which are no longer built). Provider screens change; check each provider's current documentation and correct this file afterwards.
 
 ## Overview
 
-| Piece                         | Host            | Notes                                                                                                                    |
-| ----------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Website (`web/`)              | Vercel          | Static pages, plus the browser game served at `/play`                                                                    |
-| Game files for every platform | GitHub Releases | Android APK, Windows, macOS and Linux builds, the web export, and checksums. Direct downloads; there is no store listing |
-| API, database                 | none            | The game is offline and private; there is no backend                                                                     |
+| Piece            | Host            | Notes                                                                                       |
+| ---------------- | --------------- | ------------------------------------------------------------------------------------------- |
+| Website (`web/`) | Vercel          | Static pages, plus the browser game served at `/play`                                       |
+| Game files       | GitHub Releases | The Android APK, the web export, and checksums. Direct downloads; there is no store listing |
+| API, database    | none            | The game is offline and private; there is no backend                                        |
 
-The site never builds the game. CI builds every platform and attaches the files to a release; the site reads the latest release when it builds and fetches the browser export from it.
+The site never builds the game. CI builds the APK and the web export and attaches the files to a release; the site reads the latest release when it builds and fetches the browser export from it.
 
 > **The repository, or at least its releases, must be public** for visitors to download the files. Anonymous visitors cannot download assets from a private repository's releases, and the site's download page falls back to "No release available yet" with no button.
 
@@ -32,7 +32,7 @@ make version v=0.2.0     # write the version into every file that carries it (no
 make release v=0.2.0     # the same, then commit and push (you run this; nothing runs it automatically)
 ```
 
-When that commit reaches `main`, CI builds every platform and publishes `Guli & Batto vX.Y.Z` as the latest release, and refreshes the rolling `latest` build. See [CI.md](CI.md) for the files and the secrets.
+When that commit reaches `main`, CI builds the APK and the web export and publishes `Guli & Batto vX.Y.Z` as the latest release, and refreshes the rolling `latest` build. See [CI.md](CI.md) for the files and the secrets.
 
 **Android signing key.** For builds that install over each other, store one fixed debug key as a secret, once:
 

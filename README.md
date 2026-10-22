@@ -1,10 +1,10 @@
 # Guli & Batto
 
-**Marble games from childhood, as a 3D game.** Four traditional games from Bangladesh, each played on bare ground with a line, a hole and a few marbles, rebuilt with real physics so every shot can be learned. Free, offline, no accounts, no ads. One game on Android, the web, Windows, macOS and Linux.
+**Marble games from childhood, as a 3D game.** Four traditional games from Bangladesh, each played on bare ground with a line, a hole and a few marbles, rebuilt with real physics so every shot can be learned. Free, offline, no accounts, no ads. One game on Android and in the browser.
 
 [![CI/CD](https://github.com/shahadathhs/GuliBatto/actions/workflows/ci.yml/badge.svg)](https://github.com/shahadathhs/GuliBatto/actions/workflows/ci.yml)
 
-> **Status: first release, two games playable on `dev`.** Kep and Batto are complete; the first release (`v0.0.1`) has Kep only. Guli Khela and Quick Dan are next. Releases for all five platforms are published, and the site is live. Nothing has been played by hand on a phone yet, and only the browser version has been run (in a headless browser); the Windows, macOS and Linux builds have not been run on those systems. The plan and the checklist are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md) and [TODO.md](TODO.md).
+> **Status: first release, two games playable on `dev`.** Kep and Batto are complete; the first release (`v0.0.1`) has Kep only. Guli Khela and Quick Dan are next. The Android and web builds are published, and the site is live. Nothing has been played by hand on a phone yet, and only the browser version has been run (in a headless browser). The plan and the checklist are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md) and [TODO.md](TODO.md).
 
 ## Live
 
@@ -46,15 +46,12 @@ Press your marble and drag back, like a slingshot. The arrow shows the direction
 
 ## Get it
 
-Every release publishes one file per platform and a checksum file.
+Every release publishes the APK, the web export and a checksum file.
 
-| Platform | File                               | Note                                                  |
-| -------- | ---------------------------------- | ----------------------------------------------------- |
-| Android  | `gulibatto-<version>.apk`          | Allow installs from your browser once; not on a store |
-| Windows  | `gulibatto-windows-<version>.zip`  | Unsigned: Windows may warn                            |
-| macOS    | `gulibatto-macos-<version>.zip`    | Unsigned: first open with right-click and Open        |
-| Linux    | `gulibatto-linux-<version>.tar.gz` | x86-64                                                |
-| Web      | played at `/play`                  | No install                                            |
+| Platform | File                      | Note                                                  |
+| -------- | ------------------------- | ----------------------------------------------------- |
+| Android  | `gulibatto-<version>.apk` | Allow installs from your browser once; not on a store |
+| Web      | played at `/play`         | No install                                            |
 
 ![The website, light theme](docs/design/web/light/landing-desktop.png)
 
@@ -62,7 +59,7 @@ _The website's home page (a screenshot of the built site; the version and size i
 
 ## Why it is built the way it is
 
-- **One game on every platform.** One Godot project exports to all five. The web version is the full game, not a try-out, and the site and the app carry the same information from one source.
+- **One game, two ways to play.** One Godot project exports to Android and to the browser. The web version is the full game, not a try-out, and the site and the app carry the same information from one source.
 - **Offline and private.** No accounts, no tracking, no ads, no third-party scripts on the website. The browser version runs entirely in your browser.
 - **Honest about tradition, in one place.** No game carries an "authentic" or "adapted" label; the About page names the sources and lists what was changed.
 - **Rules are tested, not hoped for.** Every rule has a test on a hand-built board, scoring is decided once from where the marbles rest, and real input is driven through the whole game in the tests.
@@ -74,8 +71,8 @@ _The website's home page (a screenshot of the built site; the version and size i
 
    ┌──────────────────────┐   make / CI    ┌────────────────────────┐
    │ Game (Godot 4, Jolt) │───────────────▶│ Godot Docker image     │
-   │ one project          │  export x5     │ Android, web, Windows, │
-   │ game/                │                │ macOS, Linux           │
+   │ one project          │  export x2     │ Android APK and the    │
+   │ game/                │                │ web export             │
    └──────────────────────┘                └───────────┬────────────┘
                                                        │ version change on main
                                                        ▼
@@ -120,11 +117,11 @@ make setup           # once: hooks, lint tooling, Godot cache
 make run             # play on this machine (needs Godot 4.7)
 make check           # every gate CI runs: lint, tokens, colours, tests, site build and smoke test
 make web-dev         # the website at localhost:3000
-make game-desktop    # the three desktop builds, in the Godot container
+make game-apk         # the Android build, in the Godot container
 make help            # every target
 ```
 
-Work on `dev` and open a pull request into `main`. A version change (`make release v=X.Y.Z`) builds every platform and publishes a release.
+Work on `dev` and open a pull request into `main`. A version change (`make release v=X.Y.Z`) builds the APK and the web export and publishes a release.
 
 ## Documentation
 

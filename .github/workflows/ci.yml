@@ -1,5 +1,5 @@
 # One pipeline. Pull requests and pushes run the quality gates. Pushes to main continue through a
-# build of every platform and the rolling "latest" release. A version bump (make release v=X.Y.Z)
+# build of the APK and the web export and the rolling "latest" release. A version bump (make release v=X.Y.Z)
 # publishes Guli & Batto vX.Y.Z; v* tags also produce releases. Secrets and variables: docs/CI.md.
 name: CI/CD
 
@@ -67,7 +67,7 @@ jobs:
         run: make game-docker-test
 
   build:
-    name: Build every platform
+    name: Build the APK and the web export
     needs: [quality, web, game]
     if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
     runs-on: ubuntu-latest
@@ -133,20 +133,15 @@ jobs:
       # (web/scripts/fetch-play-build.mjs).
       - name: Build the browser export
         run: make game-web
-      - name: Build the desktop exports
-        run: make game-desktop
 
       - name: Name the files and write the checksums
         run: |
           cd game/build
           mv gulibatto-debug.apk "gulibatto-${VERSION}.apk"
-          (cd windows && zip -qr "../gulibatto-windows-${VERSION}.zip" .)
-          mv macos/gulibatto.zip "gulibatto-macos-${VERSION}.zip"
-          tar -czf "gulibatto-linux-${VERSION}.tar.gz" -C linux .
+          rm -f gulibatto-debug.apk.idsig
           tar -czf "gulibatto-web-${VERSION}.tar.gz" -C web .
           sha256sum "gulibatto-${VERSION}.apk" > "gulibatto-${VERSION}.apk.sha256"
-          sha256sum gulibatto-"${VERSION}".apk gulibatto-windows-"${VERSION}".zip gulibatto-macos-"${VERSION}".zip \
-            gulibatto-linux-"${VERSION}".tar.gz gulibatto-web-"${VERSION}".tar.gz > SHA256SUMS
+          sha256sum "gulibatto-${VERSION}.apk" "gulibatto-web-${VERSION}.tar.gz" > SHA256SUMS
           cat SHA256SUMS
 
       - uses: actions/upload-artifact@v7

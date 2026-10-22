@@ -1,7 +1,7 @@
 # Command surface. CI runs the same targets.
 #
 #   Game checks and tests   host Godot, or `make game-docker-*` in a container (what CI runs)
-#   Every export            the Godot container: `make game-apk|web|windows|macos|linux`
+#   Every export            the Godot container: `make game-apk|web`
 #   GDScript style          gdtoolkit via uv
 #   Site and tooling        pnpm
 
@@ -18,7 +18,7 @@ IN_GODOT  := $(COMPOSE) --profile tools run --rm godot
 .DEFAULT_GOAL := help
 .PHONY: help setup import check lint format test tokens tokens-check colors-check size-check workflows \
         game-check game-test game-lint game-format run \
-        game-docker-image game-docker-check game-docker-test game-apk game-web game-windows game-macos game-linux game-desktop android-key \
+        game-docker-image game-docker-check game-docker-test game-apk game-web android-key \
         web-lint web-typecheck web-test web-build web-smoke web-dev version release
 
 help: ## Show this help
@@ -103,20 +103,6 @@ game-web: ## Browser export to web/public/play-build/ (the site serves it at /pl
 	rm -rf web/public/play-build && mkdir -p web/public/play-build
 	cp -R $(GAME)/build/web/. web/public/play-build/
 	@echo "Built web/public/play-build (the /play page serves it)"
-
-game-windows: ## Windows build to game/build/windows/
-	@mkdir -p $(GAME)/build/windows
-	$(IN_GODOT) bash -c 'godot --headless --path . --import && godot --headless --path . --export-release "Windows Desktop" build/windows/gulibatto.exe'
-
-game-macos: ## macOS build (unsigned .app in a zip) to game/build/macos/
-	@mkdir -p $(GAME)/build/macos
-	$(IN_GODOT) bash -c 'godot --headless --path . --import && godot --headless --path . --export-release "macOS" build/macos/gulibatto.zip'
-
-game-linux: ## Linux build to game/build/linux/
-	@mkdir -p $(GAME)/build/linux
-	$(IN_GODOT) bash -c 'godot --headless --path . --import && godot --headless --path . --export-release "Linux" build/linux/gulibatto.x86_64'
-
-game-desktop: game-windows game-macos game-linux ## All three desktop builds
 
 android-key: ## Print a new debug signing key as base64 (the CI secret): make -s android-key | gh secret set ANDROID_DEBUG_KEYSTORE_BASE64
 	@$(IN_GODOT) -T bash -c 'keytool -genkeypair -keyalg RSA -alias androiddebugkey -keypass android -keystore /tmp/k.ks -storepass android -dname "CN=Guli and Batto Debug" -validity 9999 -deststoretype pkcs12 >/dev/null 2>&1 && base64 -w0 /tmp/k.ks' 2>/dev/null | tr -d '\r\n'
