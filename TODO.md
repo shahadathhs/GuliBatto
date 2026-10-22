@@ -56,7 +56,8 @@ Open: the email or form for Contact.
 ## Phase 6 — the pages, on the web and in the app
 
 - [x] `content/` source and the diagram format, with a check that the content is current, its links and diagrams exist, mode pages carry no history labels, and About matches `docs/README_ABOUT.md` (`make content-check`)
-- [ ] A check, or better a rendering, that makes the site read the same `content/` (the site still holds its own text for About, How to play and Privacy)
+- [x] The site renders the same `content/` (About, How to play, Privacy, Contact and the game pages)
+- [x] Site redesign (first pass, 2026-10-22): per `docs/README_WEB_AND_APP_PLAN.md` section 12 (shells that fill the width, `Blocks` and `Diagram` renderers reading `content/`, game pages, contents and diagrams in How to play)
 - [ ] Site: the large Home, a page for each game, the very large How to play, Contact, About, Privacy
 - [x] App: How to play (controls, camera, the four games, a glossary and questions), a page and a rules card for each game, About, Contact, Privacy, and the links to the web and to the Android download (hidden where you already are)
 - [ ] Site-native browser loader (progress, WebGL and WebAssembly checks, failure and retry, sharp sizing, fullscreen) replacing the framed Godot page

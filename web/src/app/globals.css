@@ -8,6 +8,9 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   background: var(--ground);
   color: var(--ink);
@@ -27,6 +30,9 @@ a {
   outline: 3px solid var(--ink);
   outline-offset: 3px;
   border-radius: 6px;
+}
+#main {
+  flex: 1;
 }
 .skip-link {
   position: absolute;
@@ -99,19 +105,26 @@ a {
   cursor: pointer;
 }
 .site-footer {
-  margin-top: 72px;
-  padding-top: 20px;
-  padding-bottom: 36px;
+  margin-top: 88px;
+  padding-top: 28px;
+  padding-bottom: 40px;
   background: linear-gradient(var(--line), var(--line)) center top / calc(100% - 40px) 1px no-repeat;
   color: var(--mute);
   font-size: 14px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 8px 24px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 24px 40px;
 }
 .site-footer p {
+  margin: 0 0 6px;
+}
+.site-footer ul {
+  list-style: none;
   margin: 0;
+  padding: 0;
+}
+.site-footer li {
+  margin: 0 0 4px;
 }
 .site-footer a {
   color: var(--mute);
@@ -337,8 +350,12 @@ pre {
 }
 
 /* ── Prose pages ──────────────────────────────────────── */
-.prose > * {
-  max-width: 44em;
+.prose {
+  min-width: 0;
+}
+.prose > *,
+.prose section > * {
+  max-width: 40em;
 }
 .prose h1 {
   margin-top: 24px;
@@ -393,5 +410,430 @@ pre {
     scroll-behavior: auto !important;
     transition: none !important;
     animation: none !important;
+  }
+}
+
+/* ── Shared pieces ────────────────────────────────────── */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+.btn-secondary:hover {
+  background: var(--floor);
+}
+.link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.figure {
+  margin: 0;
+}
+.figure .diagram {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  display: block;
+}
+.figure figcaption {
+  color: var(--mute);
+  font-size: 14px;
+  margin-top: 8px;
+  max-width: 360px;
+}
+.diagram {
+  display: block;
+}
+.steps-list {
+  list-style: none;
+  counter-reset: s;
+  padding: 0;
+  margin: 0 0 16px;
+  display: grid;
+  gap: 12px;
+}
+.steps-list li {
+  counter-increment: s;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.steps-list li::before {
+  content: counter(s);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 14px;
+}
+.terms {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 28px;
+  margin: 0 0 16px;
+  max-width: none;
+}
+.terms dt {
+  font-weight: 800;
+}
+.terms dd {
+  margin: 0;
+  color: var(--mute);
+}
+.faq details {
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+}
+.faq details:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.faq summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.faq p {
+  margin: 8px 0 0;
+  color: var(--mute);
+}
+.aside {
+  min-width: 0;
+}
+.aside h2.caption {
+  margin: 0 0 8px;
+  font-size: 12px;
+}
+.aside ul {
+  margin: 0 0 24px;
+  padding-left: 1.1em;
+}
+.aside ul.plain {
+  list-style: none;
+  padding: 0;
+}
+.aside li {
+  margin: 0 0 6px;
+}
+
+/* ── Shells ───────────────────────────────────────────── */
+.reading {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+.contents {
+  position: sticky;
+  top: 20px;
+  padding-top: 28px;
+  font-size: 15px;
+}
+.contents ol {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  border-left: 2px solid var(--line);
+}
+.contents li a {
+  display: block;
+  padding: 5px 0 5px 14px;
+  text-decoration: none;
+}
+.contents li a:hover {
+  text-decoration: underline;
+}
+.reading .sec {
+  display: flow-root;
+  scroll-margin-top: 16px;
+}
+.reading .sec .figure {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 24px;
+  align-items: end;
+  margin: 8px 0 20px;
+  max-width: none;
+}
+.reading .sec .figure figcaption {
+  margin: 0;
+  max-width: 22em;
+}
+.reading .prose h2 {
+  margin-top: 48px;
+}
+.split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 56px;
+  align-items: start;
+}
+.split h2 {
+  margin-top: 0;
+}
+.game-head {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  padding-top: 8px;
+}
+.game-head .figure .diagram {
+  max-width: 420px;
+  margin-left: auto;
+}
+.game-head .figure figcaption {
+  margin-left: auto;
+  max-width: 420px;
+}
+.game-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 56px;
+  align-items: start;
+  margin-top: 24px;
+}
+.game-body .aside {
+  position: sticky;
+  top: 20px;
+  border-left: 2px solid var(--line);
+  padding-left: 24px;
+}
+.game-body .prose h2:first-child {
+  margin-top: 24px;
+}
+.game-body .prose .figure {
+  margin: 8px 0 20px;
+}
+.game-rows {
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 40px;
+}
+.game-row {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  border-top: 2px solid var(--ink);
+  padding-top: 32px;
+}
+.game-row h2 {
+  margin: 0 0 8px;
+}
+.game-row ul {
+  padding-left: 1.1em;
+}
+.game-row .art {
+  display: flex;
+  justify-content: center;
+}
+.game-row .diagram {
+  width: auto;
+  max-width: 100%;
+  max-height: 340px;
+}
+.game-tile .diagram {
+  width: 100%;
+  height: auto;
+}
+.band-section {
+  margin-top: 88px;
+}
+.band-section > h2 {
+  margin-top: 0;
+}
+.how {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.how .steps {
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+.how .steps li {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  column-gap: 12px;
+}
+.how .steps .step-number {
+  grid-row: span 2;
+}
+.how .steps .meta {
+  font-size: 17px;
+}
+.game-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px;
+}
+.game-tile .art {
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.game-tile .art .diagram {
+  max-height: 100%;
+  width: auto;
+  max-width: 100%;
+}
+.game-tile p {
+  margin: 0 0 8px;
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 40px;
+  margin: 0;
+}
+.facts dt {
+  font-weight: 800;
+  border-top: 2px solid var(--ink);
+  padding-top: 12px;
+}
+.facts dd {
+  margin: 4px 0 0;
+  color: var(--mute);
+}
+.band-section.two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 56px;
+}
+.where {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.where h3 {
+  margin-bottom: 4px;
+}
+.where p {
+  margin: 0 0 8px;
+}
+.download-layout,
+.play-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: start;
+}
+.download-layout .aside {
+  border-left: 2px solid var(--line);
+  padding-left: 32px;
+}
+.download-layout .prose > h2:first-of-type,
+.download-layout .aside > h2:first-child {
+  margin-top: 8px;
+}
+.play-layout {
+  grid-template-columns: 390px minmax(0, 1fr);
+}
+.play-layout .play-frame {
+  margin-top: 0;
+}
+
+@media (max-width: 980px) {
+  .reading {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .contents {
+    position: static;
+    padding-top: 0;
+  }
+  .contents ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 18px;
+    border-left: 0;
+  }
+  .contents li a {
+    padding-left: 0;
+  }
+  .reading .sec .figure {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .game-grid,
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .game-body {
+    grid-template-columns: 1fr;
+  }
+  .game-body .aside {
+    position: static;
+    border-left: 0;
+    padding-left: 0;
+    border-top: 2px solid var(--ink);
+    padding-top: 20px;
+  }
+  .play-layout {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 760px) {
+  .split,
+  .game-head,
+  .how,
+  .band-section.two,
+  .where,
+  .download-layout,
+  .terms {
+    grid-template-columns: 1fr;
+  }
+  .game-head,
+  .how {
+    gap: 24px;
+  }
+  .game-head .figure .diagram,
+  .game-head .figure figcaption {
+    margin-left: 0;
+  }
+  .game-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .download-layout .aside {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .site-footer {
+    grid-template-columns: 1fr 1fr;
+  }
+  .site-footer > div {
+    grid-column: 1 / -1;
+  }
+  .band-section {
+    margin-top: 56px;
+  }
+}
+@media (max-width: 480px) {
+  .game-grid,
+  .facts {
+    grid-template-columns: 1fr;
   }
 }

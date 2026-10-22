@@ -1,5 +1,5 @@
 // The words and diagrams shown in the game (and later on the site), from one source: content/.
-//   node scripts/content.mjs           write game/data/content.json
+//   node scripts/content.mjs           write game/data/content.json and web/src/lib/content.generated.json
 //   node scripts/content.mjs --check   fail if that file is out of date, a reference is broken, a
 //                                      wording rule is broken, or the About text drifted from
 //                                      docs/README_ABOUT.md
@@ -9,7 +9,8 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const check = process.argv.includes("--check");
-const out = join(root, "game/data/content.json");
+// The game and the site each read their own copy of the same file.
+const OUTS = ["game/data/content.json", "web/src/lib/content.generated.json"];
 const read = (p) => JSON.parse(readFileSync(join(root, p), "utf8"));
 
 const pages = {};
@@ -149,12 +150,15 @@ if (problems.length) {
 }
 const text = JSON.stringify(content, null, 1) + "\n";
 if (check) {
-  if (!existsSync(out) || readFileSync(out, "utf8") !== text) {
-    console.error("out of date: game/data/content.json (run: node scripts/content.mjs)");
-    process.exit(1);
+  for (const rel of OUTS) {
+    const file = join(root, rel);
+    if (!existsSync(file) || readFileSync(file, "utf8") !== text) {
+      console.error(`out of date: ${rel} (run: node scripts/content.mjs)`);
+      process.exit(1);
+    }
   }
   console.log("content ok");
 } else {
-  writeFileSync(out, text);
-  console.log(`wrote game/data/content.json (${Object.keys(pages).length} pages)`);
+  for (const rel of OUTS) writeFileSync(join(root, rel), text);
+  console.log(`wrote ${OUTS.join(" and ")} (${Object.keys(pages).length} pages)`);
 }
