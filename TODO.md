@@ -7,7 +7,8 @@ The goal is the four modes, represented properly, on five platforms, with the sa
 ## Built so far
 
 - [x] The shot, settling and physics core with tests (Phase 1) and camera and input (Phase 2); checked headless and in rendered frames, **not played by hand on a phone**
-- [x] Kep, complete as a playable mode against two computer sides, with the full screen set in light and dark (Phase 3); 62 game tests
+- [x] Kep, complete as a playable mode against two computer sides, with the full screen set in light and dark (Phase 3)
+- [x] Batto, playable against two computer sides: the opening toss, the race along three holes and back, bonus shots, finishing order (Phase 4); 87 game tests in all
 - [x] A first version of the site, **live at https://playgulibatto.vercel.app**: home, how to play, about, download (reads the real release), privacy, share image, theme toggle, and a play page that frames Godot's default page
 - [x] The web export builds and plays in headless Chrome (menu, aim, a shot, a computer toss into the kep; no console errors)
 - [x] Checks: lint, token and colour checks, file size, game and site tests, a smoke test, and CI that passes on `main`
@@ -32,7 +33,8 @@ The goal is the four modes, represented properly, on five platforms, with the sa
 
 ## Phase 4 — Batto
 
-- [ ] Three holes and the route on screen, hits and bonus shots (a hit or reaching a hole, cap of three), finishing order, computer sides choosing between the hole and a hit, cues, tests for every rule
+- [x] Three holes and the route on screen, hits and bonus shots (a hit or reaching a hole, cap of three), finishing order, computer sides choosing between the hole and a hit, cues, tests for every rule (87 game tests; full races with three computer sides take 34 to 78 shots)
+- [ ] Hand check Batto on a phone: hole spacing, how often a hit lands (about half of the computer sides' shots were bonus shots), the length of a race
 - [ ] Check the Batto rules with at least one more person who played
 
 ## Phase 5 — Guli Khela and Quick Dan

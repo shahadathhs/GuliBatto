@@ -37,5 +37,9 @@ const KEP_RADIUS := 0.3
 ## rolls through.
 const DISH_RADIUS := 0.45
 const DISH_DEPTH := 0.04
+## Batto: three holes in a line away from the jalla, H1 nearest.
+const BATTO_H1 := Vector2(0.0, 0.8)
+const BATTO_H2 := Vector2(0.0, -0.45)
+const BATTO_H3 := Vector2(0.0, -1.7)
 ## Ground heights are sampled on a grid this fine for the collision shape.
 const GROUND_CELL := 0.05

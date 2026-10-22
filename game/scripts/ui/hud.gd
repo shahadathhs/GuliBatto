@@ -45,14 +45,13 @@ func set_turn(side: int, text: String) -> void:
 	_turn_label.text = text
 
 
-## totals[i] is side i's score; the human side is shown as YOU.
-func set_scores(totals: Array[int], human_side: int) -> void:
+## One short label per side; the human side is shown as YOU.
+func set_standings(labels: Array[String], human_side: int) -> void:
 	for child in _chips_row.get_children():
 		child.queue_free()
-	for side in totals.size():
+	for side in labels.size():
 		var who := "YOU" if side == human_side else ""
-		var chip := SideChip.new(side, ("%s %d" % [who, totals[side]]).strip_edges())
-		_chips_row.add_child(chip)
+		_chips_row.add_child(SideChip.new(side, ("%s %s" % [who, labels[side]]).strip_edges()))
 
 
 func show_camera_bar() -> void:

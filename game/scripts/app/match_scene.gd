@@ -5,12 +5,13 @@ extends Node
 
 signal pause_requested
 signal round_finished(result: RuleResult, totals: Array[int], round_no: int, rounds: int)
-signal match_finished(ranking: Array[int], totals: Array[int])
+signal match_finished(ranking: Array[int], details: Array[String])
 
 ## The first-use prompt is shown once per run.
 static var coach_seen: bool = false
 
 var profile: RuleProfile
+var rules: RuleSet
 var board: Board
 var rig: CameraRig
 var controller: MatchController
@@ -19,8 +20,9 @@ var hud: Hud
 var human_side: int = 0
 
 
-func start(rule_profile: RuleProfile, rules: RuleSet) -> void:
+func start(rule_profile: RuleProfile, rule_set: RuleSet) -> void:
 	profile = rule_profile
+	rules = rule_set
 	var scheme := Appearance.scheme()
 	_build_environment(scheme)
 	board = Board.new(profile, scheme)
@@ -39,10 +41,10 @@ func start(rule_profile: RuleProfile, rules: RuleSet) -> void:
 	hud = Hud.new()
 	layer.add_child(hud)
 	_connect()
-	hud.set_mode_caption("Kep · round 1 of %d" % profile.rounds)
 	hud.highlight_view(CameraRig.View.ANGLED)
 	controller.start(board, profile, rules, human_side)
-	hud.set_scores(controller.state.totals, human_side)
+	hud.set_mode_caption(rules.caption(controller.state, profile))
+	hud.set_standings(rules.standings(controller.state), human_side)
 
 
 func cancel_aim() -> void:
@@ -70,22 +72,22 @@ func _connect() -> void:
 	aim.aim_changed.connect(_on_aim_changed)
 	controller.turn_started.connect(_on_turn_started)
 	controller.shot_started.connect(_on_shot_started)
-	controller.toss_resolved.connect(_on_toss_resolved)
+	controller.shot_judged.connect(_on_shot_judged)
 	controller.round_scored.connect(_on_round_scored)
 	controller.match_over.connect(_on_match_over)
 
 
 func _on_turn_started(side: int, is_human: bool) -> void:
 	var state := controller.state
-	hud.set_mode_caption("Kep · round %d of %d" % [state.round_index + 1, state.rounds])
-	hud.set_turn(side, "Your toss" if is_human else "Their toss")
-	hud.set_scores(state.totals, human_side)
+	hud.set_mode_caption(rules.caption(state, profile))
+	hud.set_turn(side, rules.turn_text(state, is_human))
+	hud.set_standings(rules.standings(state), human_side)
 	if is_human:
 		hud.show_camera_bar()
 		if not coach_seen:
 			hud.show_coach()
 	else:
-		hud.show_waiting("Waiting for their toss")
+		hud.show_waiting("Waiting for their shot")
 
 
 func _on_shot_started(_side: int) -> void:
@@ -101,22 +103,21 @@ func _on_aim_changed(active: bool, power: float) -> void:
 		hud.show_camera_bar()
 
 
-func _on_toss_resolved(side: int) -> void:
-	var snap := board.snapshot()
-	var d := snap.position_of(side).distance_to(profile.holes[0])
-	var text := "In the kep" if d <= Tuning.KEP_RADIUS else "%.1f m from the kep" % d
-	hud.show_cue(text)
+func _on_shot_judged(_side: int, result: RuleResult) -> void:
+	hud.show_cue(rules.cue_text(result, profile, board.snapshot()))
 
 
-func _on_round_scored(result: RuleResult, totals: Array[int]) -> void:
+func _on_round_scored(result: RuleResult, _totals: Array[int]) -> void:
 	var state := controller.state
-	hud.set_scores(totals, human_side)
-	var round_no := state.round_index if result.kind == &"match" else state.round_index
-	round_finished.emit(result, totals, round_no, state.rounds)
+	hud.set_standings(rules.standings(state), human_side)
+	round_finished.emit(result, state.totals, state.round_index, state.rounds)
 
 
 func _on_match_over(ranking: Array[int]) -> void:
-	match_finished.emit(ranking, controller.state.totals)
+	var details: Array[String] = []
+	for side in controller.state.side_count:
+		details.append(rules.final_text(controller.state, side))
+	match_finished.emit(ranking, details)
 
 
 func _build_environment(scheme: Palette.Scheme) -> void:

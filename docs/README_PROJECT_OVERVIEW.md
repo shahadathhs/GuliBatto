@@ -39,7 +39,7 @@ Each is a modernised version of a game people played. Sources and the rules in f
 | Game           | The idea                                                                                                                                                          | Keeps marbles between rounds | Ends                                   | State        |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | -------------------------------------- | ------------ |
 | **Kep**        | Toss at the hole from behind the line. In the hole scores most, then the closest                                                                                  | No, scored                   | After a set number of rounds           | **Playable** |
-| **Batto**      | Race along three holes and back; a hit or reaching a hole earns another shot                                                                                      | No, ranked                   | All but one have finished              | Next         |
+| **Batto**      | Race along three holes and back; a hit or reaching a hole earns another shot                                                                                      | No, ranked                   | All but one have finished              | **Playable** |
 | **Guli Khela** | Stake marbles scattered round the hole; name the marble you must not touch, then touch exactly one other; a wrong touch costs a fine; the winner takes the ground | **Yes**, play for keeps      | One side out of marbles, or surrenders | Next         |
 | **Quick Dan**  | One round of Guli Khela                                                                                                                                           | No, one stake and one winner | The round is won                       | Next         |
 
@@ -100,9 +100,10 @@ These are observations to record in playtests, not numeric targets: there are no
 
 | Area                                   | State                                                                                                                                                       |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Shot, physics, settling, camera, input | Built and tested (65 automated tests, real input through the whole stack); **not played by hand on a phone**                                                |
+| Shot, physics, settling, camera, input | Built and tested (87 automated tests, real input through the whole stack); **not played by hand on a phone**                                                |
 | Kep                                    | Complete: scoring, rounds, computer sides, the full screen set in light and dark                                                                            |
-| Batto, Guli Khela, Quick Dan           | Not built                                                                                                                                                   |
+| Batto                                  | Complete: opening toss, the three-hole race, bonus shots, finishing order and computer sides that choose between a hole and a hit; not played by hand       |
+| Guli Khela, Quick Dan                  | Not built                                                                                                                                                   |
 | Site                                   | Live at the address above: Home, How to play, About, Download, Privacy, Play, share image, theme toggle                                                     |
 | Releases                               | `v0.0.1` published with all five platforms and checksums; the site rebuilds on each release through a deploy hook                                           |
 | Checks                                 | Lint, token and colour checks, file size, game and site tests, a smoke test of every page, and a CI pipeline that passes on `main`                          |

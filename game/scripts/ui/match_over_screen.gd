@@ -7,7 +7,7 @@ signal modes_pressed
 signal menu_pressed
 
 
-func _init(ranking: Array[int] = [], totals: Array[int] = [], human_side: int = 0) -> void:
+func _init(ranking: Array[int] = [], details: Array[String] = [], human_side: int = 0) -> void:
 	super()
 	column.add_child(UiKit.spacer(40.0))
 	var cap := UiKit.label("MATCH OVER", 14, &"mute", true)
@@ -27,7 +27,7 @@ func _init(ranking: Array[int] = [], totals: Array[int] = [], human_side: int = 
 	column.add_child(verdict)
 	column.add_child(UiKit.spacer(18.0))
 	for i in ranking.size():
-		column.add_child(_row(i + 1, ranking[i], totals[ranking[i]], human_side))
+		column.add_child(_row(i + 1, ranking[i], details[ranking[i]], human_side))
 	add_fill()
 	var again := UiKit.primary("Rematch")
 	again.pressed.connect(func() -> void: rematch_pressed.emit())
@@ -43,7 +43,7 @@ func _init(ranking: Array[int] = [], totals: Array[int] = [], human_side: int = 
 	column.add_child(menu)
 
 
-func _row(place: int, side: int, total: int, human_side: int) -> Control:
+func _row(place: int, side: int, detail: String, human_side: int) -> Control:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 14)
 	row.add_child(UiKit.label(str(place), 32, &"ink" if place < 4 else &"mute", true))
@@ -53,7 +53,7 @@ func _row(place: int, side: int, total: int, human_side: int) -> Control:
 	var fill := Control.new()
 	fill.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(fill)
-	row.add_child(UiKit.label("%d points" % total, 16, &"ink", true))
+	row.add_child(UiKit.label(detail, 16, &"ink", true))
 	return row
 
 

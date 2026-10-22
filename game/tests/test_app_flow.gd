@@ -48,3 +48,16 @@ func test_going_back_to_the_menu_clears_the_match() -> void:
 	await wait_physics_frames(3)
 	assert_null(app._match)
 	assert_true(app._screen is MenuScreen)
+
+
+func test_choosing_batto_starts_a_batto_match() -> void:
+	(app._screen as MenuScreen).play_pressed.emit()
+	await wait_physics_frames(2)
+	var modes := app._screen as ModesScreen
+	assert_eq(modes.selected(), &"kep", "Kep is selected first")
+	modes.select(&"batto")
+	modes.start_pressed.emit(modes.selected())
+	await wait_physics_frames(4)
+	assert_eq(app._match.profile.mode_id, &"batto")
+	assert_true(app._match.controller.state is BattoState)
+	assert_eq(app._match.profile.holes.size(), 3, "three holes")

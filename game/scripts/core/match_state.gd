@@ -14,8 +14,9 @@ var turn_index: int = 0
 var tossed: Array[int] = []
 
 
+## The side about to shoot, or -1 when the match is over and nobody is.
 func current_side() -> int:
-	return order[turn_index]
+	return order[turn_index] if turn_index < order.size() else -1
 
 
 func is_last_turn_of_round() -> bool:

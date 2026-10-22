@@ -4,7 +4,7 @@
 
 [![CI/CD](https://github.com/shahadathhs/GuliBatto/actions/workflows/ci.yml/badge.svg)](https://github.com/shahadathhs/GuliBatto/actions/workflows/ci.yml)
 
-> **Status: first release, one game playable.** Kep is complete. Batto, Guli Khela and Quick Dan are next. Releases for all five platforms are published, and the site is live. Nothing has been played by hand on a phone yet, and only the browser version has been run (in a headless browser); the Windows, macOS and Linux builds have not been run on those systems. The plan and the checklist are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md) and [TODO.md](TODO.md).
+> **Status: first release, two games playable on `dev`.** Kep and Batto are complete; the first release (`v0.0.1`) has Kep only. Guli Khela and Quick Dan are next. Releases for all five platforms are published, and the site is live. Nothing has been played by hand on a phone yet, and only the browser version has been run (in a headless browser); the Windows, macOS and Linux builds have not been run on those systems. The plan and the checklist are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md) and [TODO.md](TODO.md).
 
 ## Live
 
@@ -31,7 +31,7 @@ Play against one to three computer sides. The rules in plain words are in [docs/
 | Game           | The idea                                                                                                                                                                   | State    |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | **Kep**        | Toss a marble from behind the line at a hole. A marble in the hole scores 3, then the closest scores 2, then the next closest 1. Five rounds.                              | Playable |
-| **Batto**      | Race along three holes and back. Hit a rival's marble, or reach a hole, to take another shot. The last to finish loses.                                                    | Next     |
+| **Batto**      | Race along three holes and back. Hit a rival's marble, or reach a hole, to take another shot. The last to finish loses.                                                    | Playable |
 | **Guli Khela** | Stake marbles are scattered round the hole. Name the marble you must not touch, then touch exactly one other. A wrong touch costs a fine, and the winner takes the ground. | Next     |
 | **Quick Dan**  | One round of Guli Khela, for when you have a few minutes.                                                                                                                  | Next     |
 

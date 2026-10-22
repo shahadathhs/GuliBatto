@@ -15,6 +15,13 @@ func _init(seed_value: int = 0) -> void:
 		rng.randomize()
 
 
+## The shot for `side` from where its marble lies. Kep: toss at the kep.
+func choose(
+	_state: MatchState, profile: RuleProfile, snapshot: BoardSnapshot, side: int
+) -> ShotCommand:
+	return choose_toss(side, side, snapshot.position_of(side), profile.holes[0])
+
+
 ## Chooses a toss from `from` at `target`. Power follows the measured roll of about 4.5 m at full
 ## power (see Tuning), then error is added.
 func choose_toss(side: int, marble_id: int, from: Vector2, target: Vector2) -> ShotCommand:
