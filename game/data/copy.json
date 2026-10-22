@@ -10,7 +10,7 @@
     ],
     [
       "WHAT I CHANGED",
-      "I changed some rules so the games work well on a phone. Those are my decisions, not the tradition's. The game scatters the marbles for you, a marble that leaves the play area is put back, and bonus shots and turns have limits so a game always ends. In Batto, a marble that finishes leaves the ground, a first toss that lands in the first hole counts as reaching it, and a marble resting in a hole is shot from the edge of the hole."
+      "I changed some rules so the games work well on a phone. Those are my decisions, not the tradition's. The game scatters the marbles for you, a marble that leaves the play area is put back, and bonus shots and turns have limits so a game always ends. In Guli Khela every side pays the stake, a fine is one marble that the game sets down for you, and giving up ends the match with you last. In Batto, a marble that finishes leaves the ground, a first toss that lands in the first hole counts as reaching it, and a marble resting in a hole is shot from the edge of the hole."
     ],
     [
       "WHAT THIS IS NOT",
@@ -37,6 +37,14 @@
     [
       "BATTO",
       "Everyone tosses once toward the first hole, and the closest goes first. Then each side shoots its own marble from where it lies (from the edge of the hole, if it rests in one), going from the first hole to the second, the third, and back to the first. Reach the hole you are heading for, or hit a rival's marble, and you shoot again (up to three extra shots in a turn). The last one to finish loses."
+    ],
+    [
+      "GULI KHELA",
+      "Every side pays a stake of marbles and tosses toward the hole. The closest side scatters the stake round the hole, and everyone else gets one attempt in turn. First tap the marble you must not touch: the baad. Then throw your marble. Touch exactly one other marble, and not the baad, and you win the dan and every marble on the ground. Touch the baad, or more than one marble, and you pay a fine of one marble from your purse, which stays on the ground. Touch nothing and your attempt is over. If nobody wins in three passes, the side that scattered keeps the ground. A side that cannot pay the next stake is out. Pause the match to surrender."
+    ],
+    [
+      "QUICK DAN",
+      "One dan of Guli Khela, for a few minutes. The same stake, scatter, baad and fines, and the match ends when the dan is won."
     ]
   ]
 }

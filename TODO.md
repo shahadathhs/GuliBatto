@@ -15,10 +15,10 @@ The goal is the four modes, represented properly, on Android and the web, with t
 
 ## App plan (agreed 2026-10-22), in this order
 
-1. [x] **Saved settings and reset:** theme, sound, volume, follow-shots, the first-use prompt and the rules cards seen are kept between runs (`Settings`); Settings has a confirmed "Reset to defaults"; 135 game tests
-2. [x] **Shot-follow camera for every mode:** follow a shot while it rolls, ease back to the framed view, a "Follow shots" toggle in Settings, a tap skips it, Kep included (`CameraDirector`); 135 game tests
-3. [x] **Sound:** synthesized sounds written by `scripts/sounds.mjs` (no downloads), played from physics events, shots, buttons and the end of a match; on/off and volume in Settings; 135 game tests. **Not yet listened to by a person**, and the web build's audio start on the first tap is not yet checked in a browser
-4. [ ] **Guli Khela and Quick Dan** (Phase 5 below), on a Kep-scale round board
+1. [x] **Saved settings and reset:** theme, sound, volume, follow-shots, the first-use prompt and the rules cards seen are kept between runs (`Settings`); Settings has a confirmed "Reset to defaults"; 184 game tests
+2. [x] **Shot-follow camera for every mode:** follow a shot while it rolls, ease back to the framed view, a "Follow shots" toggle in Settings, a tap skips it, Kep included (`CameraDirector`); 184 game tests
+3. [x] **Sound:** synthesized sounds written by `scripts/sounds.mjs` (no downloads), played from physics events, shots, buttons and the end of a match; on/off and volume in Settings; 184 game tests. **Not yet listened to by a person**, and the web build's audio start on the first tap is not yet checked in a browser
+4. [x] **Guli Khela and Quick Dan** (Phase 5 below), on a Kep-scale round board; 184 game tests
 5. [ ] **Pages and per-game teaching** (Phase 6, the app half): one `content/` source, diagrams from data, a long How to play, a page per game, a rules card the first time each game starts and a "?" in the match, About, Contact, Privacy, links to the web version and the Android download
 6. [ ] **Phone test, tuning and release** (Phase 7): play all four on a phone, tune pull, settle time and Batto's race length, check the rules with a player, publish
 
@@ -44,12 +44,13 @@ Open: the email or form for Contact.
 ## Phase 4 — Batto
 
 - [x] Three holes and the route on screen, hits and bonus shots (a hit or reaching a hole, cap of three), finishing order, computer sides choosing between the hole and a hit, cues, tests for every rule (87 game tests; full races with three computer sides take 34 to 78 shots)
+- [ ] Hand check Guli Khela on a phone: how easy it is to touch exactly one marble, the computer's mix of wins, fines and misses (3 wins, 3 fines and 6 misses in 12 test throws), how long a match takes
 - [ ] Hand check Batto on a phone: hole spacing, how often a hit lands (a full race with three computer sides is only 19 to 25 shots, about half of them bonus shots, so it may be too short), the length of a race
 - [ ] Check the Batto rules with at least one more person who played
 
 ## Phase 5 — Guli Khela and Quick Dan
 
-- [ ] Purses and stake, the scatter, naming the baad, a clean touch and a fine, winning a dan, the three-pass rule, surrender, the end; computer sides that name a baad and touch one marble; Quick Dan as a profile; tests for every rule
+- [x] Purses and stake, the scatter, naming the baad, a clean touch and a fine, winning a dan, the three-pass rule, surrender, the end; computer sides that name a baad and touch one marble; Quick Dan as a profile; tests for every rule (`GuliRules`, 57 tests across rules, attempts, match flow, input and physics)
 - [ ] Check the Guli Khela rules with at least one person who played
 
 ## Phase 6 — the pages, on the web and in the app

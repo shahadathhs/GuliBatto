@@ -81,3 +81,45 @@ func test_kep_keeps_a_fixed_camera() -> void:
 	app._start_match(&"kep")
 	await wait_physics_frames(10)
 	assert_null(app._match.rig.follow_point)
+
+
+func test_all_four_modes_are_offered_and_each_starts_its_own_match() -> void:
+	(app._screen as MenuScreen).play_pressed.emit()
+	await wait_physics_frames(2)
+	var modes := app._screen as ModesScreen
+	assert_eq(ModeRegistry.ORDER.size(), 4)
+	for id in [&"guli", &"quick"]:
+		modes.select(id)
+		modes.start_pressed.emit(modes.selected())
+		await wait_physics_frames(4)
+		assert_eq(app._match.profile.mode_id, id)
+		assert_true(app._match.controller.state is GuliState)
+		assert_true(app._match.rules.can_surrender())
+		app._show_modes()
+		modes = app._screen as ModesScreen
+		await wait_physics_frames(2)
+
+
+func test_a_dan_result_screen_names_the_winner_and_the_marbles() -> void:
+	var r := RuleResult.new()
+	r.points = {0: -3, 1: 6, 2: -3}
+	r.placing = {0: &"none", 1: &"won", 2: &"none"}
+	var screen := RoundResultScreen.new(r, [4, 13, 4] as Array[int], 0, "DAN 1", "purse")
+	add_child_autofree(screen)
+	await wait_physics_frames(2)
+	assert_not_null(screen)
+
+
+func test_the_pause_screen_offers_surrender_only_where_it_applies() -> void:
+	var plain := PauseScreen.new(false)
+	var guli := PauseScreen.new(true)
+	add_child_autofree(plain)
+	add_child_autofree(guli)
+	var count := func(root: Node) -> int:
+		var n := 0
+		for b in root.find_children("*", "Button", true, false):
+			if (b as Button).text == "SURRENDER":
+				n += 1
+		return n
+	assert_eq(count.call(plain), 0)
+	assert_eq(count.call(guli), 1)

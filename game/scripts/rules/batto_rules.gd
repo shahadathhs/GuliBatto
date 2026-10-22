@@ -201,6 +201,8 @@ func _evaluate_shot(
 	if done:
 		s.finished.append(side)
 		result.finished_side = side
+		# A side that finishes leaves the board, once the cue has been shown.
+		result.remove_marbles.append(side)
 	result.cue = _cue_for(hit, reached, done)
 	if (hit or reached) and not done:
 		if s.bonus_chain < profile.bonus_cap:

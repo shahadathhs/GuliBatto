@@ -8,6 +8,7 @@ const PLACING_TEXT := {
 	&"in_kep": "IN THE KEP",
 	&"closest": "CLOSEST",
 	&"second": "NEXT CLOSEST",
+	&"won": "WON THE GROUND",
 	&"none": "",
 }
 
@@ -16,12 +17,12 @@ func _init(
 	result: RuleResult = null,
 	totals: Array[int] = [],
 	human_side: int = 0,
-	round_no: int = 1,
-	rounds: int = 1
+	caption: String = "",
+	total_word: String = "total"
 ) -> void:
 	super()
 	column.add_child(UiKit.spacer(40.0))
-	var cap := UiKit.label("ROUND %d OF %d" % [round_no, rounds], 13, &"mute", true)
+	var cap := UiKit.label(caption, 13, &"mute", true)
 	cap.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(cap)
 	var title := UiKit.label("RESULT", 30, &"ink", true)
@@ -29,7 +30,7 @@ func _init(
 	column.add_child(title)
 	column.add_child(UiKit.spacer(16.0))
 	for side in result.points:
-		column.add_child(_row(side, result, totals, human_side))
+		column.add_child(_row(side, result, totals, human_side, total_word))
 	add_fill()
 	var next := UiKit.primary("Next")
 	next.pressed.connect(func() -> void: next_pressed.emit())
@@ -37,7 +38,9 @@ func _init(
 	column.add_child(UiKit.spacer(40.0))
 
 
-func _row(side: int, result: RuleResult, totals: Array[int], human_side: int) -> Control:
+func _row(
+	side: int, result: RuleResult, totals: Array[int], human_side: int, total_word: String
+) -> Control:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 12)
 	var chip := SideChip.new(side, "YOU" if side == human_side else "")
@@ -46,6 +49,6 @@ func _row(side: int, result: RuleResult, totals: Array[int], human_side: int) ->
 	var placing := UiKit.label(PLACING_TEXT.get(result.placing[side], ""), 15, &"ink", true)
 	placing.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(placing)
-	row.add_child(UiKit.label("+%d" % result.points[side], 20, &"ink", true))
-	row.add_child(UiKit.label("total %d" % totals[side], 14, &"mute"))
+	row.add_child(UiKit.label("%+d" % result.points[side], 20, &"ink", true))
+	row.add_child(UiKit.label("%s %d" % [total_word, totals[side]], 14, &"mute"))
 	return row

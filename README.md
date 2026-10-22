@@ -4,7 +4,7 @@
 
 [![CI/CD](https://github.com/shahadathhs/GuliBatto/actions/workflows/ci.yml/badge.svg)](https://github.com/shahadathhs/GuliBatto/actions/workflows/ci.yml)
 
-> **Status: first release, two games playable on `dev`.** Kep and Batto are complete; the first release (`v0.0.1`) has Kep only. Guli Khela and Quick Dan are next. The Android and web builds are published, and the site is live. Nothing has been played by hand on a phone yet, and only the browser version has been run (in a headless browser). The plan and the checklist are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md) and [TODO.md](TODO.md).
+> **Status: all four games are playable on `dev`.** Kep, Batto, Guli Khela and Quick Dan are built; the published release (`v0.0.1`) is older and has Kep only, and the next release will have all four. The Android and web builds are published, and the site is live. Nothing has been played by hand on a phone yet, and only the browser version has been run (in a headless browser). The plan and the checklist are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md) and [TODO.md](TODO.md).
 
 ## Live
 
@@ -32,8 +32,8 @@ Play against one to three computer sides. The rules in plain words are in [docs/
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | **Kep**        | Toss a marble from behind the line at a hole. A marble in the hole scores 3, then the closest scores 2, then the next closest 1. Five rounds.                              | Playable |
 | **Batto**      | Race along three holes and back. Hit a rival's marble, or reach a hole, to take another shot. The last to finish loses.                                                    | Playable |
-| **Guli Khela** | Stake marbles are scattered round the hole. Name the marble you must not touch, then touch exactly one other. A wrong touch costs a fine, and the winner takes the ground. | Next     |
-| **Quick Dan**  | One round of Guli Khela, for when you have a few minutes.                                                                                                                  | Next     |
+| **Guli Khela** | Stake marbles are scattered round the hole. Name the marble you must not touch, then touch exactly one other. A wrong touch costs a fine, and the winner takes the ground. | Playable |
+| **Quick Dan**  | One round of Guli Khela, for when you have a few minutes.                                                                                                                  | Playable |
 
 ## How it plays
 

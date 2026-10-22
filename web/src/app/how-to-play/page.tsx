@@ -31,14 +31,19 @@ export default function HowToPlayPage() {
         extra shots in a turn). The last one to finish loses.
       </p>
       <p>
-        <strong>Guli Khela</strong>: stake marbles are scattered around the hole. Name one marble as
-        baad, then touch exactly one other marble. Touch the baad marble or more than one and you
-        pay a fine. The winner of a round takes every marble on the ground.
+        <strong>Guli Khela</strong>: every side pays a stake of marbles and tosses toward the hole.
+        The closest side scatters the stake round the hole, and everyone else gets one attempt in
+        turn. First tap the marble you must not touch: the baad. Then throw your marble. Touch
+        exactly one other marble, and not the baad, and you win the dan and every marble on the
+        ground. Touch the baad, or more than one marble, and you pay a fine of one marble from your
+        purse, which stays on the ground. Touch nothing and your attempt is over. If nobody wins in
+        three passes, the side that scattered keeps the ground. A side that cannot pay the next
+        stake is out. Pause the match to surrender.
       </p>
       <p>
-        <strong>Quick Dan</strong>: one round of Guli Khela.
+        <strong>Quick Dan</strong>: one dan of Guli Khela, for a few minutes. The same stake,
+        scatter, baad and fines, and the match ends when the dan is won.
       </p>
-      <p className="meta">Kep and Batto are playable so far; the others are built next.</p>
     </main>
   );
 }

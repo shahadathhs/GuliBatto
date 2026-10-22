@@ -99,10 +99,12 @@ func _end_match() -> void:
 		_match = null
 
 
-func _on_round_finished(result: RuleResult, totals: Array[int], round_no: int, rounds: int) -> void:
+func _on_round_finished(
+	result: RuleResult, totals: Array[int], caption: String, total_word: String
+) -> void:
 	if result.kind == &"match":
 		return
-	var s := RoundResultScreen.new(result, totals, _match.human_side, round_no, rounds)
+	var s := RoundResultScreen.new(result, totals, _match.human_side, caption, total_word)
 	s.next_pressed.connect(
 		func() -> void:
 			_clear_screen()
@@ -122,7 +124,12 @@ func _on_match_finished(ranking: Array[int], details: Array[String]) -> void:
 func _open_pause() -> void:
 	if _pause != null or _match == null:
 		return
-	var s := PauseScreen.new()
+	var s := PauseScreen.new(_match.rules.can_surrender())
+	s.surrender_pressed.connect(
+		func() -> void:
+			_close_pause()
+			_match.controller.surrender()
+	)
 	s.resume_pressed.connect(_close_pause)
 	s.restart_pressed.connect(func() -> void: _start_match())
 	s.menu_pressed.connect(_show_menu)
@@ -155,7 +162,12 @@ func _debug_screen(name: String) -> void:
 			var r := RuleResult.new()
 			r.points = sample_points
 			r.placing = sample_placing
-			_show(RoundResultScreen.new(r, [6, 5, 2] as Array[int], 0, 2, 5))
+			_show(RoundResultScreen.new(r, [6, 5, 2] as Array[int], 0, "ROUND 2 OF 5", "total"))
+		"dan":
+			var d := RuleResult.new()
+			d.points = {0: -3, 1: 6, 2: -3}
+			d.placing = {0: &"none", 1: &"won", 2: &"none"}
+			_show(RoundResultScreen.new(d, [4, 13, 4] as Array[int], 0, "DAN 1", "purse"))
 		"over":
 			_show(
 				MatchOverScreen.new(
@@ -164,18 +176,44 @@ func _debug_screen(name: String) -> void:
 					0
 				)
 			)
-		"match", "aim", "pause", "batto", "batto_aim", "batto_top":
+		"match", "aim", "pause", "batto", "batto_aim", "batto_top", "guli", "guli_stake":
 			Settings.coach_seen = name.ends_with("aim")
-			_start_match(&"batto" if name.begins_with("batto") else &"kep")
+			var mode := &"kep"
+			if name.begins_with("batto"):
+				mode = &"batto"
+			elif name.begins_with("guli"):
+				mode = &"guli"
+			_start_match(mode)
 			if name != "match" and name != "batto":
 				await get_tree().create_timer(0.6, false).timeout
 			if name == "pause":
 				_open_pause()
+			if name == "guli_stake":
+				_debug_guli_stake()
 			if name == "batto_top":
 				_match.rig.set_view(CameraRig.View.TOP_DOWN)
 				await get_tree().create_timer(1.0, false).timeout
 			if name.ends_with("aim"):
 				_debug_aim()
+
+
+## Debug only: Guli Khela at the start of the attempts, the stake scattered and one marble named.
+func _debug_guli_stake() -> void:
+	var s := _match.controller.state as GuliState
+	_match.board.clear_marbles()
+	s.stage = GuliState.Stage.PASSES
+	var order: Array[int] = [0, 1]
+	s.order = order
+	s.turn_index = 0
+	s.scatterer = 2
+	s.pot = 9
+	var spots := StakeLayout.scatter(9, s.kep, _match.profile, s.rng, [] as Array[Vector2])
+	for i in spots.size():
+		s.ground.append(100 + i)
+		_match.board.place(100 + i, SideStyle.NEUTRAL, spots[i])
+	_match.controller._begin_turn()
+	await get_tree().create_timer(0.3, false).timeout
+	_match.controller.name_baad(103)
 
 
 func _debug_aim() -> void:

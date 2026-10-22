@@ -123,6 +123,7 @@ func fire(command: ShotCommand) -> bool:
 		return false
 	report = ShotReport.new()
 	report.shooter_id = command.marble_id
+	report.baad_id = command.baad_marble_id
 	detector.reset()
 	state = State.ROLLING
 	_count_touching_rivals_ahead(command)

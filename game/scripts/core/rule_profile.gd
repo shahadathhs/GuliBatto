@@ -41,6 +41,16 @@ extends Resource
 @export var route: PackedInt32Array = PackedInt32Array()
 @export var bonus_cap: int = 3
 @export var turn_cap: int = 40
+## Guli Khela: marbles in each purse, the stake each side pays into a dan, the passes before the
+## scatterer keeps the ground, the most dans in a match, and how the stake is scattered round the
+## kep (the ring it falls in, and the least gap between marbles' centres).
+@export var purse: int = 10
+@export var stake: int = 3
+@export var passes: int = 3
+@export var dan_limit: int = 20
+@export var scatter_inner: float = 0.9
+@export var scatter_outer: float = 2.0
+@export var scatter_spacing: float = 0.62
 
 
 ## Flat arena, no holes: the physics test bench.
@@ -82,4 +92,22 @@ static func batto() -> RuleProfile:
 	p.camera_overview = Tuning.BATTO_OVERVIEW_DISTANCE
 	p.camera_max_distance = Tuning.BATTO_CAMERA_MAX_DISTANCE
 	p.route = PackedInt32Array([0, 1, 2, 1, 0])
+	return p
+
+
+static func guli() -> RuleProfile:
+	var p := RuleProfile.new()
+	p.mode_id = &"guli"
+	p.title = "Guli Khela"
+	p.side_count = 3
+	p.holes = PackedVector2Array([Tuning.KEP_POSITION])
+	return p
+
+
+## One dan of Guli Khela: the same rules, and the match ends when the dan is won.
+static func quick_dan() -> RuleProfile:
+	var p := RuleProfile.guli()
+	p.mode_id = &"quick"
+	p.title = "Quick Dan"
+	p.dan_limit = 1
 	return p

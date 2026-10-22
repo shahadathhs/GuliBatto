@@ -94,6 +94,13 @@ Every side tosses one marble from behind the jalla toward the first hole. When t
   - A side that cannot pay the stake at the start of a dan, or that surrenders, is out.
   - The match ends when one side remains, or at the dan limit (_initial:_ 20), when the side with the most marbles wins.
 - **Marbles that leave the arena** are put back on the boundary where they left.
+- **How the game reads the points the account leaves open** (each can change after talking to players):
+  - every side pays the stake, the scatterer too, so the ground starts with sides × stake marbles;
+  - the stake is paid at the start of a dan, from the purse, and the tossed marbles go back to their owners when the stake is scattered;
+  - after an attempt the thrown marble goes back to its owner, and a fine is set down by the game at a random clear spot round the kep;
+  - the round ground is Kep-sized, with the stake scattered in a ring round the kep, never closer together than a marble and a bit;
+  - giving up (the Surrender button in the pause menu) ends the match and puts that side last; a side that cannot pay the stake is out, and if that is the player the match ends;
+  - sides are ranked by marbles; sides put out come after, the later out the better, and a side that gave up is last.
 - **Changed for digital play:** the game scatters the marbles; the fine is exactly one marble; the winner takes the whole ground; the three-pass limit; the purse and stake sizes; the dan limit; and a Surrender button.
 - **To confirm with players:** what a fine costs where they played, the usual stake (2, 3 or 4), and whether the scatterer always keeps the ground when nobody touches.
 
@@ -101,7 +108,7 @@ Every side tosses one marble from behind the jalla toward the first hole. When t
 
 **From:** Account B, one dan on its own. It is a profile of Guli Khela, not a separate ruleset.
 
-- The same opening toss, stake, scatter, _baad_ call and fines, but the match ends after the first dan is won. Purses reset for the next match. It is built only if short sessions need it.
+- The same opening toss, stake, scatter, _baad_ call and fines, but the match ends after the first dan is won, whether by a touch or by the scatterer keeping the ground. Purses reset for the next match. In the game it is the Guli Khela rules with a dan limit of one.
 
 ## 8. Round lifecycle
 

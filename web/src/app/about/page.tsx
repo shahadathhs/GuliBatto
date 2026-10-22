@@ -64,6 +64,10 @@ export default function AboutPage() {
           The number of marbles in a stake, the size of a fine, and the number of rounds are set to
           make a good game on a small screen.
         </li>
+        <li>
+          In Guli Khela, every side including the scatterer pays the stake, a fine is one marble
+          that the game sets down by the hole, and giving up ends the match with you last.
+        </li>
         <li>You can play against computer players, and you can surrender.</li>
       </ul>
 

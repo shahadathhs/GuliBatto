@@ -18,9 +18,6 @@ func _init() -> void:
 		_panels[id] = panel
 		column.add_child(panel)
 	_restyle()
-	var more := UiKit.label("Guli Khela and Quick Dan are built next.", 14, &"mute")
-	more.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	column.add_child(more)
 	add_fill()
 	var about := UiKit.text_action("About these games")
 	about.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -59,7 +56,7 @@ func _row(id: StringName) -> PanelContainer:
 	var box := VBoxContainer.new()
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.add_theme_constant_override("separation", 6)
-	var title := UiKit.label(String(id).to_upper(), 21, &"ink", true)
+	var title := UiKit.label(ModeRegistry.TITLES[id], 21, &"ink", true)
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.add_child(title)
 	var line := UiKit.label(ModeRegistry.BLURBS[id], 14, &"mute")

@@ -4,7 +4,7 @@ extends Node
 ## controller and the HUD, wired together. The app creates one per match and frees it afterwards.
 
 signal pause_requested
-signal round_finished(result: RuleResult, totals: Array[int], round_no: int, rounds: int)
+signal round_finished(result: RuleResult, totals: Array[int], caption: String, total_word: String)
 signal match_finished(ranking: Array[int], details: Array[String])
 
 var profile: RuleProfile
@@ -14,6 +14,7 @@ var rig: CameraRig
 var controller: MatchController
 var aim: AimController
 var director: CameraDirector
+var baad_marker: BaadMarker
 var hud: Hud
 var human_side: int = 0
 
@@ -42,6 +43,8 @@ func start(rule_profile: RuleProfile, rule_set: RuleSet) -> void:
 	director = CameraDirector.new(rig, board, controller, aim, rules, profile)
 	add_child(director)
 	add_child(SoundDirector.new(board, controller))
+	baad_marker = BaadMarker.new(scheme, profile.marble_radius)
+	add_child(baad_marker)
 	_connect()
 	hud.highlight_view(CameraRig.View.ANGLED)
 	controller.start(board, profile, rules, human_side)
@@ -75,12 +78,16 @@ func _connect() -> void:
 	controller.turn_started.connect(_on_turn_started)
 	controller.shot_started.connect(_on_shot_started)
 	controller.shot_judged.connect(_on_shot_judged)
+	controller.baad_needed.connect(_on_baad_needed)
+	controller.baad_named.connect(_on_baad_named)
 	controller.round_scored.connect(_on_round_scored)
 	controller.match_over.connect(_on_match_over)
 
 
 func _on_turn_started(side: int, is_human: bool) -> void:
 	var state := controller.state
+	baad_marker.clear()
+	hud.set_hint("")
 	hud.set_mode_caption(rules.caption(state, profile))
 	hud.set_turn(side, rules.turn_text(state, is_human))
 	hud.set_standings(rules.standings(state), human_side)
@@ -92,7 +99,21 @@ func _on_turn_started(side: int, is_human: bool) -> void:
 		hud.show_waiting("Waiting for their shot")
 
 
+func _on_baad_needed() -> void:
+	baad_marker.clear()
+	hud.set_hint("Tap the marble you must not touch: the baad")
+
+
+func _on_baad_named(marble_id: int) -> void:
+	baad_marker.show_on(board.marble(marble_id))
+	hud.set_hint("Baad named. Tap another to change it, or pull back to throw")
+
+
 func _on_shot_started(_side: int) -> void:
+	hud.set_hint("")
+	# Whoever throws, the baad stays marked while the marble rolls.
+	if controller.last_baad >= 0:
+		baad_marker.show_on(board.marble(controller.last_baad))
 	hud.show_waiting("Rolling")
 
 
@@ -112,7 +133,8 @@ func _on_shot_judged(_side: int, result: RuleResult) -> void:
 func _on_round_scored(result: RuleResult, _totals: Array[int]) -> void:
 	var state := controller.state
 	hud.set_standings(rules.standings(state), human_side)
-	round_finished.emit(result, state.totals, state.round_index, state.rounds)
+	var shown := result.totals if not result.totals.is_empty() else state.totals
+	round_finished.emit(result, shown, rules.round_caption(state), rules.total_word())
 
 
 func _on_match_over(ranking: Array[int]) -> void:
