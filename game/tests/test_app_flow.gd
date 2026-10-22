@@ -61,3 +61,23 @@ func test_choosing_batto_starts_a_batto_match() -> void:
 	assert_eq(app._match.profile.mode_id, &"batto")
 	assert_true(app._match.controller.state is BattoState)
 	assert_eq(app._match.profile.holes.size(), 3, "three holes")
+
+
+func test_the_batto_camera_follows_the_marble_and_the_top_view_shows_the_whole_board() -> void:
+	app._start_match(&"batto")
+	await wait_physics_frames(10)
+	var scene: MatchScene = app._match
+	var marble := scene.board.marble(scene.controller.current_side())
+	assert_not_null(scene.rig.follow_point, "the camera has something to follow")
+	var followed := scene.rig.follow_point as Vector2
+	assert_lt(followed.distance_to(marble.ground_position()), scene.profile.camera_look_ahead + 0.1)
+	scene.rig.set_view(CameraRig.View.TOP_DOWN)
+	await wait_physics_frames(5)
+	assert_null(scene.rig.follow_point, "the overview does not follow")
+	assert_almost_eq(scene.rig._target_distance, scene.profile.camera_overview, 0.01)
+
+
+func test_kep_keeps_a_fixed_camera() -> void:
+	app._start_match(&"kep")
+	await wait_physics_frames(10)
+	assert_null(app._match.rig.follow_point)

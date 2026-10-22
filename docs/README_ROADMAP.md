@@ -11,7 +11,7 @@
 - A first version of the website: home, how to play, about, download, privacy, and a play page that frames Godot's default page.
 - The Android and web builds are produced by CI and published in the release `v0.0.1`. Only the web export has been run, in a headless browser; the APK has not been run on a real device.
 - The site is live at <https://playgulibatto.vercel.app>.
-- Checks: lint, token and colour checks, 87 game tests, site tests and a smoke test, and a CI pipeline that passes on `main` and has published a release.
+- Checks: lint, token and colour checks, 110 game tests, site tests and a smoke test, and a CI pipeline that passes on `main` and has published a release.
 
 **Not built**
 

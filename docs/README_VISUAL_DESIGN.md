@@ -181,7 +181,7 @@ One compact, slightly irregular patch of packed earth with a clear boundary. Che
 
 - ground with subtle low-frequency dirt variation and a little roughness noise, not high-frequency clutter;
 - low boundary stones or a shallow raised edge where needed;
-- the jalla and a readable kep with a visible lip, and, for Batto, three holes in a line that stay distinguishable from every supported view;
+- the jalla and a readable kep with a visible lip, and, for Batto, a large rectangular board with three big numbered holes in a line that stay distinguishable from every supported view;
 - restrained background props only when they establish scale, none tall enough to block likely camera paths;
 - a neutral horizon that keeps the arena silhouette readable.
 

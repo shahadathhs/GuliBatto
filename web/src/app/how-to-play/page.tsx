@@ -25,10 +25,10 @@ export default function HowToPlayPage() {
       </p>
       <p>
         <strong>Batto</strong>: everyone tosses once toward the first hole, and the closest goes
-        first. Then each side shoots its own marble from where it lies, along the first, second and
-        third hole and back to the first. Reach the hole you are heading for, or hit a rival&apos;s
-        marble, and you shoot again (up to three extra shots in a turn). The last one to finish
-        loses.
+        first. Then each side shoots its own marble from where it lies (from the edge of the hole,
+        if it rests in one), along the first, second and third hole and back to the first. Reach the
+        hole you are heading for, or hit a rival&apos;s marble, and you shoot again (up to three
+        extra shots in a turn). The last one to finish loses.
       </p>
       <p>
         <strong>Guli Khela</strong>: stake marbles are scattered around the hole. Name one marble as

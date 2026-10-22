@@ -14,8 +14,6 @@ enum Mode { NONE, AIM, ORBIT, PINCH }
 
 ## Screen distance from the marble within which a press grabs it, much larger than the marble.
 const HANDLE_PIXELS := 56.0
-## How far (metres on the ground) the finger must be pulled back for full power.
-const MAX_PULL := 2.4
 const ORBIT_DEGREES_PER_PIXEL := 0.3
 const ZOOM_STEP := 0.92
 
@@ -153,7 +151,7 @@ func _active_marble() -> Marble:
 func _ground_point(screen: Vector2) -> Vector2:
 	var origin := rig.camera.project_ray_origin(screen)
 	var normal := rig.camera.project_ray_normal(screen)
-	var hit: Variant = Plane(Vector3.UP, Tuning.MARBLE_RADIUS).intersects_ray(origin, normal)
+	var hit: Variant = Plane(Vector3.UP, board.profile.marble_radius).intersects_ray(origin, normal)
 	if hit == null:
 		return Vector2.ZERO
 	return Vector2((hit as Vector3).x, (hit as Vector3).z)
@@ -166,14 +164,14 @@ func _update_aim(screen: Vector2) -> void:
 	var from := m.ground_position()
 	var pointer := _ground_point(screen)
 	var pull := pointer - from
-	_power = clampf(pull.length() / MAX_PULL, 0.0, 1.0)
+	_power = clampf(pull.length() / board.profile.max_pull, 0.0, 1.0)
 	if pull.length() > 0.001:
 		_direction = (-pull).normalized()
 	if _power < Tuning.AIM_DEAD_ZONE:
 		visual.clear()
 	else:
 		# The pull line ends at the finger, but no farther than full pull.
-		var shown := from + pull.limit_length(MAX_PULL)
+		var shown := from + pull.limit_length(board.profile.max_pull)
 		visual.show_aim(from, _direction, _power, shown)
 	aim_changed.emit(true, _power)
 

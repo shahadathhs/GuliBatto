@@ -77,6 +77,11 @@ func _begin_turn() -> void:
 	# Kep starts each toss on the line; in Batto a marble stays where it came to rest.
 	if _board.marble(side) == null:
 		_board.place(side, side, _rules.spawn_position(state, _profile, _board.snapshot()))
+	else:
+		# A marble resting in a hole is shot from the edge of the hole, not from inside it.
+		var start: Variant = _rules.shot_start(state, _profile, _board.snapshot(), side)
+		if start != null:
+			await _board.move_marble(side, start as Vector2)
 	phase = Phase.WAITING_FOR_SHOT
 	turn_started.emit(side, side == human_side)
 	if side != human_side:

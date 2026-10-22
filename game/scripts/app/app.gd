@@ -162,13 +162,17 @@ func _debug_screen(name: String) -> void:
 					0
 				)
 			)
-		"match", "aim", "pause", "batto":
-			_start_match(&"batto" if name == "batto" else &"kep")
-			if name != "match":
+		"match", "aim", "pause", "batto", "batto_aim", "batto_top":
+			MatchScene.coach_seen = name.ends_with("aim")
+			_start_match(&"batto" if name.begins_with("batto") else &"kep")
+			if name != "match" and name != "batto":
 				await get_tree().create_timer(0.6, false).timeout
 			if name == "pause":
 				_open_pause()
-			if name == "aim":
+			if name == "batto_top":
+				_match.rig.set_view(CameraRig.View.TOP_DOWN)
+				await get_tree().create_timer(1.0, false).timeout
+			if name.ends_with("aim"):
 				_debug_aim()
 
 

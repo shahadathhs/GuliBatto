@@ -26,7 +26,7 @@ I changed some rules so the games work well on a phone. These are my decisions, 
 - The game scatters the marbles around the hole for you.
 - A marble that leaves the play area is put back where it left.
 - Bonus shots and turns have limits, so a game always ends.
-- In Batto, a marble that finishes the route leaves the ground, and a first toss that lands in the first hole counts as reaching it.
+- In Batto, a marble that finishes the route leaves the ground, a first toss that lands in the first hole counts as reaching it, and a marble resting in a hole is shot from the edge of the hole.
 - The number of marbles in a stake, the size of a fine, and the number of rounds are set to make a good game on a small screen.
 - You can play against computer players, and you can surrender.
 

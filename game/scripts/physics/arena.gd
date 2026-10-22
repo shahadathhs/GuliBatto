@@ -1,13 +1,15 @@
 class_name Arena
 extends Node3D
-## A round arena built from a RuleProfile: ground with a smooth dish at each hole, a visible rim,
-## a ring of thick wall segments so a marble cannot tunnel out, and the jalla line to stand
-## behind. The ground shape and the ground mesh are both sampled from GroundField.
+## An arena built from a RuleProfile, round or rectangular: ground with a smooth dish at each hole,
+## a visible rim, thick walls so a marble cannot tunnel out, and the jalla line to stand behind.
+## The ground shape and the ground mesh are both sampled from GroundField.
 
 const WALL_SEGMENTS := 36
 const RIM_SEGMENTS := 96
 const RING_STEP := 0.05
 const GROUND_THICKNESS := 0.5
+## Grid step of the visible mesh over a hole.
+const MESH_CELL := 0.05
 
 var profile: RuleProfile
 var scheme: Palette.Scheme = Palette.Scheme.LIGHT
@@ -22,19 +24,32 @@ func _init(
 
 func _ready() -> void:
 	_build_ground_collision()
-	_build_ground_mesh()
-	_build_rim()
-	_build_walls()
+	if profile.arena_rect:
+		_build_rect_mesh()
+		_build_rect_rim()
+		_build_rect_walls()
+	else:
+		_build_ground_mesh()
+		_build_rim()
+		_build_walls()
 	_build_jalla()
 	_build_hole_numbers()
+
+
+## The floor: a square around the circle, or the rectangle itself.
+func _floor() -> Rect2:
+	var size := profile.arena_size
+	if profile.arena_rect:
+		return Rect2(-size, size * 2.0)
+	return Rect2(Vector2(-size.x, -size.x), Vector2(size.x, size.x) * 2.0)
 
 
 ## The ground is plain boxes, plus a small heightmap patch around each hole for the dish. A box
 ## is cheap and exact; a heightmap is only used where the ground is not flat.
 func _build_ground_collision() -> void:
-	var half := Tuning.ARENA_RADIUS + Tuning.WALL_THICKNESS + 0.1
+	var bounds := _floor().grow(Tuning.WALL_THICKNESS + 0.1)
 	var patches := GroundField.patch_rects(profile.holes, profile.dish_radius, Tuning.GROUND_CELL)
-	for rect in GroundField.free_rects(half, patches):
+	for rect in GroundField.free_rects(bounds, patches):
 		_add_ground_box(rect)
 	for rect in patches:
 		_add_ground_patch(rect)
@@ -72,7 +87,8 @@ func _add_ground_patch(rect: Rect2) -> void:
 
 ## A disc mesh in rings, so the dish is smooth and the edge is round.
 func _build_ground_mesh() -> void:
-	var rings := int(Tuning.ARENA_RADIUS / RING_STEP)
+	var radius := profile.arena_size.x
+	var rings := int(radius / RING_STEP)
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var earth := Palette.get_color(&"earth", scheme)
@@ -111,8 +127,8 @@ func _build_ground_mesh() -> void:
 func _build_rim() -> void:
 	var mesh := MeshInstance3D.new()
 	var torus := TorusMesh.new()
-	torus.inner_radius = Tuning.ARENA_RADIUS - 0.05
-	torus.outer_radius = Tuning.ARENA_RADIUS + 0.2
+	torus.inner_radius = profile.arena_size.x - 0.05
+	torus.outer_radius = profile.arena_size.x + 0.2
 	mesh.mesh = torus
 	mesh.material_override = _colour_material(&"earth_rim")
 	mesh.position = Vector3(0.0, 0.04, 0.0)
@@ -120,7 +136,7 @@ func _build_rim() -> void:
 
 
 func _build_walls() -> void:
-	var middle_radius := Tuning.ARENA_RADIUS + Tuning.WALL_THICKNESS / 2.0
+	var middle_radius := profile.arena_size.x + Tuning.WALL_THICKNESS / 2.0
 	var chord := 2.0 * middle_radius * tan(PI / WALL_SEGMENTS) + 0.1
 	for i in WALL_SEGMENTS:
 		var angle := TAU * float(i) / WALL_SEGMENTS
@@ -142,11 +158,11 @@ func _build_walls() -> void:
 func _build_jalla() -> void:
 	if profile.mode_id == &"bench":
 		return
+	var radius := profile.arena_size.x
 	var half_width := (
-		sqrt(
-			maxf(Tuning.ARENA_RADIUS * Tuning.ARENA_RADIUS - profile.jalla_z * profile.jalla_z, 0.0)
-		)
-		* 0.9
+		profile.arena_size.x * 0.9
+		if profile.arena_rect
+		else sqrt(maxf(radius * radius - profile.jalla_z * profile.jalla_z, 0.0)) * 0.9
 	)
 	var dash := 0.28
 	var gap := 0.18
@@ -170,12 +186,93 @@ func _build_hole_numbers() -> void:
 		var label := Label3D.new()
 		label.text = str(i + 1)
 		label.font_size = 96
-		label.pixel_size = 0.004
+		label.pixel_size = profile.dish_radius * 0.014
 		label.modulate = Palette.get_color(&"ink", scheme)
 		label.outline_size = 0
 		label.rotation_degrees = Vector3(-90.0, 0.0, 0.0)
-		label.position = Vector3(profile.holes[i].x + 0.75, 0.012, profile.holes[i].y)
+		label.position = Vector3(
+			profile.holes[i].x + profile.dish_radius + 0.3, 0.012, profile.holes[i].y
+		)
 		add_child(label)
+
+
+## A rectangular floor as flat quads, with a finer grid only over each hole's patch.
+func _build_rect_mesh() -> void:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var earth := Palette.get_color(&"earth", scheme)
+	var hole_colour := Palette.get_color(&"hole", scheme)
+	var patches := GroundField.patch_rects(profile.holes, profile.dish_radius, Tuning.GROUND_CELL)
+	for rect in GroundField.free_rects(_floor(), patches):
+		_add_grid(st, rect, rect.size.x, earth, hole_colour)
+	for rect in patches:
+		_add_grid(st, rect, MESH_CELL, earth, hole_colour)
+	st.generate_normals()
+	var mesh := MeshInstance3D.new()
+	mesh.mesh = st.commit()
+	var m := StandardMaterial3D.new()
+	m.vertex_color_use_as_albedo = true
+	m.roughness = 1.0
+	mesh.material_override = m
+	add_child(mesh)
+
+
+## Adds `rect` as a grid of squares about `step` wide (a single quad when step covers it).
+func _add_grid(st: SurfaceTool, rect: Rect2, step: float, earth: Color, hole_colour: Color) -> void:
+	var nx := maxi(int(ceil(rect.size.x / step)), 1)
+	var nz := maxi(int(ceil(rect.size.y / step)), 1)
+	var cell := Vector2(rect.size.x / nx, rect.size.y / nz)
+	for row in nz:
+		for col in nx:
+			var a := rect.position + Vector2(col * cell.x, row * cell.y)
+			var quad := [a, a + Vector2(cell.x, 0.0), a + cell, a + Vector2(0.0, cell.y)]
+			for idx in [0, 1, 2, 0, 2, 3]:
+				var p: Vector2 = quad[idx]
+				var h := GroundField.height(
+					p, profile.holes, profile.dish_radius, profile.dish_depth
+				)
+				var depth_t := clampf(-h / maxf(profile.dish_depth, 0.001), 0.0, 1.0)
+				st.set_color(earth.lerp(hole_colour, pow(depth_t, 0.4)))
+				st.add_vertex(Vector3(p.x, h, p.y))
+
+
+func _build_rect_rim() -> void:
+	var edge := _floor()
+	var width := 0.25
+	for strip in _strips(edge, width):
+		var mesh := MeshInstance3D.new()
+		var box := BoxMesh.new()
+		box.size = Vector3(strip.size.x, 0.08, strip.size.y)
+		mesh.mesh = box
+		mesh.material_override = _colour_material(&"earth_rim")
+		mesh.position = Vector3(strip.get_center().x, 0.04, strip.get_center().y)
+		add_child(mesh)
+
+
+func _build_rect_walls() -> void:
+	for strip in _strips(_floor(), Tuning.WALL_THICKNESS):
+		var body := StaticBody3D.new()
+		body.physics_material_override = _material(0.1, Tuning.WALL_BOUNCE)
+		var shape := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = Vector3(strip.size.x, Tuning.WALL_HEIGHT, strip.size.y)
+		shape.shape = box
+		body.add_child(shape)
+		body.position = Vector3(
+			strip.get_center().x, Tuning.WALL_HEIGHT / 2.0, strip.get_center().y
+		)
+		add_child(body)
+
+
+## Four bars just outside `inner`, each `width` thick, overlapping at the corners.
+func _strips(inner: Rect2, width: float) -> Array[Rect2]:
+	var outer := inner.grow(width)
+	return [
+		Rect2(outer.position.x, outer.position.y, outer.size.x, width),
+		Rect2(outer.position.x, inner.end.y, outer.size.x, width),
+		Rect2(outer.position.x, inner.position.y, width, inner.size.y),
+		Rect2(inner.end.x, inner.position.y, width, inner.size.y),
+	]
 
 
 func _material(friction: float, bounce: float) -> PhysicsMaterial:

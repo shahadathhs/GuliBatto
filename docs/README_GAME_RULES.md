@@ -59,19 +59,19 @@ Every side tosses one marble from behind the jalla toward the first hole. When t
 
 > Three holes. Players first toss from a distance toward a hole; everyone tries to get as close as possible. The closest goes first, then the order follows. Play goes from the first hole to the second, then the third, and then comes back toward the first in reverse. Along the way a player can try to hit another player's marble to knock it far away. If the hit connects, the hitter gets one more move toward the next hole. The last player who fails to reach the hole fails.
 
-- **Arena:** a jalla and three holes in a line, H1, H2 and H3.
+- **Arena:** a very large rectangular board, like a pool table (_initial:_ 10 m wide and 38 long, too big for one screen, so the camera follows the marble about to shoot and the top-down view shows the whole board), with a jalla near one end and three holes in a line, H1, H2 and H3, numbered on the ground and 13 m apart, further than one full-power shot rolls, so a leg takes more than one shot. The marbles are small and the holes are deep and narrow: a hole is four marbles wide (the marble counts as in when its centre is within it), and a marble that drops in cannot roll out. Kep keeps its small round ground and larger marble.
 - **Start:** the opening toss toward H1 orders the sides.
 - **Route:** H1 → H2 → H3 → H2 → H1, five legs. Each side has a progress index naming the hole it must reach next. A side is **finished** when its marble rests in H1 on the last leg.
-- **Turn:** the side shoots its own marble from where it lies. A shot that ends with the marble resting in its target hole advances the progress index; resting in any other hole does nothing.
+- **Turn:** the side shoots its own marble from where it lies. A marble resting in a hole is shot from the edge of the hole, set down on the side facing the hole it is heading for, never from inside the pit. A shot that ends with the marble resting in its target hole advances the progress index; resting in any other hole does nothing.
 - **Bonus shots:** the shooter takes **one more shot** after either of these, evaluated from the settled board:
   - the shot was a **hit** (the shooter's marble touched a rival's marble), or
   - the shot **reached the target hole**.
     A bonus shot that earns a bonus shot chains. Chains are capped at three bonus shots in a turn (_changed for digital play_). A side that has just finished gets no bonus shot.
-- **A hit rival** is knocked away by the physics; there is no scripted penalty.
+- **A hit rival** is knocked away by the physics; there is no scripted penalty. A hit counts whenever the shooter's marble touches a rival's, including one that was already touching it when the shot was fired and one that ends up in a hole because of the hit.
 - **End:** the match ends when all but one side have finished; the side still on the route is last. Finishing order is the result. A side that finishes leaves the ground, so it cannot block the last hole or be hit.
 - **Opening toss counts:** a toss that comes to rest in H1 has reached H1, so that side starts the race heading for H2. A toss gives no bonus shot, and touching another marble during it changes nothing.
 - **Turn cap:** after every unfinished side has taken its turn cap, the race stops and the sides still on the route are ranked by how far along the route they are, then by how close their marble is to the hole they were heading for.
-- **Changed for digital play:** the bonus-shot cap, a turn cap per side (_initial:_ 40) and how it ends a race, finished marbles leaving the ground, a first toss in H1 counting as reaching it, the return of marbles that leave the arena to the boundary, and the fixed hole spacing (about 1.25 m apart in a line, H1 nearest the jalla).
+- **Changed for digital play:** the bonus-shot cap, a turn cap per side (_initial:_ 40) and how it ends a race, finished marbles leaving the ground, a first toss in H1 counting as reaching it, the return of marbles that leave the arena to the boundary, shooting from the edge of a hole instead of from inside it, and the fixed board and hole layout (holes 13 m apart in a line, H1 nearest the jalla).
 - **To confirm with players:** whether the route is really five legs; the hole layout and spacing; whether a marble resting in a hole can be hit.
 
 ## 6. Guli Khela — kep and baad

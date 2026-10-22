@@ -7,6 +7,9 @@ signal touched_marble(marble: Marble, other: Marble)
 
 var marble_id: int = -1
 var side: int = -1
+var radius: float = Tuning.MARBLE_RADIUS
+## Speed a power-1.0 shot gives this marble.
+var shot_speed: float = Tuning.MAX_SHOT_SPEED
 
 
 func _init() -> void:
@@ -14,6 +17,8 @@ func _init() -> void:
 	linear_damp = Tuning.LINEAR_DAMP
 	angular_damp = Tuning.ANGULAR_DAMP
 	continuous_cd = true
+	# A sleeping marble reports no contacts, so a resting rival would never register a hit.
+	can_sleep = false
 	contact_monitor = true
 	max_contacts_reported = 8
 	physics_material_override = _make_material()
@@ -21,18 +26,26 @@ func _init() -> void:
 
 
 ## Builds the collision shape and a plain coloured sphere. id and side are set before adding.
-func setup(id: int, side_index: int, colour: Color) -> void:
+func setup(
+	id: int,
+	side_index: int,
+	colour: Color,
+	marble_radius: float = Tuning.MARBLE_RADIUS,
+	speed: float = Tuning.MAX_SHOT_SPEED
+) -> void:
 	marble_id = id
 	side = side_index
+	radius = marble_radius
+	shot_speed = speed
 	var shape := CollisionShape3D.new()
 	var sphere := SphereShape3D.new()
-	sphere.radius = Tuning.MARBLE_RADIUS
+	sphere.radius = radius
 	shape.shape = sphere
 	add_child(shape)
 	var mesh := MeshInstance3D.new()
 	var sphere_mesh := SphereMesh.new()
-	sphere_mesh.radius = Tuning.MARBLE_RADIUS
-	sphere_mesh.height = Tuning.MARBLE_RADIUS * 2.0
+	sphere_mesh.radius = radius
+	sphere_mesh.height = radius * 2.0
 	mesh.mesh = sphere_mesh
 	var material := StandardMaterial3D.new()
 	material.albedo_color = colour
@@ -42,7 +55,7 @@ func setup(id: int, side_index: int, colour: Color) -> void:
 
 
 func apply_shot(command: ShotCommand) -> void:
-	apply_central_impulse(command.impulse(Tuning.MAX_SHOT_SPEED, mass))
+	apply_central_impulse(command.impulse(shot_speed, mass))
 
 
 ## Freezes the marble in place at a ground position, with all motion cleared. Every marble is
@@ -50,7 +63,7 @@ func apply_shot(command: ShotCommand) -> void:
 func hold_at(ground_position: Vector2) -> void:
 	freeze = true
 	global_transform = Transform3D(
-		Basis.IDENTITY, Vector3(ground_position.x, Tuning.MARBLE_RADIUS, ground_position.y)
+		Basis.IDENTITY, Vector3(ground_position.x, radius, ground_position.y)
 	)
 	linear_velocity = Vector3.ZERO
 	angular_velocity = Vector3.ZERO

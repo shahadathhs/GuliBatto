@@ -61,7 +61,7 @@ func test_the_boxes_and_patches_tile_the_whole_ground_with_no_overlap() -> void:
 	var half := 3.0
 	var holes := PackedVector2Array([Vector2(0.0, -0.3), Vector2(1.0, 0.8), Vector2(-1.5, 1.6)])
 	var patches := GroundField.patch_rects(holes, Tuning.DISH_RADIUS, Tuning.GROUND_CELL)
-	var free := GroundField.free_rects(half, patches)
+	var free := GroundField.free_rects(Rect2(-half, -half, half * 2.0, half * 2.0), patches)
 	assert_almost_eq(
 		_area(free) + _area(patches), 6.0 * 6.0, 0.001, "nothing missing, nothing doubled"
 	)
@@ -78,7 +78,7 @@ func test_the_boxes_and_patches_tile_the_whole_ground_with_no_overlap() -> void:
 
 
 func test_flat_ground_is_one_box() -> void:
-	var free := GroundField.free_rects(3.0, [] as Array[Rect2])
+	var free := GroundField.free_rects(Rect2(-3.0, -3.0, 6.0, 6.0), [] as Array[Rect2])
 	assert_eq(free.size(), 1)
 	assert_almost_eq(_area(free), 36.0, 0.001)
 

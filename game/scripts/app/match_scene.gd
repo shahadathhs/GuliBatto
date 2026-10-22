@@ -29,7 +29,8 @@ func start(rule_profile: RuleProfile, rule_set: RuleSet) -> void:
 	add_child(board)
 	rig = CameraRig.new()
 	add_child(rig)
-	var visual := AimVisual.new(scheme)
+	rig.frame(profile)
+	var visual := AimVisual.new(scheme, profile.marble_radius)
 	add_child(visual)
 	controller = MatchController.new()
 	add_child(controller)
@@ -45,6 +46,30 @@ func start(rule_profile: RuleProfile, rule_set: RuleSet) -> void:
 	controller.start(board, profile, rules, human_side)
 	hud.set_mode_caption(rules.caption(controller.state, profile))
 	hud.set_standings(rules.standings(controller.state), human_side)
+
+
+func _process(_delta: float) -> void:
+	if profile.camera_follow and controller != null and controller.state != null:
+		_follow_shooter()
+
+
+## A board bigger than the screen: the camera follows the marble about to shoot, looking ahead
+## toward its target. It holds still while aiming (the aim is read from the ground under the
+## finger) and shows the whole board from the top-down view.
+func _follow_shooter() -> void:
+	if rig.view == CameraRig.View.TOP_DOWN and profile.camera_overview > 0.0:
+		rig.follow_point = null
+		return
+	var side := controller.current_side()
+	var m := board.marble(side)
+	if m == null or aim.mode == AimController.Mode.AIM:
+		return
+	var at := m.ground_position()
+	var ahead: Variant = rules.aim_point(controller.state, profile, side)
+	if controller.phase == MatchController.Phase.WAITING_FOR_SHOT and ahead != null:
+		at += ((ahead as Vector2) - at).limit_length(profile.camera_look_ahead)
+	var limit := profile.arena_size - Vector2(1.5, 2.0)
+	rig.follow_point = Vector2(clampf(at.x, -limit.x, limit.x), clampf(at.y, -limit.y, limit.y))
 
 
 func cancel_aim() -> void:

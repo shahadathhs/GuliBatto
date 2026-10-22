@@ -55,7 +55,7 @@ static func score_round(
 	var outside: Array[int] = []
 	for id in tossed:
 		var side := snapshot.side_of(id)
-		if snapshot.is_inside(id, kep, Tuning.KEP_RADIUS):
+		if snapshot.is_inside(id, kep, profile.hole_radius):
 			points[side] = profile.points_in_hole
 			placing[side] = &"in_kep"
 		else:
@@ -87,6 +87,10 @@ static func score_round(
 	return {"points": points, "placing": placing}
 
 
+func aim_point(_state: MatchState, profile: RuleProfile, _side: int) -> Variant:
+	return profile.holes[0]
+
+
 func caption(state: MatchState, profile: RuleProfile) -> String:
 	return "%s · round %d of %d" % [profile.title, state.round_index + 1, state.rounds]
 
@@ -97,7 +101,7 @@ func turn_text(_state: MatchState, is_human: bool) -> String:
 
 func cue_text(result: RuleResult, profile: RuleProfile, snapshot: BoardSnapshot) -> String:
 	var d := snapshot.position_of(result.shooter).distance_to(profile.holes[0])
-	return "In the kep" if d <= Tuning.KEP_RADIUS else "%.1f m from the kep" % d
+	return "In the kep" if d <= profile.hole_radius else "%.1f m from the kep" % d
 
 
 func _begin_round(state: MatchState) -> void:

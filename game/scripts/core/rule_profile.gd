@@ -5,6 +5,24 @@ extends Resource
 
 @export var mode_id: StringName = &"bench"
 @export var title: String = ""
+## The marble, and the speed a full-power shot gives it.
+@export var marble_radius: float = Tuning.MARBLE_RADIUS
+@export var shot_speed: float = Tuning.MAX_SHOT_SPEED
+## The floor: a circle (arena_size.x is the radius) or, with arena_rect, a rectangle whose half
+## width and half length are arena_size.
+@export var arena_rect: bool = false
+@export var arena_size: Vector2 = Vector2(Tuning.ARENA_RADIUS, Tuning.ARENA_RADIUS)
+## How far the finger is pulled for full power, and how the camera frames the floor.
+@export var max_pull: float = 2.4
+@export var camera_focus: Vector2 = Vector2(0.0, 0.3)
+@export var camera_scale: float = 1.0
+## A board bigger than the screen: the camera follows the marble about to shoot, looking a little
+## toward its target. The top-down view then stands `camera_overview` back to show the whole board,
+## and the view can zoom out to `camera_max_distance`. Zero keeps the defaults.
+@export var camera_follow: bool = false
+@export var camera_look_ahead: float = 0.0
+@export var camera_overview: float = 0.0
+@export var camera_max_distance: float = 0.0
 @export var side_count: int = 3
 @export var rounds: int = 1
 ## Z of the line to stand behind; marbles are tossed from here toward negative Z.
@@ -47,6 +65,21 @@ static func batto() -> RuleProfile:
 	p.mode_id = &"batto"
 	p.title = "Batto"
 	p.side_count = 3
+	p.marble_radius = Tuning.BATTO_MARBLE_RADIUS
+	p.shot_speed = Tuning.BATTO_SHOT_SPEED
+	p.arena_rect = true
+	p.arena_size = Tuning.BATTO_HALF_SIZE
+	p.jalla_z = Tuning.BATTO_JALLA_Z
 	p.holes = PackedVector2Array([Tuning.BATTO_H1, Tuning.BATTO_H2, Tuning.BATTO_H3])
+	p.hole_radius = Tuning.BATTO_HOLE_RADIUS
+	p.dish_radius = Tuning.BATTO_DISH_RADIUS
+	p.dish_depth = Tuning.BATTO_DISH_DEPTH
+	p.max_pull = Tuning.BATTO_MAX_PULL
+	p.camera_focus = Vector2.ZERO
+	p.camera_scale = Tuning.BATTO_CAMERA_SCALE
+	p.camera_follow = true
+	p.camera_look_ahead = Tuning.BATTO_LOOK_AHEAD
+	p.camera_overview = Tuning.BATTO_OVERVIEW_DISTANCE
+	p.camera_max_distance = Tuning.BATTO_CAMERA_MAX_DISTANCE
 	p.route = PackedInt32Array([0, 1, 2, 1, 0])
 	return p

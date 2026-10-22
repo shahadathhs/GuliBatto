@@ -37,9 +37,26 @@ const KEP_RADIUS := 0.3
 ## rolls through.
 const DISH_RADIUS := 0.45
 const DISH_DEPTH := 0.04
-## Batto: three holes in a line away from the jalla, H1 nearest.
-const BATTO_H1 := Vector2(0.0, 0.8)
-const BATTO_H2 := Vector2(0.0, -0.45)
-const BATTO_H3 := Vector2(0.0, -1.7)
+## Batto is played on a very large rectangular board ("a pool table") with small marbles and deep,
+## narrow holes four marbles wide. Half the width and half the length of the floor, the jalla near
+## one end, and three holes in a line, well apart. The camera follows the marble about to shoot.
+const BATTO_MARBLE_RADIUS := 0.1
+const BATTO_SHOT_SPEED := 14.0
+const BATTO_HALF_SIZE := Vector2(5.0, 19.0)
+const BATTO_JALLA_Z := 17.0
+const BATTO_H1 := Vector2(0.0, 13.0)
+const BATTO_H2 := Vector2(0.0, 0.0)
+const BATTO_H3 := Vector2(0.0, -13.0)
+## The hole is four marbles wide (radius = 4 x the marble's radius); the dish adds a lip around it.
+const BATTO_HOLE_RADIUS := 0.4
+const BATTO_DISH_RADIUS := 0.5
+const BATTO_DISH_DEPTH := 0.45
+const BATTO_MAX_PULL := 2.6
+const BATTO_CAMERA_SCALE := 0.9
+## The overview (top-down) view stands this far back to show the whole board, and zoom out reaches.
+const BATTO_OVERVIEW_DISTANCE := 30.0
+const BATTO_CAMERA_MAX_DISTANCE := 42.0
+## How far ahead of the marble, toward its target, the camera looks.
+const BATTO_LOOK_AHEAD := 2.5
 ## Ground heights are sampled on a grid this fine for the collision shape.
 const GROUND_CELL := 0.05

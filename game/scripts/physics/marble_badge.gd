@@ -8,7 +8,7 @@ var marble: Marble
 
 func _init(target: Marble, side: int, scheme: Palette.Scheme) -> void:
 	marble = target
-	var r := Tuning.MARBLE_RADIUS
+	var r := target.radius
 	var mesh := MeshInstance3D.new()
 	match SideStyle.mark(side):
 		SideStyle.Mark.RING:
@@ -42,4 +42,4 @@ func _init(target: Marble, side: int, scheme: Palette.Scheme) -> void:
 
 func _process(_delta: float) -> void:
 	if is_instance_valid(marble):
-		global_position = marble.global_position + Vector3(0.0, Tuning.MARBLE_RADIUS + 0.01, 0.0)
+		global_position = marble.global_position + Vector3(0.0, marble.radius + 0.01, 0.0)

@@ -34,7 +34,7 @@ The game must make it obvious whose turn it is, which marble is the striker, wha
 
 ### Aim feedback
 
-- A ground-plane arrow indicates shot direction.
+- A short ground-plane arrow indicates shot direction. It is kept short on purpose: it says which way, not how far, so judging the distance stays part of the game.
 - A power indicator grows within a fixed limit.
 - Optional predicted-path feedback should be conservative. Do not promise a precise bounce trajectory unless it actually models collision and friction well.
 - Invalid or cancelled aiming resets the preview without changing game state.

@@ -9,6 +9,12 @@ signal shot_resolved(snapshot: BoardSnapshot, report: ShotReport, timed_out: boo
 
 enum State { READY, ROLLING, RESETTING }
 
+## A rival this close to the shooter (marbles touching, give or take) is already in contact when
+## the shot is fired, so the engine will not report a new contact when the shot pushes into it.
+const CONTACT_SLACK := 0.02
+## How far toward a touching rival a shot must point (the cosine of the angle) to push into it.
+const TOWARD_MIN := 0.1
+
 var state: State = State.READY
 var report: ShotReport = ShotReport.new()
 var detector: SettleDetector = SettleDetector.new()
@@ -61,6 +67,17 @@ func reset(layout: Array) -> void:
 	state = State.READY
 
 
+## Lifts one marble and sets it down at a ground position (it must not overlap another marble),
+## for a shot taken from the edge of a hole. The board is RESETTING until it has settled there.
+func move_marble(id: int, pos: Vector2) -> void:
+	state = State.RESETTING
+	var m: Marble = _marbles[id]
+	m.hold_at(pos)
+	await get_tree().physics_frame
+	m.release()
+	state = State.READY
+
+
 ## Adds a marble at rest at a ground position (it must not overlap another marble).
 func place(id: int, side: int, pos: Vector2) -> Marble:
 	return _spawn(id, side, pos)
@@ -96,8 +113,23 @@ func fire(command: ShotCommand) -> bool:
 	report.shooter_id = command.marble_id
 	detector.reset()
 	state = State.ROLLING
+	_count_touching_rivals_ahead(command)
 	ShotApplier.apply(_marbles[command.marble_id], command)
 	return true
+
+
+## A marble resting against the shooter is touched if the shot goes toward it, even though no new
+## contact begins. Contact reports cover every other touch.
+func _count_touching_rivals_ahead(command: ShotCommand) -> void:
+	var shooter: Marble = _marbles[command.marble_id]
+	for id in _marbles:
+		if id == command.marble_id:
+			continue
+		var other: Marble = _marbles[id]
+		var offset := other.ground_position() - shooter.ground_position()
+		if offset.length() <= shooter.radius + other.radius + CONTACT_SLACK:
+			if command.direction.dot(offset.normalized()) > TOWARD_MIN:
+				report.add_touch(id)
 
 
 func snapshot() -> BoardSnapshot:
@@ -134,8 +166,8 @@ func _resolve() -> void:
 
 func _spawn(id: int, side: int, at: Vector2) -> Marble:
 	var m := Marble.new()
-	m.setup(id, side, SideStyle.colour(side, scheme))
-	m.position = Vector3(at.x, Tuning.MARBLE_RADIUS, at.y)
+	m.setup(id, side, SideStyle.colour(side, scheme), profile.marble_radius, profile.shot_speed)
+	m.position = Vector3(at.x, profile.marble_radius, at.y)
 	m.touched_marble.connect(_on_touched)
 	add_child(m)
 	_marbles[id] = m

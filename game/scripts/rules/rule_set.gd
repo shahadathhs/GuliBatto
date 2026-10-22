@@ -15,6 +15,18 @@ func spawn_position(_state: MatchState, _profile: RuleProfile, _snapshot: BoardS
 	return Vector2.ZERO
 
 
+## Where the side's marble is set down before it shoots, or null to shoot from where it lies.
+func shot_start(
+	_state: MatchState, _profile: RuleProfile, _snapshot: BoardSnapshot, _side: int
+) -> Variant:
+	return null
+
+
+## The ground point the side is playing toward (its next hole), or null. The camera looks that way.
+func aim_point(_state: MatchState, _profile: RuleProfile, _side: int) -> Variant:
+	return null
+
+
 ## Called once per shot, after the board settles. Updates the state and says what happened.
 func evaluate(
 	_state: MatchState, _profile: RuleProfile, _snapshot: BoardSnapshot, _report: ShotReport
