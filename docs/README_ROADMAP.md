@@ -10,7 +10,7 @@
 - All four games (Kep, Batto, Guli Khela, Quick Dan), complete, with computer sides, saved settings, a shot-follow camera, sound, and the pages and rules cards from the shared `content/`.
 - Two play modes: against one to three computers, and pass and play for two to five people ([`README_PLAY_MODES.md`](README_PLAY_MODES.md)), with a fifth side (rose, diamond), a hand-over screen and two sounds.
 - The website, redesigned: Home, the games, How to play, About, Contact, Privacy, Download (with a QR code) and Play (a phone, then the game), all rendered from the same `content/` as the app.
-- The Android and web builds are produced by CI. `v0.0.1` was published on 2026-10-21 (Kep only) and on 2026-10-22 (all four games); the version is now `0.0.2`, and the first merge to `main` publishes it. Only the web export has been run, in a headless browser; the APK has not been run on a real device.
+- The Android and web builds are produced by CI. `v0.0.1` was published on 2026-10-21 (Kep only) and on 2026-10-22 (all four games); `0.0.2` (both play modes) followed it, and the version is now `0.0.3` (the 3D field view, deep Batto pits and the phone back button), published by the merge of PR #6. Only the web export has been run, in a headless browser; the APK has not been run on a real device.
 - Checks: lint, token, colour, sound and content checks, 230 game tests, site tests and a smoke test of every page, and a CI pipeline that passes.
 
 **Not built**

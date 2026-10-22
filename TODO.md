@@ -90,7 +90,7 @@ Open: the email or form for Contact.
 
 ## Phase 7 — release
 
-- [x] Automatic release of the APK, the web export and `SHA256SUMS`: it ran on 2026-10-22 and republished `v0.0.1` with all four games; the version is now `0.0.2` (both play modes), published when that merges
+- [x] Automatic release of the APK, the web export and `SHA256SUMS`: it ran on 2026-10-22 and republished `v0.0.1` with all four games; `0.0.2` (both play modes) followed, and the version is now `0.0.3` (the 3D field view, deep pits and back), published when PR #6 merges
 - [x] Site host chosen and deployed: Vercel, `playgulibatto.vercel.app`
 - [ ] Hand-test on a phone and in a desktop browser; write the known-limitations note
 - [ ] Check the rules with people who played; update the About page from what they said
