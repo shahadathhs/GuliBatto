@@ -4,6 +4,7 @@ extends ScreenBase
 signal back_pressed
 signal start_pressed(mode_id: StringName)
 signal about_pressed
+signal rules_pressed(mode_id: StringName)
 
 var _selected: StringName = ModeRegistry.ORDER[0]
 var _panels: Dictionary = {}
@@ -53,8 +54,12 @@ func _restyle() -> void:
 func _row(id: StringName) -> PanelContainer:
 	var panel := PanelContainer.new()
 	panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override("separation", 8)
 	var box := VBoxContainer.new()
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	box.add_theme_constant_override("separation", 6)
 	var title := UiKit.label(ModeRegistry.TITLES[id], 21, &"ink", true)
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -63,7 +68,12 @@ func _row(id: StringName) -> PanelContainer:
 	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(line)
-	panel.add_child(box)
+	row.add_child(box)
+	var rules := UiKit.text_action("Rules")
+	rules.size_flags_vertical = Control.SIZE_SHRINK_END
+	rules.pressed.connect(func() -> void: rules_pressed.emit(id))
+	row.add_child(rules)
+	panel.add_child(row)
 	panel.gui_input.connect(
 		func(event: InputEvent) -> void:
 			if (

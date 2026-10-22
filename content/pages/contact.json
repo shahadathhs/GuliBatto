@@ -1,0 +1,39 @@
+{
+  "title": "Contact",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "If you know these games, I would like to hear how you played them: the names you used, the distances, what happened when someone missed."
+    },
+    {
+      "type": "paragraph",
+      "text": "The best way to reach me is to open an issue on the project's page on GitHub. Say which game it is and what you remember. A short note is plenty."
+    },
+    {
+      "type": "link",
+      "label": "Tell me how you played",
+      "target": "url:issues"
+    },
+    {
+      "type": "heading",
+      "text": "Elsewhere"
+    },
+    {
+      "type": "link",
+      "label": "Play on the web",
+      "target": "url:play",
+      "hide_on": "web"
+    },
+    {
+      "type": "link",
+      "label": "Get it on Android",
+      "target": "url:download",
+      "hide_on": "android"
+    },
+    {
+      "type": "link",
+      "label": "About these games",
+      "target": "page:about"
+    }
+  ]
+}

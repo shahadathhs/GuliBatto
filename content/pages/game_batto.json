@@ -1,0 +1,69 @@
+{
+  "title": "Batto",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Race your marble along three holes and back. Hit a rival's marble, or reach a hole, and you shoot again. The last side to finish loses."
+    },
+    {
+      "type": "diagram",
+      "id": "batto_route",
+      "caption": "Out through holes 1, 2 and 3, then back through 2 to 1."
+    },
+    {
+      "type": "heading",
+      "text": "The board"
+    },
+    {
+      "type": "paragraph",
+      "text": "A large rectangular board with the jalla at one end and three deep holes in a line, numbered 1, 2 and 3. The marbles are small and the holes are only a few marbles wide. A marble that drops in stays in. The camera follows the marble about to shoot."
+    },
+    {
+      "type": "heading",
+      "text": "The turns"
+    },
+    {
+      "type": "steps",
+      "items": [
+        "Everyone tosses once from behind the jalla toward hole 1. The side closest to it goes first, and a marble resting in the hole counts as closest.",
+        "Then each side shoots its own marble from where it lies. A marble resting in a hole is set down at the edge of the hole, on the side facing its next hole, and shot from there.",
+        "A shot that ends with your marble in the hole you are heading for takes you on to the next. The route is hole 1, 2, 3, then back through 2 to 1.",
+        "Reach the hole you are heading for, or hit a rival's marble, and you shoot again. Another hit or hole earns another shot, up to three extra shots in one turn.",
+        "A side that comes to rest in the last hole has finished. Its marble leaves the board and it gets no extra shot."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The match ends when all but one side have finished. The side still on the route is last. If the turns run out first, the sides still racing are ranked by how far along the route they are, then by how close they are to their next hole."
+    },
+    {
+      "type": "diagram",
+      "id": "batto_hit",
+      "caption": "A hit: B's marble is knocked away and A shoots again."
+    },
+    {
+      "type": "paragraph",
+      "text": "A toss that comes to rest in hole 1 counts as reaching it, so that side starts the race heading for hole 2. Touching another marble during the opening toss changes nothing."
+    },
+    {
+      "type": "heading",
+      "text": "A worked example"
+    },
+    {
+      "type": "paragraph",
+      "text": "Three sides toss at hole 1. B's marble rests in the hole and counts as closest, then A's, then C's. B goes first and is already heading for hole 2. B's shot drops into hole 2, so B shoots again. The second shot hits C's marble, which rolls away, so B shoots again. The third shot misses and the turn passes to A."
+    },
+    {
+      "type": "heading",
+      "text": "What to look for"
+    },
+    {
+      "type": "list",
+      "items": [
+        "A hit does not move you along the route. It earns a shot, and it can send a rival away from the hole it was heading for.",
+        "A fast shot rolls over a hole. A slow one drops in.",
+        "The holes are further apart than a hard shot rolls, so most legs take more than one shot."
+      ]
+    }
+  ]
+}

@@ -15,11 +15,11 @@ The goal is the four modes, represented properly, on Android and the web, with t
 
 ## App plan (agreed 2026-10-22), in this order
 
-1. [x] **Saved settings and reset:** theme, sound, volume, follow-shots, the first-use prompt and the rules cards seen are kept between runs (`Settings`); Settings has a confirmed "Reset to defaults"; 184 game tests
-2. [x] **Shot-follow camera for every mode:** follow a shot while it rolls, ease back to the framed view, a "Follow shots" toggle in Settings, a tap skips it, Kep included (`CameraDirector`); 184 game tests
-3. [x] **Sound:** synthesized sounds written by `scripts/sounds.mjs` (no downloads), played from physics events, shots, buttons and the end of a match; on/off and volume in Settings; 184 game tests. **Not yet listened to by a person**, and the web build's audio start on the first tap is not yet checked in a browser
-4. [x] **Guli Khela and Quick Dan** (Phase 5 below), on a Kep-scale round board; 184 game tests
-5. [ ] **Pages and per-game teaching** (Phase 6, the app half): one `content/` source, diagrams from data, a long How to play, a page per game, a rules card the first time each game starts and a "?" in the match, About, Contact, Privacy, links to the web version and the Android download
+1. [x] **Saved settings and reset:** theme, sound, volume, follow-shots, the first-use prompt and the rules cards seen are kept between runs (`Settings`); Settings has a confirmed "Reset to defaults"; 199 game tests
+2. [x] **Shot-follow camera for every mode:** follow a shot while it rolls, ease back to the framed view, a "Follow shots" toggle in Settings, a tap skips it, Kep included (`CameraDirector`); 199 game tests
+3. [x] **Sound:** synthesized sounds written by `scripts/sounds.mjs` (no downloads), played from physics events, shots, buttons and the end of a match; on/off and volume in Settings; 199 game tests. **Not yet listened to by a person**, and the web build's audio start on the first tap is not yet checked in a browser
+4. [x] **Guli Khela and Quick Dan** (Phase 5 below), on a Kep-scale round board; 199 game tests
+5. [x] **Pages and per-game teaching** (Phase 6, the app half): one `content/` source, diagrams from data, a long How to play, a page per game, a rules card the first time each game starts and a "?" in the match, About, Contact, Privacy, links to the web version and the Android download; 199 game tests. **Contact is the project's GitHub issues page until you choose an email or form**
 6. [ ] **Phone test, tuning and release** (Phase 7): play all four on a phone, tune pull, settle time and Batto's race length, check the rules with a player, publish
 
 Open: the email or form for Contact.
@@ -55,9 +55,10 @@ Open: the email or form for Contact.
 
 ## Phase 6 — the pages, on the web and in the app
 
-- [ ] `content/` source and the diagram format; a check that the game and the site match; move the About text onto it
+- [x] `content/` source and the diagram format, with a check that the content is current, its links and diagrams exist, mode pages carry no history labels, and About matches `docs/README_ABOUT.md` (`make content-check`)
+- [ ] A check, or better a rendering, that makes the site read the same `content/` (the site still holds its own text for About, How to play and Privacy)
 - [ ] Site: the large Home, a page for each game, the very large How to play, Contact, About, Privacy
-- [ ] App: How to play, mode info, About, Contact, Privacy, and the links to the web and to the Android download
+- [x] App: How to play (controls, camera, the four games, a glossary and questions), a page and a rules card for each game, About, Contact, Privacy, and the links to the web and to the Android download (hidden where you already are)
 - [ ] Site-native browser loader (progress, WebGL and WebAssembly checks, failure and retry, sharp sizing, fullscreen) replacing the framed Godot page
 - [ ] Download page for the APK and the browser version, reading the release
 - [ ] The basics: sound, locally saved settings with a reset

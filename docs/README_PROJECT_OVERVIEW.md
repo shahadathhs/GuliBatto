@@ -97,7 +97,7 @@ These are observations to record in playtests, not numeric targets: there are no
 
 | Area                                   | State                                                                                                                                                 |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Shot, physics, settling, camera, input | Built and tested (184 automated tests, real input through the whole stack); **not played by hand on a phone**                                         |
+| Shot, physics, settling, camera, input | Built and tested (199 automated tests, real input through the whole stack); **not played by hand on a phone**                                         |
 | Kep                                    | Complete: scoring, rounds, computer sides, the full screen set in light and dark                                                                      |
 | Batto                                  | Complete: opening toss, the three-hole race, bonus shots, finishing order and computer sides that choose between a hole and a hit; not played by hand |
 | Guli Khela, Quick Dan                  | Complete: stake, scatter, baad, fines, dans, the three-pass rule, surrender and computer sides                                                        |

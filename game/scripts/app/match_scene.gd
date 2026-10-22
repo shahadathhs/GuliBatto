@@ -4,6 +4,7 @@ extends Node
 ## controller and the HUD, wired together. The app creates one per match and frees it afterwards.
 
 signal pause_requested
+signal help_requested
 signal round_finished(result: RuleResult, totals: Array[int], caption: String, total_word: String)
 signal match_finished(ranking: Array[int], details: Array[String])
 
@@ -61,6 +62,11 @@ func _connect() -> void:
 		func() -> void:
 			aim.cancel()
 			pause_requested.emit()
+	)
+	hud.help_pressed.connect(
+		func() -> void:
+			aim.cancel()
+			help_requested.emit()
 	)
 	hud.view_selected.connect(
 		func(v: CameraRig.View) -> void:

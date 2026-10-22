@@ -1,0 +1,192 @@
+{
+  "title": "How to play",
+  "blocks": [
+    {
+      "type": "paragraph",
+      "text": "Guli & Batto has four marble games. They all work the same way. You take a shot, everything rolls under real physics until it stops, and the shot is judged once, from where the marbles rest."
+    },
+    {
+      "type": "heading",
+      "text": "Taking a shot"
+    },
+    {
+      "type": "steps",
+      "items": [
+        "Press your marble. A ring under it shows it is your turn.",
+        "Drag back, away from where you want it to go, like a slingshot.",
+        "A short arrow shows the direction and a bar shows the power. A longer pull means more power.",
+        "Release to shoot. To change your mind, pull back to where you started or tap Cancel before you release."
+      ]
+    },
+    {
+      "type": "diagram",
+      "id": "slingshot",
+      "caption": "Pull back from the marble. It goes the other way."
+    },
+    {
+      "type": "paragraph",
+      "text": "The arrow shows only the direction. How hard to shoot is for you to judge."
+    },
+    {
+      "type": "heading",
+      "text": "The camera"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Drag empty ground to turn the view.",
+        "Scroll, or pinch with two fingers, to zoom.",
+        "The three buttons at the bottom change the view: angled, from above, and low. The round arrow puts the view back.",
+        "The camera never changes your shot. Your aim is worked out on the ground, not on the screen.",
+        "On a big board the camera follows the marble about to shoot, and follows a shot while it rolls. You can turn that off in Settings, and a tap skips it for one shot."
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "After a shot"
+    },
+    {
+      "type": "paragraph",
+      "text": "When everything has stopped, the game judges the shot once, from where the marbles rest, and a short note says what happened and why. Only a marble your own marble reaches counts as touched by you. A marble pushed by a third marble does not."
+    },
+    {
+      "type": "heading",
+      "text": "The sides"
+    },
+    {
+      "type": "paragraph",
+      "text": "You play against two computer sides. Each side has its own colour and its own mark on the marble: a ring, a dot, a bar or a triangle, so colour is never the only way to tell them apart. Marbles that belong to no side, the stake in Guli Khela, are bone-coloured with a bar."
+    },
+    {
+      "type": "heading",
+      "text": "The four games"
+    },
+    {
+      "type": "paragraph",
+      "text": "Each game has a page with its rules, a worked example and a picture."
+    },
+    {
+      "type": "link",
+      "label": "Kep",
+      "target": "page:game_kep"
+    },
+    {
+      "type": "link",
+      "label": "Batto",
+      "target": "page:game_batto"
+    },
+    {
+      "type": "link",
+      "label": "Guli Khela",
+      "target": "page:game_guli"
+    },
+    {
+      "type": "link",
+      "label": "Quick Dan",
+      "target": "page:game_quick"
+    },
+    {
+      "type": "heading",
+      "text": "Words you will see"
+    },
+    {
+      "type": "term",
+      "term": "jalla",
+      "text": "The line scratched on the ground. You stand behind it to toss or throw."
+    },
+    {
+      "type": "term",
+      "term": "kep",
+      "text": "The hole. In Kep it is the target, and in Guli Khela the stake is scattered round it."
+    },
+    {
+      "type": "term",
+      "term": "dan",
+      "text": "One round of Guli Khela, from paying the stake to a side taking the ground."
+    },
+    {
+      "type": "term",
+      "term": "baad",
+      "text": "The marble you name before you throw in Guli Khela, and must not touch."
+    },
+    {
+      "type": "term",
+      "term": "stake",
+      "text": "The marbles each side pays into a dan."
+    },
+    {
+      "type": "term",
+      "term": "purse",
+      "text": "The marbles a side holds. Each side starts with 10."
+    },
+    {
+      "type": "term",
+      "term": "scatterer",
+      "text": "The side whose toss was closest. It sets the stake down round the kep and does not throw in that dan."
+    },
+    {
+      "type": "term",
+      "term": "pass",
+      "text": "One go round the table: every side except the scatterer throws once."
+    },
+    {
+      "type": "term",
+      "term": "fine",
+      "text": "One marble from your purse, put on the ground, when you touch the baad or more than one marble."
+    },
+    {
+      "type": "term",
+      "term": "touch",
+      "text": "Your marble reaching another during your own shot."
+    },
+    {
+      "type": "term",
+      "term": "hit",
+      "text": "In Batto, a touch of a rival's marble."
+    },
+    {
+      "type": "heading",
+      "text": "Questions"
+    },
+    {
+      "type": "qa",
+      "q": "Why was my shot judged that way?",
+      "a": "The game looks only at where the marbles rest once everything has stopped, and at which marbles your marble touched. The note after the shot says which."
+    },
+    {
+      "type": "qa",
+      "q": "Can a marble leave the board?",
+      "a": "No. The board has walls, and the marbles stay in."
+    },
+    {
+      "type": "qa",
+      "q": "Can I change my mind after I start to pull?",
+      "a": "Yes. Pull back to where you started, or tap Cancel, before you release."
+    },
+    {
+      "type": "qa",
+      "q": "How do I leave a match?",
+      "a": "Pause with the button at the top right, then choose Restart or Back to menu. In Guli Khela and Quick Dan you can also surrender, which ends the match with you last."
+    },
+    {
+      "type": "qa",
+      "q": "Does it need the internet?",
+      "a": "No. The game runs without a connection and sends nothing."
+    },
+    {
+      "type": "qa",
+      "q": "My game was different when I played it.",
+      "a": "The rules come from games people played, and they differed from street to street. About these games says where each one comes from and what was changed. If you remember it differently, Contact says how to tell me."
+    },
+    {
+      "type": "link",
+      "label": "About these games",
+      "target": "page:about"
+    },
+    {
+      "type": "link",
+      "label": "Contact",
+      "target": "page:contact"
+    }
+  ]
+}

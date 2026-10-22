@@ -6,7 +6,8 @@ export const metadata: Metadata = {
     "Where the rules of Guli & Batto come from, and what the author changed for play on a phone.",
 };
 
-// The text mirrors docs/README_ABOUT.md and game/data/copy.json; change all three together.
+// The text mirrors docs/README_ABOUT.md and content/pages/about.json (which the game shows); change
+// all three together. `make content-check` fails when the doc and the content differ.
 export default function AboutPage() {
   return (
     <main className="page prose">

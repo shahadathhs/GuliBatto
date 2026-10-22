@@ -6,6 +6,7 @@ extends Control
 ## never decides anything.
 
 signal pause_pressed
+signal help_pressed
 signal view_selected(view: CameraRig.View)
 signal reset_pressed
 signal cancel_aim_pressed
@@ -135,6 +136,9 @@ func _build_top() -> void:
 	_chips_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_chips_row.add_theme_constant_override("separation", 14)
 	left.add_child(_chips_row)
+	var help := IconButton.new(IconButton.Glyph.HELP)
+	help.pressed.connect(func() -> void: help_pressed.emit())
+	row.add_child(help)
 	var pause := IconButton.new(IconButton.Glyph.PAUSE)
 	pause.pressed.connect(func() -> void: pause_pressed.emit())
 	row.add_child(pause)

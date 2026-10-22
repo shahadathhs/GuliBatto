@@ -18,6 +18,11 @@ const BLURBS := {
 }
 
 
+## The content page that explains a mode.
+static func page_id(mode_id: StringName) -> String:
+	return "game_%s" % mode_id
+
+
 static func profile(mode_id: StringName) -> RuleProfile:
 	match mode_id:
 		&"batto":

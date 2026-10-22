@@ -4,6 +4,11 @@ extends RefCounted
 ## text actions, bold labels. Everything takes its colours from Appearance, never a literal.
 
 const PRIMARY_SIZE := 112.0
+## A label longer than this many letters does not fit a disc, so the primary action is a rounded
+## rectangle instead of being stretched into a pill.
+const DISC_LABEL_MAX := 6
+const WIDE_PRIMARY_SIZE := Vector2(210.0, 56.0)
+const WIDE_PRIMARY_RADIUS := 16
 const BUTTON_RADIUS := 14
 const FONT_STATES := ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]
 
@@ -50,17 +55,19 @@ static func _apply_states(button: Button, normal: StyleBoxFlat, pressed: StyleBo
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 
-## The one primary action: a solid glaze disc with its label inside.
+## The one primary action: a solid glaze disc with its label inside, or a rounded rectangle when
+## the label is too long for a disc.
 static func primary(text: String, size: float = PRIMARY_SIZE) -> Button:
+	var wide := text.length() > DISC_LABEL_MAX
 	var b := Button.new()
 	b.text = text.to_upper()
-	b.custom_minimum_size = Vector2(size, size)
-	b.add_theme_font_size_override("font_size", 16 if text.length() <= 6 else 13)
+	b.custom_minimum_size = WIDE_PRIMARY_SIZE if wide else Vector2(size, size)
+	b.add_theme_font_size_override("font_size", 16 if wide or text.length() <= 6 else 13)
 	b.add_theme_font_override("font", bold_font())
 	for state in FONT_STATES:
 		b.add_theme_color_override(state, Appearance.color(&"on_glaze"))
 	var fill := Appearance.color(&"glaze")
-	var radius := int(size / 2.0)
+	var radius := WIDE_PRIMARY_RADIUS if wide else int(size / 2.0)
 	_apply_states(b, _style(fill, fill, 0, radius), _style(fill.darkened(0.15), fill, 0, radius))
 	b.pressed.connect(_tap)
 	return b

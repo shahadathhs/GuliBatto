@@ -41,7 +41,7 @@ If you know these games, I would like to hear how you played them: the names you
 
 ## Where it appears
 
-- **In the game:** a screen "About these games" linked from the menu (a text action, not a button), and from the mode list as a small "About" link. It is shown once, after the first mode is chosen, and is always reachable from the menu. It is plain text with the same layout as the Settings screen.
+- **In the game:** a screen "About these games" linked from the menu (a text action, not a button) and from the mode list as a small "About" link. It is built from `content/pages/about.json`, which `make content-check` compares with this file line for line. Contact and Privacy are linked from the end of the page.
 - **On the website:** `/about`, linked from the header and the footer. The landing page's note links to it.
 - **In the store listing and release notes:** one sentence and a link: "Inspired by the traditional marble games of Bangladesh. The rules were remembered and modified by the author; read how on the About page."
 

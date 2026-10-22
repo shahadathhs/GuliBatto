@@ -1,0 +1,317 @@
+{
+  "slingshot": {
+    "half": [2.2, 2.4],
+    "items": [
+      {
+        "kind": "arena",
+        "shape": "rect",
+        "half": [2.2, 2.4]
+      },
+      {
+        "kind": "marble",
+        "at": [0, 0.2],
+        "side": 0,
+        "r": 0.28
+      },
+      {
+        "kind": "line",
+        "from": [0, 0.2],
+        "to": [0, 1.7],
+        "style": "pull"
+      },
+      {
+        "kind": "finger",
+        "at": [0, 1.7]
+      },
+      {
+        "kind": "arrow",
+        "from": [0, -0.2],
+        "to": [0, -1.7],
+        "style": "shot"
+      },
+      {
+        "kind": "label",
+        "at": [0.35, 1.15],
+        "text": "pull back"
+      },
+      {
+        "kind": "label",
+        "at": [-2.05, -1.0],
+        "text": "it goes this way"
+      }
+    ]
+  },
+  "kep_toss": {
+    "half": [3.2, 3.2],
+    "items": [
+      {
+        "kind": "arena",
+        "shape": "circle",
+        "r": 3.0
+      },
+      {
+        "kind": "line",
+        "from": [-2.2, 2.2],
+        "to": [2.2, 2.2],
+        "style": "jalla"
+      },
+      {
+        "kind": "label",
+        "at": [-2.9, 2.55],
+        "text": "jalla"
+      },
+      {
+        "kind": "hole",
+        "at": [0, -0.3],
+        "r": 0.45
+      },
+      {
+        "kind": "label",
+        "at": [0.0, -1.15],
+        "text": "kep"
+      },
+      {
+        "kind": "marble",
+        "at": [0.05, -0.28],
+        "side": 0,
+        "r": 0.22,
+        "label": "A 3"
+      },
+      {
+        "kind": "marble",
+        "at": [0.9, -0.3],
+        "side": 1,
+        "r": 0.22,
+        "label": "B 2"
+      },
+      {
+        "kind": "marble",
+        "at": [-1.5, -0.3],
+        "side": 2,
+        "r": 0.22,
+        "label": "C 1"
+      }
+    ]
+  },
+  "batto_route": {
+    "half": [3.2, 6.5],
+    "items": [
+      {
+        "kind": "arena",
+        "shape": "rect",
+        "half": [3.2, 6.5]
+      },
+      {
+        "kind": "line",
+        "from": [-2.8, 5.6],
+        "to": [2.8, 5.6],
+        "style": "jalla"
+      },
+      {
+        "kind": "label",
+        "at": [-2.95, 5.1],
+        "text": "jalla"
+      },
+      {
+        "kind": "hole",
+        "at": [0, 3.5],
+        "r": 0.8,
+        "label": "1"
+      },
+      {
+        "kind": "hole",
+        "at": [0, -0.5],
+        "r": 0.8,
+        "label": "2"
+      },
+      {
+        "kind": "hole",
+        "at": [0, -4.5],
+        "r": 0.8,
+        "label": "3"
+      },
+      {
+        "kind": "arrow",
+        "from": [-1.2, 3.0],
+        "to": [-1.2, -0.1],
+        "style": "route"
+      },
+      {
+        "kind": "arrow",
+        "from": [-1.2, -1.0],
+        "to": [-1.2, -4.0],
+        "style": "route"
+      },
+      {
+        "kind": "arrow",
+        "from": [1.2, -4.0],
+        "to": [1.2, -1.0],
+        "style": "route_back"
+      },
+      {
+        "kind": "arrow",
+        "from": [1.2, -0.1],
+        "to": [1.2, 3.0],
+        "style": "route_back"
+      },
+      {
+        "kind": "label",
+        "at": [-2.1, 1.4],
+        "text": "out"
+      },
+      {
+        "kind": "label",
+        "at": [2.0, 1.4],
+        "text": "back"
+      },
+      {
+        "kind": "marble",
+        "at": [0, 5.95],
+        "side": 0,
+        "r": 0.3
+      }
+    ]
+  },
+  "batto_hit": {
+    "half": [3.0, 3.0],
+    "items": [
+      {
+        "kind": "arena",
+        "shape": "rect",
+        "half": [3.0, 3.0]
+      },
+      {
+        "kind": "hole",
+        "at": [0, -2.0],
+        "r": 0.7,
+        "label": "2"
+      },
+      {
+        "kind": "marble",
+        "at": [-1.5, 2.0],
+        "side": 0,
+        "r": 0.3,
+        "label": "A"
+      },
+      {
+        "kind": "arrow",
+        "from": [-1.5, 1.6],
+        "to": [0.2, -0.5],
+        "style": "shot"
+      },
+      {
+        "kind": "marble",
+        "at": [0.45, -0.8],
+        "side": 1,
+        "r": 0.3,
+        "label": "B"
+      },
+      {
+        "kind": "arrow",
+        "from": [0.8, -1.0],
+        "to": [2.0, -2.4],
+        "style": "away"
+      },
+      {
+        "kind": "label",
+        "at": [-0.2, 2.55],
+        "text": "hit: shoot again"
+      }
+    ]
+  },
+  "guli_scatter": {
+    "half": [3.2, 3.4],
+    "items": [
+      {
+        "kind": "arena",
+        "shape": "circle",
+        "r": 3.0
+      },
+      {
+        "kind": "line",
+        "from": [-2.2, 2.5],
+        "to": [2.2, 2.5],
+        "style": "jalla"
+      },
+      {
+        "kind": "label",
+        "at": [-2.9, 3.15],
+        "text": "jalla"
+      },
+      {
+        "kind": "hole",
+        "at": [0, -0.3],
+        "r": 0.45
+      },
+      {
+        "kind": "marble",
+        "at": [1.5, -0.3],
+        "side": -1,
+        "r": 0.2
+      },
+      {
+        "kind": "marble",
+        "at": [1.06, 0.76],
+        "side": -1,
+        "r": 0.2
+      },
+      {
+        "kind": "marble",
+        "at": [0, 1.2],
+        "side": -1,
+        "r": 0.2
+      },
+      {
+        "kind": "marble",
+        "at": [-1.06, 0.76],
+        "side": -1,
+        "r": 0.2
+      },
+      {
+        "kind": "marble",
+        "at": [-1.5, -0.3],
+        "side": -1,
+        "r": 0.2
+      },
+      {
+        "kind": "marble",
+        "at": [-1.06, -1.36],
+        "side": -1,
+        "r": 0.2
+      },
+      {
+        "kind": "marble",
+        "at": [0, -1.8],
+        "side": -1,
+        "r": 0.2
+      },
+      {
+        "kind": "marble",
+        "at": [1.06, -1.36],
+        "side": -1,
+        "r": 0.2
+      },
+      {
+        "kind": "cross",
+        "at": [-1.06, 0.76]
+      },
+      {
+        "kind": "label",
+        "at": [-2.0, 1.45],
+        "text": "baad"
+      },
+      {
+        "kind": "marble",
+        "at": [0, 3.0],
+        "side": 0,
+        "r": 0.25
+      },
+      {
+        "kind": "arrow",
+        "from": [0, 2.7],
+        "to": [0, 1.5],
+        "style": "shot"
+      }
+    ]
+  }
+}
