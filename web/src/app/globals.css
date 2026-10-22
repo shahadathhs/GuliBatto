@@ -369,15 +369,85 @@ pre {
 }
 
 /* ── Play ─────────────────────────────────────────────── */
+.phone,
+.play-frame {
+  --phone-w: min(360px, calc((100vh - 200px) * 0.462 + 24px));
+}
+.phone {
+  width: var(--phone-w);
+  background: var(--ink);
+  border-radius: 46px;
+  padding: 0 12px 12px;
+  margin: 24px 0 0;
+  position: relative;
+}
+.phone-top {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.phone-speaker {
+  width: 56px;
+  height: 7px;
+  border-radius: 4px;
+  background: var(--ground);
+  opacity: 0.35;
+}
+.phone-camera {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ground);
+  opacity: 0.35;
+}
+.phone-screen {
+  aspect-ratio: 390 / 800;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--ground);
+}
+.phone-bar {
+  display: block;
+  width: 96px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--ground);
+  opacity: 0.35;
+  margin: 8px auto 0;
+}
 .play-frame {
   display: block;
-  width: 100%;
-  max-width: 390px;
-  height: min(844px, 78vh);
+  width: calc(var(--phone-w, 360px) - 0px);
+  max-width: 100%;
+  aspect-ratio: 390 / 844;
+  max-height: calc(100vh - 140px);
   border: 2px solid var(--ink);
   border-radius: 18px;
   background: var(--ground);
-  margin: 24px 0 0;
+}
+.phone-start {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 0 20px;
+  text-align: center;
+}
+.phone-play {
+  min-width: 0;
+  width: 112px;
+  height: 112px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 18px;
+}
+.phone-start .meta {
+  margin: 0;
 }
 
 @media (max-width: 760px) {
@@ -428,7 +498,9 @@ pre {
 .btn-secondary:hover {
   background: var(--floor);
 }
-.link-row {
+.link-row,
+.prose .link-row {
+  margin: 24px 0 0;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -491,6 +563,9 @@ pre {
 .terms dd {
   margin: 0;
   color: var(--mute);
+}
+.faq {
+  margin-bottom: 8px;
 }
 .faq details {
   border-top: 1px solid var(--line);
@@ -749,8 +824,9 @@ pre {
   margin-top: 8px;
 }
 .play-layout {
-  grid-template-columns: 390px minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
 }
+.play-layout .phone,
 .play-layout .play-frame {
   margin-top: 0;
 }
@@ -836,4 +912,146 @@ pre {
   .facts {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── Motion ───────────────────────────────────────────── */
+/* The hero's marble is pulled back, shot into the first hole, and set down again. */
+.hero-shot {
+  animation: hero-shot 7s infinite;
+}
+@keyframes hero-shot {
+  0%,
+  22% {
+    transform: translateY(0);
+    opacity: 1;
+    animation-timing-function: ease-in-out;
+  }
+  36%,
+  44% {
+    transform: translateY(14px);
+    animation-timing-function: cubic-bezier(0.1, 0.7, 0.3, 1);
+  }
+  58%,
+  80% {
+    transform: translateY(-55px);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  88% {
+    transform: translateY(-55px);
+    opacity: 0;
+  }
+  89% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.demo-art {
+  max-width: 318px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.demo-art:active {
+  cursor: grabbing;
+}
+.marble-fell {
+  animation: fell 0.35s ease-in forwards;
+}
+@keyframes fell {
+  to {
+    transform: scale(0.55);
+    opacity: 0.4;
+  }
+}
+.btn-primary,
+.btn-secondary {
+  transition:
+    transform 0.12s ease,
+    background-color 0.15s ease;
+}
+.btn-primary:active,
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+.game-tile .art .diagram,
+.game-row .diagram {
+  transition: transform 0.25s ease;
+}
+.game-tile:hover .art .diagram,
+.game-row:hover .diagram {
+  transform: translateY(-4px) rotate(-1.5deg);
+}
+.site-header nav a {
+  background: linear-gradient(currentColor, currentColor) left bottom / 0 2px no-repeat;
+  transition: background-size 0.2s ease;
+  text-decoration: none;
+}
+.site-header nav a:hover {
+  background-size: 100% 2px;
+  text-decoration: none;
+}
+.facts dt {
+  transition: border-color 0.2s ease;
+}
+.facts > div:hover dt {
+  border-color: var(--glaze);
+}
+
+/* Set by the Reveal script, so nothing is hidden without JavaScript. */
+.js-reveal .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+.js-reveal .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+.draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.8s ease 0.2s;
+}
+.arrow-head {
+  transition: opacity 0.3s ease 0.8s;
+}
+.js-reveal .figure:not(.in) .draw {
+  stroke-dashoffset: 1;
+}
+.js-reveal .figure:not(.in) .arrow-head {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-shot,
+  .marble-fell {
+    animation: none;
+  }
+}
+.qr-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.qr {
+  width: 168px;
+  height: 168px;
+  flex: none;
+  display: block;
+}
+.qr-row .meta {
+  max-width: 20em;
+}
+.other-device {
+  margin: 28px 0;
+}
+.other-device h2 {
+  margin: 0 0 14px;
+  font-size: 22px;
 }

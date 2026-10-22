@@ -150,8 +150,14 @@ function Item({
             strokeWidth={thin ? 2.5 : 3}
             strokeDasharray={away ? "8 8" : undefined}
             strokeLinecap="round"
+            className={away ? undefined : "draw"}
+            pathLength={away ? undefined : 1}
           />
-          <polygon points={`${x2},${y2} ${tip(13, 6.5)} ${tip(13, -6.5)}`} fill={colour} />
+          <polygon
+            points={`${x2},${y2} ${tip(13, 6.5)} ${tip(13, -6.5)}`}
+            fill={colour}
+            className="arrow-head"
+          />
         </>
       );
     }

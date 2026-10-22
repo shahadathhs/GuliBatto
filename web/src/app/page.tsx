@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArenaArt } from "@/components/arena-art";
-import { Figure } from "@/components/blocks";
+import { SlingshotDemo } from "@/components/slingshot-demo";
 import { GameArt } from "@/components/game-art";
 import { GAMES, card } from "@/lib/content";
 import { latestRelease } from "@/lib/latest-release";
@@ -67,7 +67,7 @@ export default async function HomePage() {
               </li>
             ))}
           </ol>
-          <Figure id="slingshot" caption="Pull back from the marble. It goes the other way." />
+          <SlingshotDemo />
         </div>
       </section>
 

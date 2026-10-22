@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { QrCode } from "@/components/qr-code";
 import { latestRelease } from "@/lib/latest-release";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Download" };
 export const revalidate = 3600;
@@ -25,6 +27,18 @@ export default async function DownloadPage() {
               </div>
               <p className="meta">64-bit ARM. A direct download, not a store build.</p>
 
+              <div className="other-device">
+                <h2>On another device</h2>
+                <div className="qr-row">
+                  <QrCode
+                    text={`${SITE_URL}/download`}
+                    label="A QR code that opens this download page."
+                  />
+                  <p className="meta">
+                    Scan this with a phone camera to open this page on it, then download the app.
+                  </p>
+                </div>
+              </div>
               <section className="verify" aria-labelledby="about-apk">
                 <h3 id="about-apk">About this APK</h3>
                 <dl>
