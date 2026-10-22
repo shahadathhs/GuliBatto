@@ -215,7 +215,7 @@ The site uses the same tokens, wordmark and rules, so it reads as the same produ
 
 ## 11. Sound
 
-A small, original or properly licensed set: marble click and roll, a stronger collision, a soft dirt contact, button feedback, a concise score cue. Sound supports weight and result; every critical result also has a visual cue and works muted. Do not use a recording of a real person's voice or a recognisable cultural performance without permission and licence, and do not use stock "village" ambience to imply authenticity. Record the source and licence of every file beside it.
+A small, original set, written from code by `scripts/sounds.mjs` (so there is nothing to license; `make sounds` regenerates the files in `game/audio/` and `make sounds-check` fails if they drift): a marble striking a marble, a marble on the wall, a marble dropping into a hole, the shot leaving the finger, a button tap, and a win and a lose chime. Hard hits are louder, and the pitch of the repeating sounds varies a little. The sounds are synthetic and have not been judged by ear yet; recordings can replace the files (record their source and licence beside them). Sound supports weight and result; every critical result also has a visual cue and works muted. Do not use a recording of a real person's voice or a recognisable cultural performance without permission and licence, and do not use stock "village" ambience to imply authenticity. Record the source and licence of every file beside it.
 
 ## 12. Cultural visual integrity
 

@@ -7,15 +7,13 @@ signal pause_requested
 signal round_finished(result: RuleResult, totals: Array[int], round_no: int, rounds: int)
 signal match_finished(ranking: Array[int], details: Array[String])
 
-## The first-use prompt is shown once per run.
-static var coach_seen: bool = false
-
 var profile: RuleProfile
 var rules: RuleSet
 var board: Board
 var rig: CameraRig
 var controller: MatchController
 var aim: AimController
+var director: CameraDirector
 var hud: Hud
 var human_side: int = 0
 
@@ -41,35 +39,14 @@ func start(rule_profile: RuleProfile, rule_set: RuleSet) -> void:
 	add_child(layer)
 	hud = Hud.new()
 	layer.add_child(hud)
+	director = CameraDirector.new(rig, board, controller, aim, rules, profile)
+	add_child(director)
+	add_child(SoundDirector.new(board, controller))
 	_connect()
 	hud.highlight_view(CameraRig.View.ANGLED)
 	controller.start(board, profile, rules, human_side)
 	hud.set_mode_caption(rules.caption(controller.state, profile))
 	hud.set_standings(rules.standings(controller.state), human_side)
-
-
-func _process(_delta: float) -> void:
-	if profile.camera_follow and controller != null and controller.state != null:
-		_follow_shooter()
-
-
-## A board bigger than the screen: the camera follows the marble about to shoot, looking ahead
-## toward its target. It holds still while aiming (the aim is read from the ground under the
-## finger) and shows the whole board from the top-down view.
-func _follow_shooter() -> void:
-	if rig.view == CameraRig.View.TOP_DOWN and profile.camera_overview > 0.0:
-		rig.follow_point = null
-		return
-	var side := controller.current_side()
-	var m := board.marble(side)
-	if m == null or aim.mode == AimController.Mode.AIM:
-		return
-	var at := m.ground_position()
-	var ahead: Variant = rules.aim_point(controller.state, profile, side)
-	if controller.phase == MatchController.Phase.WAITING_FOR_SHOT and ahead != null:
-		at += ((ahead as Vector2) - at).limit_length(profile.camera_look_ahead)
-	var limit := profile.arena_size - Vector2(1.5, 2.0)
-	rig.follow_point = Vector2(clampf(at.x, -limit.x, limit.x), clampf(at.y, -limit.y, limit.y))
 
 
 func cancel_aim() -> void:
@@ -93,7 +70,7 @@ func _connect() -> void:
 			hud.highlight_view(CameraRig.View.ANGLED)
 	)
 	hud.cancel_aim_pressed.connect(aim.cancel)
-	hud.coach_dismissed.connect(func() -> void: coach_seen = true)
+	hud.coach_dismissed.connect(Settings.mark_coach_seen)
 	aim.aim_changed.connect(_on_aim_changed)
 	controller.turn_started.connect(_on_turn_started)
 	controller.shot_started.connect(_on_shot_started)
@@ -109,7 +86,7 @@ func _on_turn_started(side: int, is_human: bool) -> void:
 	hud.set_standings(rules.standings(state), human_side)
 	if is_human:
 		hud.show_camera_bar()
-		if not coach_seen:
+		if not Settings.coach_seen:
 			hud.show_coach()
 	else:
 		hud.show_waiting("Waiting for their shot")
@@ -121,7 +98,7 @@ func _on_shot_started(_side: int) -> void:
 
 func _on_aim_changed(active: bool, power: float) -> void:
 	if active:
-		coach_seen = true
+		Settings.mark_coach_seen()
 		hud.hide_coach()
 		hud.show_aim(power)
 	elif controller.phase == MatchController.Phase.WAITING_FOR_SHOT:

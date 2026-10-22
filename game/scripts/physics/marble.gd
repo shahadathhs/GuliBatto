@@ -4,6 +4,9 @@ extends RigidBody3D
 
 ## Emitted once for each contact with another marble. The bench turns these into a ShotReport.
 signal touched_marble(marble: Marble, other: Marble)
+## Emitted for each contact with another body (a marble or a wall), with how fast the marble is
+## going. Sound listens to this; nothing about a shot or a result depends on it.
+signal struck(other: Node, speed: float)
 
 var marble_id: int = -1
 var side: int = -1
@@ -83,6 +86,7 @@ func ground_position() -> Vector2:
 func _on_body_entered(body: Node) -> void:
 	if body is Marble:
 		touched_marble.emit(self, body)
+	struck.emit(body, linear_velocity.length())
 
 
 func _make_material() -> PhysicsMaterial:

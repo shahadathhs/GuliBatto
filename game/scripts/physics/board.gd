@@ -6,6 +6,9 @@ extends Node3D
 
 ## Emitted once per shot, after the board settles (or the timeout fires).
 signal shot_resolved(snapshot: BoardSnapshot, report: ShotReport, timed_out: bool)
+## A marble struck another marble, or a wall, at this speed. For sound only.
+signal marble_hit(speed: float)
+signal wall_hit(speed: float)
 
 enum State { READY, ROLLING, RESETTING }
 
@@ -14,6 +17,8 @@ enum State { READY, ROLLING, RESETTING }
 const CONTACT_SLACK := 0.02
 ## How far toward a touching rival a shot must point (the cosine of the angle) to push into it.
 const TOWARD_MIN := 0.1
+## A marble leaves a wall at about this share of the speed it arrived with.
+const WALL_SPEED_BACK := 2.0
 
 var state: State = State.READY
 var report: ShotReport = ShotReport.new()
@@ -97,6 +102,13 @@ func clear_marbles() -> void:
 		remove_marble(id)
 
 
+func marbles() -> Array[Marble]:
+	var out: Array[Marble] = []
+	for id in _marbles:
+		out.append(_marbles[id])
+	return out
+
+
 func marble(id: int) -> Marble:
 	return _marbles.get(id)
 
@@ -169,12 +181,22 @@ func _spawn(id: int, side: int, at: Vector2) -> Marble:
 	m.setup(id, side, SideStyle.colour(side, scheme), profile.marble_radius, profile.shot_speed)
 	m.position = Vector3(at.x, profile.marble_radius, at.y)
 	m.touched_marble.connect(_on_touched)
+	m.struck.connect(func(other: Node, speed: float) -> void: _on_struck(m, other, speed))
 	add_child(m)
 	_marbles[id] = m
 	var badge := MarbleBadge.new(m, side, scheme)
 	add_child(badge)
 	_badges[id] = badge
 	return m
+
+
+## Both marbles of a pair report the contact; only the lower one is passed on.
+func _on_struck(marble_node: Marble, other: Node, speed: float) -> void:
+	if other is Marble:
+		if marble_node.get_instance_id() < other.get_instance_id():
+			marble_hit.emit(maxf(speed, (other as Marble).linear_velocity.length()))
+	elif other.is_in_group(&"wall"):
+		wall_hit.emit(speed * WALL_SPEED_BACK)
 
 
 func _on_touched(first: Marble, other: Marble) -> void:

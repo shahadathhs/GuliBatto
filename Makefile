@@ -16,7 +16,7 @@ GDPATHS   := $(GAME)/scripts $(GAME)/tests
 IN_GODOT  := $(COMPOSE) --profile tools run --rm godot
 
 .DEFAULT_GOAL := help
-.PHONY: help setup import check lint format test tokens tokens-check colors-check size-check workflows \
+.PHONY: help setup import check lint format test tokens tokens-check colors-check sounds sounds-check size-check workflows \
         game-check game-test game-lint game-format run \
         game-docker-image game-docker-check game-docker-test game-apk game-web android-key \
         web-lint web-typecheck web-test web-build web-smoke web-dev version release
@@ -35,7 +35,7 @@ import: ## Import assets and build the Godot cache (host Godot)
 
 check: lint game-lint game-check test web-typecheck web-build web-smoke ## Everything CI runs, except the exports
 
-lint: tokens-check colors-check size-check ## Style gates: prettier, oxlint, tokens, colours, file size
+lint: tokens-check colors-check sounds-check size-check ## Style gates: prettier, oxlint, tokens, colours, sounds, file size
 	pnpm exec prettier --check .
 	$(MAKE) web-lint
 
@@ -54,6 +54,12 @@ tokens: ## Regenerate the Godot palette and web CSS from design/tokens.json
 
 tokens-check: ## Fail if generated colours are out of date or a contrast pair fails
 	node scripts/tokens.mjs --check
+
+sounds: ## Regenerate the sound effects in game/audio from scripts/sounds.mjs
+	node scripts/sounds.mjs
+
+sounds-check: ## Fail if a sound file differs from what scripts/sounds.mjs makes
+	node scripts/sounds.mjs --check
 
 colors-check: ## Fail if a colour is written by hand outside the token source
 	node scripts/check-colors.mjs

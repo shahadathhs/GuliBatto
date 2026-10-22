@@ -5,7 +5,7 @@ var app: App
 
 
 func before_each() -> void:
-	MatchScene.coach_seen = true
+	Settings.mark_coach_seen()
 	app = App.new()
 	add_child_autofree(app)
 	await wait_physics_frames(3)

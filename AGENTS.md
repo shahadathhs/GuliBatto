@@ -25,6 +25,7 @@ make lint          # gdlint, gdformat, prettier, oxlint, tokens, colours, file s
 make test          # GUT tests and the site's unit tests
 make format        # gdformat and prettier
 make tokens        # regenerate the Godot palette and web CSS from design/tokens.json
+make sounds        # regenerate the sound effects in game/audio from scripts/sounds.mjs
 make run           # play on this machine
 make web-dev       # the website at localhost:3000
 make game-docker-check   # load the project in the Godot container (what CI runs)

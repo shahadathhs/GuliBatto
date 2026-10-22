@@ -142,6 +142,7 @@ func _build_walls() -> void:
 		var angle := TAU * float(i) / WALL_SEGMENTS
 		var body := StaticBody3D.new()
 		body.physics_material_override = _material(0.1, Tuning.WALL_BOUNCE)
+		body.add_to_group(&"wall")
 		var shape := CollisionShape3D.new()
 		var box := BoxShape3D.new()
 		box.size = Vector3(Tuning.WALL_THICKNESS, Tuning.WALL_HEIGHT, chord)
@@ -253,6 +254,7 @@ func _build_rect_walls() -> void:
 	for strip in _strips(_floor(), Tuning.WALL_THICKNESS):
 		var body := StaticBody3D.new()
 		body.physics_material_override = _material(0.1, Tuning.WALL_BOUNCE)
+		body.add_to_group(&"wall")
 		var shape := CollisionShape3D.new()
 		var box := BoxShape3D.new()
 		box.size = Vector3(strip.size.x, Tuning.WALL_HEIGHT, strip.size.y)

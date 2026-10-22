@@ -21,7 +21,7 @@ func after_all() -> void:
 
 
 func before_each() -> void:
-	MatchScene.coach_seen = true
+	Settings.mark_coach_seen()
 	scene = MatchScene.new()
 	add_child_autofree(scene)
 	scene.start(RuleProfile.kep(), KepRules.new())

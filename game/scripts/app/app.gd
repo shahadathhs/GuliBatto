@@ -11,6 +11,8 @@ var _pause: Control
 
 
 func _ready() -> void:
+	Settings.load_from_disk()
+	add_child(Sfx.new())
 	_layer = CanvasLayer.new()
 	_layer.layer = 10
 	add_child(_layer)
@@ -163,7 +165,7 @@ func _debug_screen(name: String) -> void:
 				)
 			)
 		"match", "aim", "pause", "batto", "batto_aim", "batto_top":
-			MatchScene.coach_seen = name.ends_with("aim")
+			Settings.coach_seen = name.ends_with("aim")
 			_start_match(&"batto" if name.begins_with("batto") else &"kep")
 			if name != "match" and name != "batto":
 				await get_tree().create_timer(0.6, false).timeout
@@ -177,7 +179,7 @@ func _debug_screen(name: String) -> void:
 
 
 func _debug_aim() -> void:
-	MatchScene.coach_seen = true
+	Settings.coach_seen = true
 	var m := _match.board.marble(0)
 	var from := _match.rig.camera.unproject_position(m.global_position)
 	var to := from + Vector2(20.0, 110.0)

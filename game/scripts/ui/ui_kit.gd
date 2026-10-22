@@ -62,6 +62,7 @@ static func primary(text: String, size: float = PRIMARY_SIZE) -> Button:
 	var fill := Appearance.color(&"glaze")
 	var radius := int(size / 2.0)
 	_apply_states(b, _style(fill, fill, 0, radius), _style(fill.darkened(0.15), fill, 0, radius))
+	b.pressed.connect(_tap)
 	return b
 
 
@@ -78,6 +79,7 @@ static func secondary(text: String, width: float = 220.0) -> Button:
 	var ground := Appearance.color(&"ground")
 	var pressed := Appearance.color(&"floor")
 	_apply_states(b, _style(ground, ink, 2, BUTTON_RADIUS), _style(pressed, ink, 2, BUTTON_RADIUS))
+	b.pressed.connect(_tap)
 	return b
 
 
@@ -92,7 +94,12 @@ static func text_action(text: String) -> LinkButton:
 	l.add_theme_color_override("font_pressed_color", Appearance.color(&"mute"))
 	l.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	l.focus_mode = Control.FOCUS_NONE
+	l.pressed.connect(_tap)
 	return l
+
+
+static func _tap() -> void:
+	Sfx.play(Sfx.Event.TAP)
 
 
 static func spacer(height: float) -> Control:

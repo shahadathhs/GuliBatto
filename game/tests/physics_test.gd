@@ -7,6 +7,8 @@ extends GutTest
 ## failure. This marks that one message as handled and prints how many it ignored. Every other
 ## engine error still fails the test.
 
+## Tests keep their settings here, never in the real settings file.
+const TEST_SETTINGS := "user://test_settings.cfg"
 const MARKER := "Jolt Physics job system exceeded the maximum number of jobs"
 
 static var ignored: int = 0
@@ -45,9 +47,13 @@ func before_all() -> void:
 	_filter = JoltWarningFilter.new()
 	_filter.tracker = gut.error_tracker
 	OS.add_logger(_filter)
+	Settings.path = TEST_SETTINGS
+	Settings.reset()
 
 
 func after_all() -> void:
 	OS.remove_logger(_filter)
+	DirAccess.remove_absolute(TEST_SETTINGS)
+	Settings.path = Settings.DEFAULT_PATH
 	if ignored > 0:
 		gut.p("Ignored %d benign Jolt job-queue warning(s) in this run." % ignored)
