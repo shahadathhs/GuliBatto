@@ -28,7 +28,8 @@ func _init() -> void:
 	body_entered.connect(_on_body_entered)
 
 
-## Builds the collision shape and a plain coloured sphere. id and side are set before adding.
+## Builds the collision shape and a sphere with the swirl of its colour. id and side are set
+## before adding.
 func setup(
 	id: int,
 	side_index: int,
@@ -51,8 +52,13 @@ func setup(
 	sphere_mesh.height = radius * 2.0
 	mesh.mesh = sphere_mesh
 	var material := StandardMaterial3D.new()
-	material.albedo_color = colour
-	material.roughness = 0.15
+	material.albedo_texture = MarbleTexture.for_colour(colour)
+	material.roughness = 0.1
+	material.metallic_specular = 0.9
+	# A little light of its own, so a marble at the bottom of a pit is not lost in its shadow.
+	material.emission_enabled = true
+	material.emission_texture = material.albedo_texture
+	material.emission_energy_multiplier = 0.22
 	mesh.material_override = material
 	add_child(mesh)
 

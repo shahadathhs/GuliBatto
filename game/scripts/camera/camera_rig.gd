@@ -6,9 +6,9 @@ extends Node3D
 enum View { ANGLED, TOP_DOWN, LOW }
 
 const PRESETS := {
-	View.ANGLED: {"yaw": 0.0, "pitch": 52.0, "distance": 9.6},
+	View.ANGLED: {"yaw": 0.0, "pitch": 26.0, "distance": 8.4},
 	View.TOP_DOWN: {"yaw": 0.0, "pitch": 88.0, "distance": 9.6},
-	View.LOW: {"yaw": 0.0, "pitch": 16.0, "distance": 7.5},
+	View.LOW: {"yaw": 0.0, "pitch": 11.0, "distance": 6.2},
 }
 const PITCH_MIN := 12.0
 const PITCH_MAX := 88.0
@@ -31,11 +31,11 @@ var overview_distance: float = 0.0
 var max_distance: float = 0.0
 
 var _yaw: float = 0.0
-var _pitch: float = 52.0
-var _distance: float = 9.6
+var _pitch: float = 26.0
+var _distance: float = 8.4
 var _target_yaw: float = 0.0
-var _target_pitch: float = 52.0
-var _target_distance: float = 9.6
+var _target_pitch: float = 26.0
+var _target_distance: float = 8.4
 
 
 func _init() -> void:

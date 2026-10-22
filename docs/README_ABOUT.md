@@ -51,4 +51,4 @@ If you know these games, I would like to hear how you played them: the names you
 - Nothing in the game, the site or the store may call a mode "the official rules", "the authentic game" or "how it is really played".
 - Every change to a mode's rules updates this page's "What I changed" list in the same change.
 - When someone contributes how they played, record who and where, with their permission, in [README_GAME_RULES.md](README_GAME_RULES.md) and thank them on this page.
-- Respect the people and places the games come from: no stock "village" imagery or recordings to imply authenticity.
+- Respect the people and places the games come from: no stock "village" imagery or recordings to imply authenticity. The setting of a match may be an open field (a sky, a far line of palms and bamboo, an earth bund, stubble after harvest) because that is where the games were played; it never includes buildings, people, animals, flags, patterns or writing, and it is never offered as a claim of authenticity.

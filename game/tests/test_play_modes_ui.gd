@@ -133,3 +133,64 @@ func test_the_hand_over_screen_names_the_side() -> void:
 		if (l as Label).text == "ROSE":
 			found = true
 	assert_true(found)
+
+
+func test_the_phones_back_button_goes_back_one_step_from_who_plays() -> void:
+	await _who()
+	app.go_back()
+	await wait_physics_frames(2)
+	assert_true(app._screen is ModesScreen, "Who plays? goes back to the modes")
+	app.go_back()
+	await wait_physics_frames(2)
+	assert_true(app._screen is MenuScreen, "and the modes to the menu")
+
+
+func test_back_from_the_rules_card_returns_to_who_plays() -> void:
+	Settings.reset()
+	Settings.mark_coach_seen()
+	app._choose_players(&"guli")
+	await wait_physics_frames(2)
+	(app._screen as WhoPlaysScreen).play_pressed.emit(MatchSetup.solo())
+	await wait_physics_frames(3)
+	assert_true(app._screen is RulesCard)
+	app.go_back()
+	await wait_physics_frames(2)
+	assert_true(app._screen is WhoPlaysScreen)
+
+
+func test_back_in_a_match_opens_the_pause_menu_and_back_again_resumes() -> void:
+	app._start_match(&"kep")
+	await wait_physics_frames(3)
+	app.go_back()
+	assert_true(get_tree().paused, "the match is paused")
+	assert_not_null(app._pause)
+	app.go_back()
+	assert_false(get_tree().paused, "back again resumes")
+	assert_null(app._pause)
+
+
+func test_back_does_not_skip_a_hand_over_or_a_score() -> void:
+	app._setup = MatchSetup.pass_and_play(2)
+	app._start_match(&"kep")
+	await wait_physics_frames(3)
+	assert_true(app._screen is HandoverScreen)
+	app.go_back()
+	await wait_physics_frames(2)
+	assert_true(app._screen is HandoverScreen, "the hand-over stays until Ready is tapped")
+	var over := MatchOverScreen.new([0, 1] as Array[int], ["a", "b"] as Array[String], app._setup)
+	app._show(over)
+	app.go_back()
+	await wait_physics_frames(3)
+	assert_true(app._screen is MenuScreen, "back from the end of a match goes to the menu")
+
+
+func test_the_phones_back_notification_does_the_same_as_go_back() -> void:
+	await _who()
+	app.notification(Node.NOTIFICATION_WM_GO_BACK_REQUEST)
+	await wait_physics_frames(2)
+	assert_true(app._screen is ModesScreen)
+
+
+func test_a_screen_starts_below_whatever_covers_the_top_of_the_phone() -> void:
+	assert_gte(SafeArea.top(), SafeArea.TOP_MARGIN)
+	assert_eq(SafeArea.inset_top(), 0.0, "nothing covers the top on a computer")

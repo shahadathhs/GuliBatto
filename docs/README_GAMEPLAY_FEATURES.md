@@ -43,7 +43,9 @@ The game must make it obvious whose turn it is, which marble is the striker, wha
 
 All views use one camera rig and the same active camera projection/world.
 
-- **Angled play view:** default perspective with enough ground visible to read the board.
+- **Back:** the phone's back button or gesture (and Escape in a browser) goes one step back from wherever you are: Who plays? to the modes, the modes to the menu, a rules card to Who plays?, a match to its pause menu, and the pause menu or a page over a match closes. The score and hand-over screens ignore it, so a stray press cannot skip them; the menu leaves the app on Android.
+- **Safe area:** screens start below a notch or status bar, measured from the system's safe area, so a top button is never under it.
+- **Angled play view:** the default, a low view from behind the line, with the board, the field and the horizon in sight. The top-down view stays for judging a shot exactly.
 - **Top-down view:** useful for placement and tactical judgement.
 - **Low ground view:** cinematic inspection, constrained so the camera cannot pass below the surface or clip through the arena.
 - **Shot-follow view:** briefly tracks the active shot, then eases back to the player's prior view or a stable arena view.

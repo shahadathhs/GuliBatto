@@ -95,18 +95,18 @@ These are observations to record in playtests, not numeric targets: there are no
 
 ## 11. Status
 
-| Area                                   | State                                                                                                                                                                                |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Shot, physics, settling, camera, input | Built and tested (230 automated tests, real input through the whole stack); **not played by hand on a phone**                                                                        |
-| Kep                                    | Complete: scoring, rounds, computer sides                                                                                                                                            |
-| Batto                                  | Complete: opening toss, the three-hole race on its own large board, bonus shots, finishing order; not played by hand                                                                 |
-| Guli Khela, Quick Dan                  | Complete: stake, scatter, baad, fines, dans, the three-pass rule, surrender                                                                                                          |
-| Play modes                             | Against one to three computers, and pass and play for two to five people with a hand-over screen; tested to the end of every game; not played by hand                                |
-| Pages and teaching                     | Built in the app and on the site from one `content/`: how to play, a page and a rules card for each game, About, Contact, Privacy                                                    |
-| Site                                   | Redesigned: Home, games, How to play, About, Contact, Privacy, Download with a QR code, Play in a phone frame; live at the address above                                             |
-| Releases                               | `v0.0.1` (all four games) is published; `0.0.2` (with both play modes) follows the next merge to `main`; each has the APK, the web export and checksums, and the site rebuilds on it |
-| Checks                                 | Lint, token, colour, sound and content checks, file size, game and site tests, a smoke test of every page, and a passing CI pipeline                                                 |
-| Not done                               | Playing on real devices; checking the rules with people who played; the site-native browser loader                                                                                   |
+| Area                                   | State                                                                                                                                                                                                                    |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Shot, physics, settling, camera, input | Built and tested (230 automated tests, real input through the whole stack); **not played by hand on a phone**                                                                                                            |
+| Kep                                    | Complete: scoring, rounds, computer sides                                                                                                                                                                                |
+| Batto                                  | Complete: opening toss, the three-hole race on its own large board, bonus shots, finishing order; not played by hand                                                                                                     |
+| Guli Khela, Quick Dan                  | Complete: stake, scatter, baad, fines, dans, the three-pass rule, surrender                                                                                                                                              |
+| Play modes                             | Against one to three computers, and pass and play for two to five people with a hand-over screen; tested to the end of every game; not played by hand                                                                    |
+| Pages and teaching                     | Built in the app and on the site from one `content/`: how to play, a page and a rules card for each game, About, Contact, Privacy                                                                                        |
+| Site                                   | Redesigned: Home, games, How to play, About, Contact, Privacy, Download with a QR code, Play in a phone frame; live at the address above                                                                                 |
+| Releases                               | `v0.0.1` (all four games) and `0.0.2` (both play modes) are published; `0.0.3` (the 3D field view and deep pits) follows the merge of PR #6; each has the APK, the web export and checksums, and the site rebuilds on it |
+| Checks                                 | Lint, token, colour, sound and content checks, file size, game and site tests, a smoke test of every page, and a passing CI pipeline                                                                                     |
+| Not done                               | Playing on real devices; checking the rules with people who played; the site-native browser loader                                                                                                                       |
 
 The order of work is in [`README_ROADMAP.md`](README_ROADMAP.md) and the checklist in [`../TODO.md`](../TODO.md).
 

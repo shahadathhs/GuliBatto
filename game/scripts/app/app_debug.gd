@@ -2,8 +2,9 @@ class_name AppDebug
 extends RefCounted
 ## Debug only: `godot --path game -- --screen=NAME` opens one screen so it can be photographed.
 ## NAME is a screen (modes, who_plays, settings, result, dan, over, over_five), a match state
-## (match, aim, pause, batto, batto_aim, batto_top, guli, guli_stake, pass_to, five), `page_ID` for
-## a page of the content (page_game_kep) or `card_MODE` for a rules card (card_guli).
+## (match, aim, pause, batto, batto_aim, batto_top, guli, guli_stake, pass_to, five, low, low_batto,
+## pit), `page_ID` for a page of the content (page_game_kep) or `card_MODE` for a rules card
+## (card_guli).
 
 
 static func open(app: App, name: String) -> void:
@@ -56,6 +57,23 @@ static func open(app: App, name: String) -> void:
 					MatchSetup.solo()
 				)
 			)
+		"low", "low_batto":
+			Settings.coach_seen = true
+			app._start_match(&"batto" if name == "low_batto" else &"kep")
+			await app.get_tree().create_timer(0.4, false).timeout
+			app._match.rig.set_view(CameraRig.View.LOW)
+			await app.get_tree().create_timer(1.2, false).timeout
+		"pit":
+			Settings.coach_seen = true
+			app._start_match(&"batto")
+			await app.get_tree().create_timer(0.4, false).timeout
+			var scene: MatchScene = app._match
+			var hole := scene.profile.holes[0]
+			scene.board.place(5, 1, hole + Vector2(0.05, 0.0))
+			await app.get_tree().create_timer(0.8, false).timeout
+			scene.board.place(6, 2, hole + Vector2(-0.05, 0.0))
+			scene.rig.follow_point = hole + Vector2(0.0, 2.0)
+			await app.get_tree().create_timer(1.6, false).timeout
 		"who_plays":
 			app._choose_players(&"kep")
 		"pass_to":
