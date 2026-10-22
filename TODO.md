@@ -65,6 +65,16 @@ Open: the email or form for Contact.
 - [ ] The basics: sound, locally saved settings with a reset
 - [ ] Contact details to publish; the author's review of the How to play and games wording
 
+## Play modes (planned 2026-10-22, see docs/README_PLAY_MODES.md)
+
+- [ ] A fifth side: colour token and mark in both themes, the modulo guard, a test that no two sides share a colour or a mark
+- [ ] `MatchSetup`; the controller and HUD take a set of human sides; side names; the "Pass to ..." screen
+- [ ] Every game at 2 and at 5 sides (Kep, Batto, Guli Khela, Quick Dan), with tests
+- [ ] The "Who plays?" screen, the saved choice, "End the match" in pass and play, the win cue
+- [ ] Content, About and the site describe both modes; the site draws the fifth marble
+- [ ] Two sounds (pass, per-side turn tick); a hand test with real people
+- [x] Drawn renders refreshed (not captured): rose token, app screens 14 to 21, a six-screen README strip and site renders; re-run `node scripts/design/render.mjs` when a screen changes and before each release
+
 ## Phase 7 — release
 
 - [ ] Automatic release of the APK, the web export and `SHA256SUMS` when the version changes

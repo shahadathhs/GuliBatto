@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { tmpdir } from "node:os";
 import { screenSvg, screenList, screenBody, viewsSvg, W, H } from "./screens.mjs";
 import { THEMES } from "./tokens.mjs";
+import { homeSvg, gameSvg, downloadSvg, WEB_W } from "./web.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const out = join(root, "docs/design");
@@ -60,6 +61,29 @@ for (const theme of Object.keys(THEMES)) {
     .join("");
   const sw = gap + cols * (cw + gap),
     sh = gap + rows * (ch + gap);
+  // The README strip: six screens in a row.
+  const pick = [
+    "01-menu",
+    "02-modes",
+    "17-who-plays",
+    "05-kep-ready",
+    "07-batto-ready",
+    "10-guli-baad",
+  ];
+  const strip = pick
+    .map((id, i) => {
+      const x = gap + i * (cw + gap);
+      return `<g transform="translate(${x},${gap}) scale(${s})"><rect width="${W}" height="${H}" fill="${THEMES[theme].ground}"/><clipPath id="s${i}"><rect width="${W}" height="${H}"/></clipPath><g clip-path="url(#s${i})">${screenBody(id, theme)}</g></g>`;
+    })
+    .join("");
+  const stw = gap + pick.length * (cw + gap);
+  png(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${stw}" height="${ch + gap * 2}"><rect width="100%" height="100%" fill="${THEMES[theme].sheet}"/>${strip}</svg>`,
+    `${theme}-strip`,
+    stw,
+    ch + gap * 2,
+    join(out, `app-strip-${theme}.png`),
+  );
   png(
     `<svg xmlns="http://www.w3.org/2000/svg" width="${sw}" height="${sh}"><rect width="100%" height="100%" fill="${THEMES[theme].sheet}"/>${sheet}</svg>`,
     `${theme}-overview`,
@@ -67,5 +91,13 @@ for (const theme of Object.keys(THEMES)) {
     sh,
     join(out, `overview-${theme}.png`),
   );
+}
+for (const theme of Object.keys(THEMES)) {
+  for (const [name, svg, h] of [
+    ["home", homeSvg(theme), 1900],
+    ["game-guli", gameSvg(theme), 1230],
+    ["download", downloadSvg(theme), 1030],
+  ])
+    png(svg, `${theme}-web-${name}`, WEB_W, h, join(out, "web", theme, `${name}.png`));
 }
 console.log("done");

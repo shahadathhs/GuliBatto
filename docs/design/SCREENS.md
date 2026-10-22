@@ -21,9 +21,14 @@ Individual screens (390 × 844, 2x): `screens/light/` and `screens/dark/`.
 | 11  | Guli Khela, aiming        | The baad marble marked with a drawn cross, the arrow at another marble, power meter, Cancel              |
 | 12  | Guli Khela, fine          | The shooter touched the baad marble: a fine of one marble into the pot; the next side is up              |
 | 13  | Guli Khela, dan won       | Marbles taken, purses before and after, Next dan (primary), Surrender                                    |
-| 14  | Pause                     | Resume (primary), Restart, How to play, Settings, Back to menu; cancels any aim in progress              |
-| 15  | Settings                  | Sound, music, vibration, reduce motion, follow camera, theme, reset saved data                           |
+| 14  | Pause                     | Resume (primary), Restart, Surrender, Back to menu; cancels any aim in progress                          |
+| 15  | Settings                  | Theme, sound, volume, follow shots, reset to defaults                                                    |
 | 16  | Camera views              | Angled, top-down and low views of the same Batto board (a reference sheet, not a screen)                 |
+| 17  | Who plays? (planned)      | Against the computer (1 to 3) or pass and play (2 to 5), a stepper for each, Play (primary)              |
+| 18  | Pass to … (planned)       | The next side's marble, its name, one tap to continue; between human turns in pass and play              |
+| 19  | Kep, five sides (planned) | The HUD chips and the ground with five sides, the fifth a rose marble with a diamond                     |
+| 20  | Rules card                | A game's picture and three lines, shown the first time a game starts                                     |
+| 21  | How to play               | The page: Taking a shot, numbered steps and the pull diagram                                             |
 
 ## Not in this set
 
@@ -35,11 +40,12 @@ Individual screens (390 × 844, 2x): `screens/light/` and `screens/dark/`.
 
 ## Website
 
-The site is planned in [../README_WEB_AND_APP_PLAN.md](../README_WEB_AND_APP_PLAN.md). These are real screenshots of the built site, not concepts, taken with Chrome at 1280 px and 390 px wide in both themes. The download page shows a stand-in release (version, size and checksum are not a real build), because no release has been published yet.
+Drawn renders of the redesigned site (1440 px wide, both themes), made by `scripts/design/web.mjs` from the same tokens and marble marks. They show layout, not every word; the live site is the reference. A headless browser does not keep the real site's layout, which is why these are drawn rather than captured.
 
-| Page              | Light                                                            | Dark                                                           |
-| ----------------- | ---------------------------------------------------------------- | -------------------------------------------------------------- |
-| Landing, desktop  | [web/light/landing-desktop.png](web/light/landing-desktop.png)   | [web/dark/landing-desktop.png](web/dark/landing-desktop.png)   |
-| Landing, mobile   | [web/light/landing-mobile.png](web/light/landing-mobile.png)     | [web/dark/landing-mobile.png](web/dark/landing-mobile.png)     |
-| Download, desktop | [web/light/download-desktop.png](web/light/download-desktop.png) | [web/dark/download-desktop.png](web/dark/download-desktop.png) |
-| Download, mobile  | [web/light/download-mobile.png](web/light/download-mobile.png)   | [web/dark/download-mobile.png](web/dark/download-mobile.png)   |
+| Page                     | Light                                              | Dark                                             |
+| ------------------------ | -------------------------------------------------- | ------------------------------------------------ |
+| Home                     | [web/light/home.png](web/light/home.png)           | [web/dark/home.png](web/dark/home.png)           |
+| A game page (Guli Khela) | [web/light/game-guli.png](web/light/game-guli.png) | [web/dark/game-guli.png](web/dark/game-guli.png) |
+| Download                 | [web/light/download.png](web/light/download.png)   | [web/dark/download.png](web/dark/download.png)   |
+
+The download render shows the QR code as a pattern; the real page draws a real code. The version, size and checksum on it are an example.

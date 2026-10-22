@@ -203,9 +203,11 @@ The game screens are listed with their purpose in [design/SCREENS.md](design/SCR
 - **About:** one plain text screen reached from the menu, with the same layout as Settings; see [README_ABOUT.md](README_ABOUT.md). Mode screens carry no authenticity labels.
 - **Save data failure:** the game starts with defaults and says so once; nothing is blocking.
 
+Two screens are planned with the play modes ([`README_PLAY_MODES.md`](README_PLAY_MODES.md)): **Who plays?** (two large choices, a stepper for the computers or the people, Play as the one primary action) and **Pass to …** (the next side's marble, its colour and mark, one tap to continue). A fifth side adds a rose marble with a diamond mark (token `rose`). Both screens, and a five-side Kep, are drawn in `docs/design/screens` (17 to 19) like every other screen.
+
 ## 10. The website
 
-The site uses the same tokens, wordmark and rules, so it reads as the same product. Details and the page-by-page plan are in [README_WEB_AND_APP_PLAN.md](README_WEB_AND_APP_PLAN.md); renders are in [design/web/](design/web/).
+The site uses the same tokens, wordmark and rules, so it reads as the same product. Details and the page-by-page plan are in [README_WEB_AND_APP_PLAN.md](README_WEB_AND_APP_PLAN.md); drawn renders of Home, a game page and Download are in [design/web/](design/web/).
 
 - Purpose: explain the game and get people to install it. **Download is the single primary action.**
 - On the web the primary action is the same glaze, drawn as a full-round button (a disc is impractical for a wide label).

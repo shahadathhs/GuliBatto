@@ -72,7 +72,9 @@ The game may stylise physics for enjoyable play. If so, use repeatable tuning an
 
 ## 5. Opponent behaviour
 
-For the AI opponents (one to three sides):
+For the AI opponents (one to three sides). A second play mode, pass and play for two to five people, is planned and has no AI; see [`README_PLAY_MODES.md`](README_PLAY_MODES.md).
+
+The AI list:
 
 - It takes legal turns and uses the same shot interface as the player.
 - It aims at obvious targets (in Batto, its next hole, or a rival marble when a hit looks worthwhile) and adjusts power based on rough distance.
@@ -90,13 +92,13 @@ Start with a transparent heuristic: generate a small number of candidate directi
 - **Batto** — a race for 2 to 4 sides along three holes and back (H1, H2, H3, H2, H1), with an opening toss, bonus shots for a hit or for reaching a hole, and a finishing order.
 - **Guli Khela** — the line, the hole, the stake and the _baad_ marble: stake marbles are scattered around the kep, a side names one _baad_ and must touch exactly one other marble, a wrong touch costs a fine, the winner of a round takes every marble on the ground, and marbles are won and lost across rounds.
 - **Quick Dan** (optional) — one round of Guli Khela for a short session.
-- Every mode plays against one to three AI opponents. Details are in [`README_GAME_RULES.md`](README_GAME_RULES.md); where the rules come from is on the About page ([`README_ABOUT.md`](README_ABOUT.md)).
+- Every mode plays against one to three AI opponents, and (planned) with two to five people passing one device: see [`README_PLAY_MODES.md`](README_PLAY_MODES.md). Details are in [`README_GAME_RULES.md`](README_GAME_RULES.md); where the rules come from is on the About page ([`README_ABOUT.md`](README_ABOUT.md)).
 - Difficulty setting for opponent aim error only if it can be implemented and tested cheaply.
 - Local settings and small local match statistics.
 
 ### Not planned
 
-Anything outside the four modes: pass-and-play, other languages, statistics and achievements, extra arenas, a practice mode, cosmetic marbles. See the overview's "Not in" list; adding one is a new decision recorded there first.
+Anything outside the four modes: other languages, statistics and achievements, extra arenas, a practice mode, cosmetic marbles. See the overview's "Not in" list; adding one is a new decision recorded there first.
 
 No online multiplayer, remote profile, cloud save, or online leaderboard is part of the current product.
 

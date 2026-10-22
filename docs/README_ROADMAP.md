@@ -9,7 +9,7 @@
 - The shot, settling and physics core, with tests (Phase 1) and the camera and input (Phase 2), checked headless and in rendered frames; **not played by hand on a phone**.
 - Kep and Batto, complete as playable modes against computer sides, with their rules and match flow, and the menu, HUD, results, About, pause and settings screens in light and dark (Phase 3).
 - A first version of the website: home, how to play, about, download, privacy, and a play page that frames Godot's default page.
-- The Android and web builds are produced by CI and published in the release `v0.0.1`. Only the web export has been run, in a headless browser; the APK has not been run on a real device.
+- The Android and web builds are produced by CI. No release is published at the moment (the old `v0.0.1` was deleted); the next one will have all four games. Only the web export has been run, in a headless browser; the APK has not been run on a real device.
 - The site is live at <https://playgulibatto.vercel.app>.
 - Checks: lint, token and colour checks, 199 game tests, site tests and a smoke test, and a CI pipeline that passes on `main` and has published a release.
 
@@ -94,6 +94,12 @@ Deliverables ([`README_WEB_AND_APP_PLAN.md`](README_WEB_AND_APP_PLAN.md)):
 
 **Gate:** a visitor can learn all four games from the site alone and the app teaches the same, from the same words, and a check proves they match.
 
+## Phase 6b — Play modes
+
+Deliverables: a fifth side (colour and mark), `MatchSetup` with human sides, the hand-over screen, every game checked at 2 and 5 sides, the "Who plays?" screen, two sounds, the site and About updated, then fresh screenshots for the README and the site. The full plan and exit criteria are in [`README_PLAY_MODES.md`](README_PLAY_MODES.md).
+
+**Status:** planned 2026-10-22; nothing built.
+
 ## Phase 7 — Release
 
 **Goal:** a stable first release on Android and the web.
@@ -110,7 +116,7 @@ Deliverables:
 
 ## Not on the roadmap
 
-Pass-and-play, other languages, statistics and achievements, extra arenas or skins, a campaign, online play, accounts, leaderboards or any backend, human characters, monetisation, a dashboard. Adding one is a new decision recorded in the overview first.
+Other languages, statistics and achievements, extra arenas or skins, a campaign, online play, accounts, leaderboards or any backend, human characters, monetisation, a dashboard. Adding one is a new decision recorded in the overview first.
 
 ## Roadmap rule
 
