@@ -29,6 +29,40 @@ func _ready() -> void:
 			AppDebug.open(self, arg.trim_prefix("--screen="))
 
 
+func _notification(what: int) -> void:
+	# The phone's back button or gesture.
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		go_back()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"ui_cancel"):
+		go_back()
+		get_viewport().set_input_as_handled()
+
+
+## One step back from wherever the player is: the phone's back button and Escape do this. A page
+## or the pause menu over a match closes; a screen goes to the one before it; a match opens its
+## pause menu; the menu leaves the app on Android. The result and hand-over screens ignore it, so
+## a stray press cannot skip a score or a hand-over.
+func go_back() -> void:
+	if _pause != null:
+		_close_pause()
+	elif _screen == null:
+		if _match != null and _match.controller.phase != MatchController.Phase.MATCH_OVER:
+			_match.cancel_aim()
+			_open_pause()
+	elif _screen is MenuScreen:
+		if OS.get_name() == "Android":
+			get_tree().quit()
+	elif _screen is MatchOverScreen:
+		_show_menu()
+	elif _screen is RoundResultScreen or _screen is HandoverScreen:
+		return
+	elif _screen.has_signal(&"back_pressed"):
+		_screen.emit_signal(&"back_pressed")
+
+
 func _show(screen: Control) -> void:
 	if _screen != null:
 		_screen.queue_free()

@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { tmpdir } from "node:os";
 import { screenSvg, screenList, screenBody, viewsSvg, W, H } from "./screens.mjs";
 import { THEMES } from "./tokens.mjs";
+import { feelSvg } from "./feel.mjs";
 import { homeSvg, gameSvg, downloadSvg, WEB_W } from "./web.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -91,6 +92,10 @@ for (const theme of Object.keys(THEMES)) {
     sh,
     join(out, `overview-${theme}.png`),
   );
+}
+for (const theme of Object.keys(THEMES)) {
+  const feel = feelSvg(theme);
+  png(feel.svg, `${theme}-feel`, feel.w, feel.h, join(out, `feel-planned-${theme}.png`));
 }
 for (const theme of Object.keys(THEMES)) {
   for (const [name, svg, h] of [

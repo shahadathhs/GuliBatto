@@ -32,7 +32,8 @@ func _ready() -> void:
 		_build_ground_mesh()
 		_build_rim()
 		_build_walls()
-	_build_jalla()
+	add_child(JallaScratch.new(profile, scheme))
+	add_child(HoleWear.new(profile, scheme))
 	_build_hole_numbers()
 
 
@@ -93,6 +94,7 @@ func _build_ground_mesh() -> void:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var earth := Palette.get_color(&"earth", scheme)
 	var hole_colour := Palette.get_color(&"hole", scheme)
+	var pit := hole_colour.darkened(0.55)
 	for ring in rings:
 		for seg in RIM_SEGMENTS:
 			var a0 := TAU * float(seg) / RIM_SEGMENTS
@@ -111,7 +113,7 @@ func _build_ground_mesh() -> void:
 					p, profile.holes, profile.dish_radius, profile.dish_depth
 				)
 				var depth_t := clampf(-h / maxf(profile.dish_depth, 0.001), 0.0, 1.0)
-				st.set_color(earth.lerp(hole_colour, pow(depth_t, 0.4)))
+				st.set_color(earth.lerp(pit, pow(depth_t, 0.3)))
 				st.add_vertex(Vector3(p.x, h, p.y))
 	st.generate_normals()
 	var mesh := MeshInstance3D.new()
@@ -119,6 +121,7 @@ func _build_ground_mesh() -> void:
 	var m := StandardMaterial3D.new()
 	m.vertex_color_use_as_albedo = true
 	m.roughness = 1.0
+	DirtTexture.apply(m)
 	mesh.material_override = m
 	add_child(mesh)
 
@@ -130,8 +133,10 @@ func _build_rim() -> void:
 	torus.inner_radius = profile.arena_size.x - 0.05
 	torus.outer_radius = profile.arena_size.x + 0.2
 	mesh.mesh = torus
-	mesh.material_override = _colour_material(&"earth_rim")
-	mesh.position = Vector3(0.0, 0.04, 0.0)
+	mesh.material_override = _rim_material()
+	# A low lip of earth, not a wall.
+	mesh.scale = Vector3(1.0, 0.4, 1.0)
+	mesh.position = Vector3(0.0, 0.02, 0.0)
 	add_child(mesh)
 
 
@@ -153,30 +158,6 @@ func _build_walls() -> void:
 		)
 		body.rotation.y = -angle
 		add_child(body)
-
-
-## The jalla: a dashed line across the arena at the profile's Z, drawn on the ground.
-func _build_jalla() -> void:
-	if profile.mode_id == &"bench":
-		return
-	var radius := profile.arena_size.x
-	var half_width := (
-		profile.arena_size.x * 0.9
-		if profile.arena_rect
-		else sqrt(maxf(radius * radius - profile.jalla_z * profile.jalla_z, 0.0)) * 0.9
-	)
-	var dash := 0.28
-	var gap := 0.18
-	var x := -half_width
-	while x < half_width:
-		var mesh := MeshInstance3D.new()
-		var box := BoxMesh.new()
-		box.size = Vector3(minf(dash, half_width - x), 0.01, 0.06)
-		mesh.mesh = box
-		mesh.material_override = _colour_material(&"ink")
-		mesh.position = Vector3(x + box.size.x / 2.0, 0.006, profile.jalla_z)
-		add_child(mesh)
-		x += dash + gap
 
 
 ## With more than one hole, each is numbered on the ground beside it, so the route can be read.
@@ -214,6 +195,7 @@ func _build_rect_mesh() -> void:
 	var m := StandardMaterial3D.new()
 	m.vertex_color_use_as_albedo = true
 	m.roughness = 1.0
+	DirtTexture.apply(m)
 	mesh.material_override = m
 	add_child(mesh)
 
@@ -223,6 +205,7 @@ func _add_grid(st: SurfaceTool, rect: Rect2, step: float, earth: Color, hole_col
 	var nx := maxi(int(ceil(rect.size.x / step)), 1)
 	var nz := maxi(int(ceil(rect.size.y / step)), 1)
 	var cell := Vector2(rect.size.x / nx, rect.size.y / nz)
+	var pit := hole_colour.darkened(0.55)
 	for row in nz:
 		for col in nx:
 			var a := rect.position + Vector2(col * cell.x, row * cell.y)
@@ -233,7 +216,7 @@ func _add_grid(st: SurfaceTool, rect: Rect2, step: float, earth: Color, hole_col
 					p, profile.holes, profile.dish_radius, profile.dish_depth
 				)
 				var depth_t := clampf(-h / maxf(profile.dish_depth, 0.001), 0.0, 1.0)
-				st.set_color(earth.lerp(hole_colour, pow(depth_t, 0.4)))
+				st.set_color(earth.lerp(pit, pow(depth_t, 0.3)))
 				st.add_vertex(Vector3(p.x, h, p.y))
 
 
@@ -243,10 +226,10 @@ func _build_rect_rim() -> void:
 	for strip in _strips(edge, width):
 		var mesh := MeshInstance3D.new()
 		var box := BoxMesh.new()
-		box.size = Vector3(strip.size.x, 0.08, strip.size.y)
+		box.size = Vector3(strip.size.x, 0.04, strip.size.y)
 		mesh.mesh = box
-		mesh.material_override = _colour_material(&"earth_rim")
-		mesh.position = Vector3(strip.get_center().x, 0.04, strip.get_center().y)
+		mesh.material_override = _rim_material()
+		mesh.position = Vector3(strip.get_center().x, 0.02, strip.get_center().y)
 		add_child(mesh)
 
 
@@ -281,6 +264,13 @@ func _material(friction: float, bounce: float) -> PhysicsMaterial:
 	var m := PhysicsMaterial.new()
 	m.friction = friction
 	m.bounce = bounce
+	return m
+
+
+## The low lip round the play area: the same earth as the ground, with its grain.
+func _rim_material() -> StandardMaterial3D:
+	var m := _colour_material(&"earth")
+	DirtTexture.apply(m)
 	return m
 
 

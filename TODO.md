@@ -77,6 +77,17 @@ Open: the email or form for Contact.
 - [ ] A hand test with real people on a phone, in a browser and on the site (pass the device, five people, a Batto match)
 - [ ] Real-device check that the five sides read well in both themes outdoors
 
+## Feel (planned 2026-10-22, see docs/README_FEEL.md)
+
+- [x] A and B (first pass): a swirled marble that turns as it rolls, contact shadows, a dirt ground from the earth tokens, an open field with a bund, far palms and a sky, a scratched jalla and crumbs round the holes; not yet seen on a phone, and the swirl and field want a hand look
+- [ ] E: a rolling sound that follows speed, clicks that differ by what is struck, a short vibration on a hit (Android)
+- [x] D (camera part): a low default camera behind the line, a low sun with shadows, real 3D palms, bamboo, bunds and grass; speed on a phone not measured
+- [x] Batto pits read as deep (a dark pit, no plane over it) and a marble resting in one is marked on the lip; not yet seen on a phone
+- [x] The phone's back button and Escape work on every screen (`App.go_back`), and screens start below a notch (`SafeArea`); not yet tried on a device
+- [ ] D (interface part): the interface fades while marbles move
+- [ ] C: a flick gesture beside the pull, with Settings: Shot Pull or Flick (decide the default)
+- [ ] F: write feel targets, play and tune by hand
+
 ## Phase 7 — release
 
 - [x] Automatic release of the APK, the web export and `SHA256SUMS`: it ran on 2026-10-22 and republished `v0.0.1` with all four games; the version is now `0.0.2` (both play modes), published when that merges

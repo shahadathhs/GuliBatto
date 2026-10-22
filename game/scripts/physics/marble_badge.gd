@@ -8,7 +8,11 @@ var marble: Marble
 
 func _init(target: Marble, side: int, scheme: Palette.Scheme) -> void:
 	marble = target
-	var r := target.radius
+	add_child(mark_instance(side, target.radius, scheme))
+
+
+## The flat mark of a side at a given size: a mesh and its (unshaded) colour.
+static func mark_instance(side: int, r: float, scheme: Palette.Scheme) -> MeshInstance3D:
 	var mesh := MeshInstance3D.new()
 	match SideStyle.mark(side):
 		SideStyle.Mark.RING:
@@ -44,7 +48,7 @@ func _init(target: Marble, side: int, scheme: Palette.Scheme) -> void:
 	m.albedo_color = SideStyle.on_colour(side, scheme)
 	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mesh.material_override = m
-	add_child(mesh)
+	return mesh
 
 
 func _process(_delta: float) -> void:

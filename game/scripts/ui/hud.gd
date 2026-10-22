@@ -112,7 +112,7 @@ func _build_top() -> void:
 	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for side in ["left", "right"]:
 		margin.add_theme_constant_override("margin_" + side, 24)
-	margin.add_theme_constant_override("margin_top", 44)
+	margin.add_theme_constant_override("margin_top", int(SafeArea.top()))
 	add_child(margin)
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE

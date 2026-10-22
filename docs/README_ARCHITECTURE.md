@@ -17,6 +17,7 @@ GuliBatto/
 │   │   ├── match/             # match state machine, turn ownership, rule evaluation
 │   │   ├── rules/             # one script per ruleset (Kep, Batto, Guli Khela); they read a profile, a snapshot and a shot report
 │   │   ├── physics/           # marble body, arena colliders, shot applier
+│   │   ├── scenery/           # the look of the place: dirt grain, the open field, the scratched jalla, worn holes (presentation only)
 │   │   ├── camera/            # CameraRig and view presets
 │   │   ├── input/             # gesture arbiter, aim controller
 │   │   ├── ai/                # shot chooser for the local opponent
@@ -109,6 +110,17 @@ MENU → SETUP → OPENING_TOSS → (SCATTER → CALLING_BAAD, Guli Khela only) 
 ### Settle detector
 
 A board is settled when every marble stays below both thresholds for a continuous window. **Tuned in Milestone 1** (all in `core/tuning.gd`): linear speed below 0.1 m/s, angular speed below 1.0 rad/s, held for 0.3 s. A hard timeout (8 s) ends settling anyway: the bench freezes all marbles and evaluates the board as it is (the match will also log it in debug builds). A stuck turn is a bug in the design, so the timeout is a safety net and not the normal path. In the tests no shot reaches it; a full-power shot settles in about 4 s.
+
+### How the ground and the marbles look
+
+Presentation only; nothing here touches the shot, the physics or the score. Colours are tokens: the generated textures are greys laid over a token colour, or white with an alpha tinted by the material.
+
+- **Marble** (`physics/marble_texture.gd`, `marble_shadow.gd`, `marble_badge.gd`): the sphere carries a swirl of its side's colour, painted once per colour, so it turns with the body and a rolling marble can be seen to roll. The flat mark on top (`MarbleBadge`) follows the position, not the spin, so a side stays readable. A soft shadow (`MarbleShadow`) lies on the ground under it.
+- **Ground** (`scenery/dirt_texture.gd`): grain, pebbles and scratches in greys, laid over the earth colour in world space (triplanar), so it does not stretch with the mesh. The jalla is a scratched groove and a ridge (`JallaScratch`); each hole has crumbs round its rim (`HoleWear`).
+- **Real 3D scenery** (`scenery/tree_meshes.gd`, `field_objects.gd`): palms (a leaning trunk and drooping fronds) and clumps of bamboo as small generated meshes, placed in clumps 35 to 90 m out; low earth bunds with a grass strip between the plots; and grass tufts near the play area. They are lit and cast shadows, so the view has depth and things to move past. The sun is low (27 degrees) with an orthogonal shadow map out to 30 m.
+- **Deep holes** (Batto): the pit is darkened by depth so it reads as deep, and the field's ground is a frame round the board and never a plane over a hole (a plane over a pit hid the pit and the marble in it). A low camera cannot see the bottom of a pit, so a marble resting in one is marked on the near lip by a small flat token in its colour and mark (`PitTags`); the marble itself stays down in the pit under real physics. Marbles carry a little emission so they are not lost in the pit's shadow.
+- **The camera:** the default view is low and behind the line (about 26 degrees up) so the horizon, the trees and the shadows are in view; the top-down view stays for exact aiming, since a low view compresses the depth of a pull.
+- **The field** (`scenery/field.gd`): an open field round the play area, with stubble rows to the horizon, a low earth bund on the far side and a far hazy line of palms and bamboo painted as a silhouette on a cylinder; the sky and a light fog are in `MatchScene`. No buildings, people, animals or patterns.
 
 ## 4. Physics
 

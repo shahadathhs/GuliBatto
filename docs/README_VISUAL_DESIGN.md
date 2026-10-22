@@ -25,7 +25,7 @@ Character: warm, tactile, grounded, quiet. Not a candy-coloured casual game, not
 - No cards inside cards. Group with spacing and a small caption; a mode choice may be one outlined row.
 - Exactly **one primary (glaze disc) action per screen**. Secondary actions are outlined rounded rectangles; tertiary actions are underlined text.
 - No taglines or marketing eyebrow lines, motivational copy, exclamation marks, or emoji. Do not address the player with questions.
-- No decorative "village" motifs, stock folk patterns, or stock ambient sound used as a shortcut for authenticity (see section 11).
+- No decorative "village" motifs, stock folk patterns, or stock ambient sound used as a shortcut for authenticity (see section 11). The one exception is the match's setting, an open field with a sky, a far treeline, an earth bund and stubble (decided 2026-10-22, see section 12 and [`README_FEEL.md`](README_FEEL.md)): the place the games were played, never buildings, people, animals or patterns.
 - No loops or idle animation in the UI. No UI animation over 250 ms except the shot-follow camera and the result cue.
 - No default component-library look on the website (soft pastel badges, heavy shadows).
 - Prefer deleting to adding. A screen improves when parts are removed.
@@ -141,12 +141,12 @@ If height runs out, the HUD compresses first; the arena shrinks last. Do not let
 
 ### Camera views
 
-| View             | Purpose                                                | Constraint                                                                   |
-| ---------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------- |
-| Angled (default) | Read the whole board, the holes, and the active marble | Shows the active marble, the holes and the boundary at once                  |
-| Top-down         | Tactical judgement                                     | Limited perspective distortion; aim computed in world space                  |
-| Low              | Cinematic inspection                                   | Minimum height above ground; never inside walls; optional if it harms aiming |
-| Follow           | Tracks the shot, then returns to the player's view     | Skippable; can be turned off in Settings; never changes the result           |
+| View             | Purpose                                                                                                        | Constraint                                                                   |
+| ---------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Angled (default) | A low view from behind the line (about 26 degrees up): the board, the field and the horizon, as when crouching | Shows the active marble, the holes, the ground and the open field at once    |
+| Top-down         | Tactical judgement                                                                                             | Limited perspective distortion; aim computed in world space                  |
+| Low              | Cinematic inspection                                                                                           | Minimum height above ground; never inside walls; optional if it harms aiming |
+| Follow           | Tracks the shot, then returns to the player's view                                                             | Skippable; can be turned off in Settings; never changes the result           |
 
 The concept sheet [design/screens/light/16-camera-views.png](design/screens/light/16-camera-views.png) shows the three static views.
 
@@ -219,7 +219,11 @@ The site uses the same tokens, wordmark and rules, so it reads as the same produ
 
 A small, original set, written from code by `scripts/sounds.mjs` (so there is nothing to license; `make sounds` regenerates the files in `game/audio/` and `make sounds-check` fails if they drift): a marble striking a marble, a marble on the wall, a marble dropping into a hole, the shot leaving the finger, a button tap, and a win and a lose chime. Hard hits are louder, and the pitch of the repeating sounds varies a little. The sounds are synthetic and have not been judged by ear yet; recordings can replace the files (record their source and licence beside them). Sound supports weight and result; every critical result also has a visual cue and works muted. Do not use a recording of a real person's voice or a recognisable cultural performance without permission and licence, and do not use stock "village" ambience to imply authenticity. Record the source and licence of every file beside it.
 
+The match is drawn this way in 3D (see [`README_ARCHITECTURE.md`](README_ARCHITECTURE.md), "How the ground and the marbles look"): a swirled marble with a flat mark and a soft shadow, dirt with grain and pebbles, a scratched jalla, worn holes, and the open field.
+
 ## 12. Cultural visual integrity
+
+**The setting.** A match is set in an open field, seen from a crouch: a wide sky, a far hazy line of palms and bamboo, a low earth bund with a fringe of grass, and dry ground with stubble rows running to the horizon. It is specific and grounded (the edge of a field after harvest) and not a postcard: no huts, people, animals, boats, flags, patterns or writing, no golden-hour glow, and nothing that explains itself. It is drawn from the colour tokens in both themes, and in the dark theme it is dusk.
 
 Use observation of real play areas where possible; ask permission before photographing people or private places. Prefer specific, grounded detail to generic visuals. When a local player explains a tool, layout or marking, record it, say which locality it came from, and confirm whether it is local or broader before it appears in the game or on the site.
 

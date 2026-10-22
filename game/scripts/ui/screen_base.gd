@@ -14,7 +14,7 @@ func _init() -> void:
 	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
 	margin.add_theme_constant_override("margin_left", 24)
 	margin.add_theme_constant_override("margin_right", 24)
-	margin.add_theme_constant_override("margin_top", 44)
+	margin.add_theme_constant_override("margin_top", int(SafeArea.top()))
 	margin.add_theme_constant_override("margin_bottom", 36)
 	add_child(margin)
 	column = VBoxContainer.new()

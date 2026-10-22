@@ -28,6 +28,7 @@ var scheme: Palette.Scheme
 
 var _marbles: Dictionary = {}
 var _badges: Dictionary = {}
+var _shadows: Dictionary = {}
 var _layout: Array = []
 
 
@@ -95,6 +96,9 @@ func remove_marble(id: int) -> void:
 	if _badges.has(id):
 		_badges[id].queue_free()
 		_badges.erase(id)
+	if _shadows.has(id):
+		_shadows[id].queue_free()
+		_shadows.erase(id)
 
 
 func clear_marbles() -> void:
@@ -188,6 +192,9 @@ func _spawn(id: int, side: int, at: Vector2) -> Marble:
 	var badge := MarbleBadge.new(m, side, scheme)
 	add_child(badge)
 	_badges[id] = badge
+	var shadow := MarbleShadow.new(m, scheme)
+	add_child(shadow)
+	_shadows[id] = shadow
 	return m
 
 

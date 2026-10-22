@@ -31,6 +31,10 @@ func start(rule_profile: RuleProfile, rule_set: RuleSet, new_setup: MatchSetup =
 	_build_environment(scheme)
 	board = Board.new(profile, scheme)
 	add_child(board)
+	add_child(Field.new(profile, scheme))
+	add_child(FieldObjects.new(profile, scheme))
+	if PitTags.needed(profile):
+		add_child(PitTags.new(board, profile, scheme))
 	rig = CameraRig.new()
 	add_child(rig)
 	rig.frame(profile)
@@ -157,15 +161,35 @@ func _on_match_over(ranking: Array[int]) -> void:
 
 func _build_environment(scheme: Palette.Scheme) -> void:
 	var env := Environment.new()
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = Palette.get_color(&"ground", scheme)
+	env.background_mode = Environment.BG_SKY
+	var sky := ProceduralSkyMaterial.new()
+	sky.sky_top_color = Palette.get_color(&"ground", scheme)
+	sky.sky_horizon_color = Palette.get_color(&"bone", scheme).lerp(
+		Palette.get_color(&"ground", scheme), 0.35
+	)
+	sky.ground_horizon_color = Palette.get_color(&"earth", scheme)
+	sky.ground_bottom_color = Palette.get_color(&"earth", scheme)
+	env.sky = Sky.new()
+	env.sky.sky_material = sky
+	# Far ground fades into the colour of the sky, so the field has depth.
+	env.fog_enabled = true
+	env.fog_light_color = sky.sky_horizon_color
+	env.fog_density = 0.006
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color = Palette.get_color(&"highlight", scheme)
-	env.ambient_light_energy = 0.55
+	env.ambient_light_energy = 0.42
 	var world := WorldEnvironment.new()
 	world.environment = env
 	add_child(world)
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-58.0, 25.0, 0.0)
-	sun.light_energy = 0.9
+	# A low sun, so marbles and trees throw long shadows across the ground.
+	sun.rotation_degrees = Vector3(-27.0, 35.0, 0.0)
+	sun.light_energy = 0.72
+	sun.light_color = Palette.get_color(&"bone", scheme).lerp(
+		Palette.get_color(&"highlight", scheme), 0.5
+	)
+	sun.shadow_enabled = true
+	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
+	sun.directional_shadow_max_distance = 30.0
+	sun.shadow_bias = 0.04
 	add_child(sun)
