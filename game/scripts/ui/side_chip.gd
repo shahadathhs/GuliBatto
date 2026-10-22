@@ -48,6 +48,16 @@ static func draw_marble(
 			canvas.draw_colored_polygon(
 				PackedVector2Array(tri.map(func(p: Vector2) -> Vector2: return centre + p)), mark
 			)
+		SideStyle.Mark.DIAMOND:
+			var diamond := PackedVector2Array(
+				[
+					centre + Vector2(0.0, -radius * 0.5),
+					centre + Vector2(radius * 0.42, 0.0),
+					centre + Vector2(0.0, radius * 0.5),
+					centre + Vector2(-radius * 0.42, 0.0)
+				]
+			)
+			canvas.draw_colored_polygon(diamond, mark)
 
 
 func _draw() -> void:

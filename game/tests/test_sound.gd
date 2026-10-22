@@ -131,10 +131,30 @@ func test_a_marble_dropping_into_a_hole_is_heard_once() -> void:
 func test_a_shot_is_heard_and_the_end_of_the_match_has_its_own_sound() -> void:
 	var parts: Array = await _board_with_director()
 	var controller: MatchController = parts[1]
-	controller.human_side = 0
+	controller.setup = MatchSetup.solo()
 	controller.shot_started.emit(0)
 	controller.match_over.emit([0, 1] as Array[int])
 	controller.match_over.emit([1, 0] as Array[int])
 	assert_eq(Sfx.played.count(Sfx.Event.SHOT), 1)
 	assert_eq(Sfx.played.count(Sfx.Event.WIN), 1, "the player came first")
 	assert_eq(Sfx.played.count(Sfx.Event.LOSE), 1, "the player came second")
+
+
+func test_pass_and_play_marks_the_hand_over_and_each_turn_but_alone_it_is_quiet() -> void:
+	var parts: Array = await _board_with_director()
+	var controller: MatchController = parts[1]
+	controller.setup = MatchSetup.pass_and_play(3)
+	controller.handover_needed.emit(1)
+	controller.turn_started.emit(1, true)
+	assert_eq(Sfx.played.count(Sfx.Event.PASS), 1)
+	assert_eq(Sfx.played.count(Sfx.Event.TURN), 1)
+	Sfx.played.clear()
+	controller.setup = MatchSetup.solo()
+	controller.turn_started.emit(0, true)
+	assert_eq(Sfx.played.count(Sfx.Event.TURN), 0, "no tock when one person plays")
+
+
+func test_each_side_has_a_higher_tock_than_the_one_before() -> void:
+	for side in range(1, SideStyle.MAX_SIDES):
+		assert_gt(Sfx.pitch_for_side(side), Sfx.pitch_for_side(side - 1))
+	assert_almost_eq(Sfx.pitch_for_side(0), 1.0, 0.0001)

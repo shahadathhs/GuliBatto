@@ -208,12 +208,12 @@ func test_the_turn_cap_stops_the_race_and_ranks_by_progress_then_distance() -> v
 
 func test_the_text_the_screens_show_follows_the_state() -> void:
 	assert_eq(rules.caption(state, profile), "Batto · opening toss")
-	assert_eq(rules.turn_text(state, true), "Your toss")
+	assert_eq(rules.turn_text(state, "Your"), "Your toss")
 	assert_eq(rules.standings(state), ["H1", "H1", "H1"] as Array[String])
 	_open([far, far, far])
 	assert_eq(rules.caption(state, profile), "Batto · the race")
 	var side := state.current_side()
 	var rival := (side + 1) % 3
 	var r := _shoot([far, far, far], [rival])
-	assert_eq(rules.turn_text(state, false), "Their bonus shot")
+	assert_eq(rules.turn_text(state, "Their"), "Their bonus shot")
 	assert_eq(rules.cue_text(r, profile, _board([far, far, far])), "Hit. Another shot")

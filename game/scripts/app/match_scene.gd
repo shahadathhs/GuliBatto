@@ -7,6 +7,8 @@ signal pause_requested
 signal help_requested
 signal round_finished(result: RuleResult, totals: Array[int], caption: String, total_word: String)
 signal match_finished(ranking: Array[int], details: Array[String])
+## Pass and play: this side is a different person, who should take the device first.
+signal handover_requested(side: int)
 
 var profile: RuleProfile
 var rules: RuleSet
@@ -17,12 +19,14 @@ var aim: AimController
 var director: CameraDirector
 var baad_marker: BaadMarker
 var hud: Hud
-var human_side: int = 0
+var setup: MatchSetup = MatchSetup.solo()
 
 
-func start(rule_profile: RuleProfile, rule_set: RuleSet) -> void:
+func start(rule_profile: RuleProfile, rule_set: RuleSet, new_setup: MatchSetup = null) -> void:
 	profile = rule_profile
 	rules = rule_set
+	if new_setup != null:
+		setup = new_setup
 	var scheme := Appearance.scheme()
 	_build_environment(scheme)
 	board = Board.new(profile, scheme)
@@ -48,9 +52,9 @@ func start(rule_profile: RuleProfile, rule_set: RuleSet) -> void:
 	add_child(baad_marker)
 	_connect()
 	hud.highlight_view(CameraRig.View.ANGLED)
-	controller.start(board, profile, rules, human_side)
+	controller.start(board, profile, rules, setup)
 	hud.set_mode_caption(rules.caption(controller.state, profile))
-	hud.set_standings(rules.standings(controller.state), human_side)
+	hud.set_standings(rules.standings(controller.state), setup)
 
 
 func cancel_aim() -> void:
@@ -84,6 +88,7 @@ func _connect() -> void:
 	controller.turn_started.connect(_on_turn_started)
 	controller.shot_started.connect(_on_shot_started)
 	controller.shot_judged.connect(_on_shot_judged)
+	controller.handover_needed.connect(func(side: int) -> void: handover_requested.emit(side))
 	controller.baad_needed.connect(_on_baad_needed)
 	controller.baad_named.connect(_on_baad_named)
 	controller.round_scored.connect(_on_round_scored)
@@ -95,8 +100,8 @@ func _on_turn_started(side: int, is_human: bool) -> void:
 	baad_marker.clear()
 	hud.set_hint("")
 	hud.set_mode_caption(rules.caption(state, profile))
-	hud.set_turn(side, rules.turn_text(state, is_human))
-	hud.set_standings(rules.standings(state), human_side)
+	hud.set_turn(side, rules.turn_text(state, setup.owner_word(side)))
+	hud.set_standings(rules.standings(state), setup)
 	if is_human:
 		hud.show_camera_bar()
 		if not Settings.coach_seen:
@@ -138,7 +143,7 @@ func _on_shot_judged(_side: int, result: RuleResult) -> void:
 
 func _on_round_scored(result: RuleResult, _totals: Array[int]) -> void:
 	var state := controller.state
-	hud.set_standings(rules.standings(state), human_side)
+	hud.set_standings(rules.standings(state), setup)
 	var shown := result.totals if not result.totals.is_empty() else state.totals
 	round_finished.emit(result, shown, rules.round_caption(state), rules.total_word())
 

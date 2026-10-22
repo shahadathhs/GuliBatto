@@ -14,16 +14,16 @@ These are accounts, not a single authority. The same game is played differently 
 
 ## 2. The four modes
 
-|                              | **Kep**                                  | **Batto**                                                     | **Guli Khela**                                     | **Quick Dan**                               |
-| ---------------------------- | ---------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------- |
-| Comes from                   | Account B (the opening toss)             | Account A                                                     | Accounts B and C                                   | Account B (one round)                       |
-| Shape                        | Toss at the hole; closest wins           | Race along three holes and back                               | Stake marbles; touch exactly one, never the _baad_ | One round of Guli Khela                     |
-| Sides                        | 2 to 4 (you plus 1 to 3 AI)              | 2 to 4                                                        | 2 to 4                                             | 2 to 4                                      |
-| Key decision                 | Judging distance and power               | Hole or hit: aim ahead, or send a rival away for a bonus shot | Which marble is _baad_, and a clean single touch   | The same, with no long-term stakes          |
-| Keeps marbles between rounds | No, it is scored                         | No, it is ranked                                              | **Yes**, play for keeps                            | No, one stake, one winner                   |
-| Ends when                    | After a set number of rounds             | All but one have finished                                     | One side is out of marbles or surrenders           | The round is won                            |
-| Result                       | Points, then ranking                     | Finishing order; the last loses                               | Marble counts; the last with marbles wins          | The winner takes the pot                    |
-| Role                         | Quick, simplest, shares the opening toss | The race                                                      | The full traditional game                          | A short session of the full game (optional) |
+|                              | **Kep**                                              | **Batto**                                                     | **Guli Khela**                                     | **Quick Dan**                               |
+| ---------------------------- | ---------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------- |
+| Comes from                   | Account B (the opening toss)                         | Account A                                                     | Accounts B and C                                   | Account B (one round)                       |
+| Shape                        | Toss at the hole; closest wins                       | Race along three holes and back                               | Stake marbles; touch exactly one, never the _baad_ | One round of Guli Khela                     |
+| Sides                        | 2 to 5 (you plus 1 to 3 computers, or 2 to 5 people) | 2 to 5                                                        | 2 to 5                                             | 2 to 5                                      |
+| Key decision                 | Judging distance and power                           | Hole or hit: aim ahead, or send a rival away for a bonus shot | Which marble is _baad_, and a clean single touch   | The same, with no long-term stakes          |
+| Keeps marbles between rounds | No, it is scored                                     | No, it is ranked                                              | **Yes**, play for keeps                            | No, one stake, one winner                   |
+| Ends when                    | After a set number of rounds                         | All but one have finished                                     | One side is out of marbles or surrenders           | The round is won                            |
+| Result                       | Points, then ranking                                 | Finishing order; the last loses                               | Marble counts; the last with marbles wins          | The winner takes the pot                    |
+| Role                         | Quick, simplest, shares the opening toss             | The race                                                      | The full traditional game                          | A short session of the full game (optional) |
 
 Order of building: **Kep** (smallest, and its toss is the opening of the other two), then **Batto**, then **Guli Khela**, then **Quick Dan** if short sessions need it. The modes must ask for different decisions. If two of them feel like the same rule, cut the weaker one rather than adding a fifth.
 

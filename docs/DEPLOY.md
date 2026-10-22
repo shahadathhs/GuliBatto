@@ -1,6 +1,6 @@
 # Deploying Guli & Batto (GitHub Releases + Vercel)
 
-> **Status: live.** The site is deployed at <https://playgulibatto.vercel.app> and serves the home page, how to play, about, download, privacy and play pages, the web export at `/play`, `robots.txt` and `sitemap.xml` (checked 2026-10-21). The Vercel deploy hook is stored as the GitHub secret `VERCEL_DEPLOY_HOOK`. The release `v0.0.1` was published by the pipeline on 2026-10-21 with the APK, the web export and checksums (it also had desktop builds, which are no longer built). Provider screens change; check each provider's current documentation and correct this file afterwards.
+> **Status: live (the release was republished on 2026-10-22 with all four games).** The site is deployed at <https://playgulibatto.vercel.app> and serves the home page, how to play, about, download, privacy and play pages, the web export at `/play`, `robots.txt` and `sitemap.xml` (checked 2026-10-21). The Vercel deploy hook is stored as the GitHub secret `VERCEL_DEPLOY_HOOK`. The release `v0.0.1` was published by the pipeline on 2026-10-21 with the APK, the web export and checksums (it also had desktop builds, which are no longer built). Provider screens change; check each provider's current documentation and correct this file afterwards.
 
 ## Overview
 

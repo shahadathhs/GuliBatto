@@ -25,7 +25,7 @@ func _init() -> void:
 	about.pressed.connect(func() -> void: about_pressed.emit())
 	column.add_child(about)
 	column.add_child(UiKit.spacer(6.0))
-	var start := UiKit.primary("Start")
+	var start := UiKit.primary("Next")
 	start.pressed.connect(func() -> void: start_pressed.emit(_selected))
 	add_centered(start)
 

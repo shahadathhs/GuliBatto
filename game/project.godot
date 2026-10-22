@@ -10,7 +10,7 @@ config/quit_on_go_back=false
 config/icon="res://icon.svg"
 boot_splash/show_image=false
 boot_splash/bg_color=Color(0.9529, 0.9216, 0.8667, 1)
-config/version="0.0.1"
+config/version="0.0.2"
 
 [display]
 

@@ -23,7 +23,7 @@ func test_three_computer_sides_play_five_rounds_to_the_end() -> void:
 	match_controller.round_scored.connect(
 		func(_r: RuleResult, _t: Array[int]) -> void: scored.append(1)
 	)
-	match_controller.start(board, profile, KepRules.new(), -1, 1234)
+	match_controller.start(board, profile, KepRules.new(), MatchSetup.computers_only(3), 1234)
 	await wait_for_signal(match_controller.match_over, 600.0)
 	assert_eq(match_controller.phase, MatchController.Phase.MATCH_OVER)
 	assert_eq(scored.size(), profile.rounds, "every round was scored once")
@@ -36,7 +36,9 @@ func test_three_computer_sides_play_five_rounds_to_the_end() -> void:
 
 
 func test_the_player_can_only_shoot_on_their_own_turn() -> void:
-	match_controller.start(board, profile, KepRules.new(), 1, 99)
+	match_controller.start(
+		board, profile, KepRules.new(), MatchSetup.with_humans([1] as Array[int], 3), 99
+	)
 	await wait_for_signal(match_controller.turn_started, 5.0)
 	# Side 0 is first and is a computer, so a shot from the player (side 1) is refused.
 	var shot := ShotCommand.create(1, 1, Vector2.UP, 0.5)
@@ -44,7 +46,7 @@ func test_the_player_can_only_shoot_on_their_own_turn() -> void:
 
 
 func test_a_human_toss_is_taken_and_the_next_side_follows() -> void:
-	match_controller.start(board, profile, KepRules.new(), 0, 7)
+	match_controller.start(board, profile, KepRules.new(), MatchSetup.solo(2), 7)
 	assert_true(match_controller.is_human_turn(), "side 0 goes first and is the player")
 	var shot := ShotCommand.create(
 		0, 0, (profile.holes[0] - board.marble(0).ground_position()).normalized(), 0.55

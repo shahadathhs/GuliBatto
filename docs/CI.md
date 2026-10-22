@@ -1,6 +1,6 @@
 # CI, tooling and releases
 
-> **Status: ran on GitHub and passed.** On 2026-10-21 the pipeline ran on `main` after pull request #2 and every job succeeded: quality, web, game (in the Docker image), build, and release. It published `v0.0.1` and a rolling `latest` with the APK, the web export, the desktop builds (since dropped) and checksums. The site rebuild hook (`VERCEL_DEPLOY_HOOK`) was added after that run, so its first real use is the next release. Update this file in the same change as any workflow or tooling change.
+> **Status: ran on GitHub and passed (again on 2026-10-22, when the merge of PR #4 republished `v0.0.1` with all four games).** On 2026-10-21 the pipeline ran on `main` after pull request #2 and every job succeeded: quality, web, game (in the Docker image), build, and release. It published `v0.0.1` and a rolling `latest` with the APK, the web export, the desktop builds (since dropped) and checksums. The site rebuild hook (`VERCEL_DEPLOY_HOOK`) was added after that run, so its first real use is the next release. Update this file in the same change as any workflow or tooling change.
 
 ## Principles
 

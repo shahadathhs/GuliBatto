@@ -67,9 +67,9 @@ The website and the app carry the same information from one source ([`README_WEB
 
 ## 8. Scope
 
-**In:** the four games, complete; one to three computer opponents in each; Android and the web from one project; the pages above on the web and in the app; automatic releases; and the basics a game needs: menu and mode select, pause and restart, a theme setting, basic sound and locally saved settings.
+**In:** the four games, complete; one to three computer opponents in each, and pass and play for two to five people on one device ([`README_PLAY_MODES.md`](README_PLAY_MODES.md)); Android and the web from one project; the pages above on the web and in the app; automatic releases; and the basics a game needs: menu and mode select, pause and restart, a theme setting, basic sound and locally saved settings.
 
-**Not in:** pass-and-play on one device, other languages, statistics and achievements, extra arenas or skins, a campaign, online play, accounts, leaderboards, cloud saves or any backend, human characters, ads and monetisation, a dashboard or authoring tool. Adding any of these is a new decision recorded here first.
+**Not in:** other languages, statistics and achievements, extra arenas or skins, a campaign, online play, accounts, leaderboards, cloud saves or any backend, human characters, ads and monetisation, a dashboard or authoring tool. Adding any of these is a new decision recorded here first.
 
 ## 9. When a game is "represented properly"
 
@@ -95,33 +95,35 @@ These are observations to record in playtests, not numeric targets: there are no
 
 ## 11. Status
 
-| Area                                   | State                                                                                                                                                 |
-| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Shot, physics, settling, camera, input | Built and tested (199 automated tests, real input through the whole stack); **not played by hand on a phone**                                         |
-| Kep                                    | Complete: scoring, rounds, computer sides, the full screen set in light and dark                                                                      |
-| Batto                                  | Complete: opening toss, the three-hole race, bonus shots, finishing order and computer sides that choose between a hole and a hit; not played by hand |
-| Guli Khela, Quick Dan                  | Complete: stake, scatter, baad, fines, dans, the three-pass rule, surrender and computer sides                                                        |
-| Site                                   | Live at the address above: Home, How to play, About, Download, Privacy, Play, share image, theme toggle                                               |
-| Releases                               | `v0.0.1` published with the APK, the web export and checksums; the site rebuilds on each release through a deploy hook                                |
-| Checks                                 | Lint, token and colour checks, file size, game and site tests, a smoke test of every page, and a CI pipeline that passes on `main`                    |
-| Not done                               | Playing on real devices; checking the rules with people who played; sound, saved settings and the shared pages                                        |
+| Area                                   | State                                                                                                                                                                                |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Shot, physics, settling, camera, input | Built and tested (230 automated tests, real input through the whole stack); **not played by hand on a phone**                                                                        |
+| Kep                                    | Complete: scoring, rounds, computer sides                                                                                                                                            |
+| Batto                                  | Complete: opening toss, the three-hole race on its own large board, bonus shots, finishing order; not played by hand                                                                 |
+| Guli Khela, Quick Dan                  | Complete: stake, scatter, baad, fines, dans, the three-pass rule, surrender                                                                                                          |
+| Play modes                             | Against one to three computers, and pass and play for two to five people with a hand-over screen; tested to the end of every game; not played by hand                                |
+| Pages and teaching                     | Built in the app and on the site from one `content/`: how to play, a page and a rules card for each game, About, Contact, Privacy                                                    |
+| Site                                   | Redesigned: Home, games, How to play, About, Contact, Privacy, Download with a QR code, Play in a phone frame; live at the address above                                             |
+| Releases                               | `v0.0.1` (all four games) is published; `0.0.2` (with both play modes) follows the next merge to `main`; each has the APK, the web export and checksums, and the site rebuilds on it |
+| Checks                                 | Lint, token, colour, sound and content checks, file size, game and site tests, a smoke test of every page, and a passing CI pipeline                                                 |
+| Not done                               | Playing on real devices; checking the rules with people who played; the site-native browser loader                                                                                   |
 
 The order of work is in [`README_ROADMAP.md`](README_ROADMAP.md) and the checklist in [`../TODO.md`](../TODO.md).
 
 ## 12. Decisions and open questions
 
-| Topic                 | Decision                                                | Needs                                                                                         |
-| --------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Name                  | "Guli & Batto" is a working label                       | Name, spelling and cultural fit                                                               |
-| Modes                 | Kep, Batto, Guli Khela, Quick Dan, all four complete    | The rules checked with at least one more person who played each                               |
-| Platforms             | Android and web                                         | Whether to add iOS, a store or desktop builds later (not planned)                             |
-| Orientation           | Portrait on phones; the web version resizes             | Playtests on real devices                                                                     |
-| Language              | English, with the games' own words                      | None planned                                                                                  |
-| Opponents             | One to three computer sides, same shot interface        | Whether they play each game convincingly                                                      |
-| Rendering and physics | Compatibility renderer, Jolt physics, on every platform | Performance on real phones and browsers; Jolt in the browser is only seen to behave correctly |
-| Site address          | `playgulibatto.vercel.app`                              | A custom domain later, if wanted                                                              |
-| Contact details       | Not chosen                                              | An email or form to publish                                                                   |
-| Persistence           | Local save only                                         | Browser storage behaviour and a clear reset                                                   |
+| Topic                 | Decision                                                                                             | Needs                                                                                         |
+| --------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Name                  | "Guli & Batto" is a working label                                                                    | Name, spelling and cultural fit                                                               |
+| Modes                 | Kep, Batto, Guli Khela, Quick Dan, all four complete                                                 | The rules checked with at least one more person who played each                               |
+| Platforms             | Android and web                                                                                      | Whether to add iOS, a store or desktop builds later (not planned)                             |
+| Orientation           | Portrait on phones; the web version resizes                                                          | Playtests on real devices                                                                     |
+| Language              | English, with the games' own words                                                                   | None planned                                                                                  |
+| Opponents             | One to three computer sides, same shot interface; pass and play for two to five people on one device | Whether they play each game convincingly                                                      |
+| Rendering and physics | Compatibility renderer, Jolt physics, on every platform                                              | Performance on real phones and browsers; Jolt in the browser is only seen to behave correctly |
+| Site address          | `playgulibatto.vercel.app`                                                                           | A custom domain later, if wanted                                                              |
+| Contact details       | Not chosen                                                                                           | An email or form to publish                                                                   |
+| Persistence           | Local save only                                                                                      | Browser storage behaviour and a clear reset                                                   |
 
 ## 13. Principles and documentation
 

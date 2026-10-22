@@ -117,6 +117,20 @@ const sounds = {
       );
     return out;
   })(),
+  // Pass and play, a new person takes the device: two soft notes.
+  pass: (() => {
+    const out = new Float32Array(Math.round(0.5 * RATE));
+    [392, 523.25].forEach((hz, i) =>
+      mix(
+        out,
+        make(0.3, (t) => (tone(hz, t) + 0.2 * tone(hz * 2, t)) * decay(8, t)),
+        i * 0.14,
+      ),
+    );
+    return out;
+  })(),
+  // Pass and play, the turn begins: a soft tock, played higher for each side.
+  turn: make(0.09, (t) => 0.8 * tone(660, t) * decay(45, t) + 0.3 * tone(1320, t) * decay(70, t)),
   // Won the match: four rising notes.
   win: (() => {
     const out = new Float32Array(Math.round(0.65 * RATE));

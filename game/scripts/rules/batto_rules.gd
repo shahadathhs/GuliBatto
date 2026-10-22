@@ -57,8 +57,21 @@ func aim_point(state: MatchState, profile: RuleProfile, side: int) -> Variant:
 	return profile.holes[profile.route[0] if s.opening else s.next_hole(side)]
 
 
+## Sides that have finished in order, then the rest by how far along the route they are (so it is
+## the full order when a match is ended early, and the finishing order at the end).
 func ranking(state: MatchState) -> Array[int]:
-	return (state as BattoState).finished.duplicate()
+	var s := state as BattoState
+	var out: Array[int] = s.finished.duplicate()
+	var rest: Array[int] = []
+	for side in s.side_count:
+		if not s.is_finished(side):
+			rest.append(side)
+	rest.sort_custom(
+		func(a: int, b: int) -> bool:
+			return s.progress[a] > s.progress[b] or (s.progress[a] == s.progress[b] and a < b)
+	)
+	out.append_array(rest)
+	return out
 
 
 func make_ai(seed_value: int) -> TossAI:
@@ -70,13 +83,13 @@ func caption(state: MatchState, profile: RuleProfile) -> String:
 	return "%s · %s" % [profile.title, "opening toss" if s.opening else "the race"]
 
 
-func turn_text(state: MatchState, is_human: bool) -> String:
+func turn_text(state: MatchState, owner: String) -> String:
 	var s := state as BattoState
 	if s.opening:
-		return "Your toss" if is_human else "Their toss"
+		return "%s toss" % owner
 	if s.bonus_chain > 0:
-		return "Your bonus shot" if is_human else "Their bonus shot"
-	return "Your shot" if is_human else "Their shot"
+		return "%s bonus shot" % owner
+	return "%s shot" % owner
 
 
 ## The hole each side must reach next ("H2"), or its place once it has finished.
@@ -85,7 +98,7 @@ func standings(state: MatchState) -> Array[String]:
 	var out: Array[String] = []
 	for side in s.side_count:
 		if s.is_finished(side):
-			out.append(["1ST", "2ND", "3RD", "4TH"][s.finished.find(side)])
+			out.append(["1ST", "2ND", "3RD", "4TH", "5TH"][s.finished.find(side)])
 		else:
 			out.append("H%d" % (s.next_hole(side) + 1))
 	return out

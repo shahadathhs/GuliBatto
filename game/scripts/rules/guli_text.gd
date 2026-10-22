@@ -11,10 +11,10 @@ static func caption(s: GuliState, profile: RuleProfile) -> String:
 	return "%s%s · pass %d of %d" % [profile.title, dan, s.pass_index + 1, s.passes_limit]
 
 
-static func turn_text(s: GuliState, is_human: bool) -> String:
+static func turn_text(s: GuliState, owner: String) -> String:
 	if s.stage == GuliState.Stage.OPENING:
-		return "Your toss" if is_human else "Their toss"
-	return "Your throw" if is_human else "Their throw"
+		return "%s toss" % owner
+	return "%s throw" % owner
 
 
 static func standings(s: GuliState) -> Array[String]:

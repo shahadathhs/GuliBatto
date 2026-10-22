@@ -4,11 +4,11 @@ export const FONT = "'Avenir Next','Helvetica Neue',Arial,sans-serif";
 export const text = (t, x, y, o = {}) =>
   `<text x="${x}" y="${y}" font-family="${FONT}" font-size="${o.size ?? 16}" font-weight="${o.weight ?? 500}" fill="${o.fill}" text-anchor="${o.anchor ?? "start"}" letter-spacing="${o.ls ?? 0}"${o.deco ? ` text-decoration="${o.deco}"` : ""}>${t}</text>`;
 
-// Sides: p1 blue ring, p2 amber dot, p3 jade bar, p4 plum triangle; pot = plain bone (stake marbles).
+// Sides: p1 blue ring, p2 amber dot, p3 jade bar, p4 plum triangle, p5 rose diamond; pot = bone with an ink bar (stake marbles).
 export function marble(c, x, y, kind, o = {}) {
   const r = o.r ?? 12;
-  const fill = { p1: c.glaze, p2: c.amber, p3: c.jade, p4: c.plum, pot: c.bone }[kind];
-  const mk = { p1: c.onGlaze, p2: c.onAmber, p3: c.onJade, p4: c.onPlum }[kind];
+  const fill = { p1: c.glaze, p2: c.amber, p3: c.jade, p4: c.plum, p5: c.rose, pot: c.bone }[kind];
+  const mk = { p1: c.onGlaze, p2: c.onAmber, p3: c.onJade, p4: c.onPlum, p5: c.onRose }[kind];
   let m = "";
   if (kind === "p1")
     m = `<circle cx="${x}" cy="${y}" r="${r * 0.48}" fill="none" stroke="${mk}" stroke-width="${Math.max(1.5, r / 6)}"/>`;
@@ -17,6 +17,10 @@ export function marble(c, x, y, kind, o = {}) {
     m = `<rect x="${x - r * 0.5}" y="${y - r * 0.12}" width="${r}" height="${r * 0.24}" fill="${mk}"/>`;
   if (kind === "p4")
     m = `<polygon points="${x},${y - r * 0.5} ${x + r * 0.5},${y + r * 0.38} ${x - r * 0.5},${y + r * 0.38}" fill="${mk}"/>`;
+  if (kind === "p5")
+    m = `<polygon points="${x},${y - r * 0.5} ${x + r * 0.42},${y} ${x},${y + r * 0.5} ${x - r * 0.42},${y}" fill="${mk}"/>`;
+  if (kind === "pot")
+    m = `<rect x="${x - r * 0.5}" y="${y - r * 0.12}" width="${r}" height="${r * 0.24}" fill="${c.ink}"/>`;
   const ring =
     o.active || o.striker
       ? `<ellipse cx="${x}" cy="${y + r * 0.7}" rx="${r * 1.55}" ry="${r * 0.62}" fill="none" stroke="${o.ringColor ?? c.ink}" stroke-width="3"/>`

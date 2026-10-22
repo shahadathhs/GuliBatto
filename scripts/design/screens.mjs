@@ -1,4 +1,5 @@
 import { THEMES } from "./tokens.mjs";
+import { MORE } from "./screens_more.mjs";
 import {
   text,
   marble,
@@ -44,6 +45,12 @@ const mini = (c, kind) => {
   return base + holes[kind.type];
 };
 
+// Batto's board: long and narrow, seen from behind the line, with three deep holes four marbles wide.
+const battoBoard = (
+  c,
+) => `<polygon points="120,236 270,236 346,574 44,574" fill="${c.earthRim}"/><polygon points="126,240 264,240 336,566 54,566" fill="${c.earth}"/>
+${hole(c, 195, 290, "H3", { rx: 22, ry: 8 })}${hole(c, 195, 392, "H2", { rx: 26, ry: 10 })}${hole(c, 195, 494, "H1", { rx: 30, ry: 12 })}${jalla(c, 195, 556, 90)}`;
+
 const SCREENS = [
   [
     "01-menu",
@@ -66,7 +73,7 @@ ${textAction(c, "How to play", 75, 800)}${textAction(c, "About", 195, 800)}${tex
         sel,
       ) => `<rect x="24" y="${y}" width="342" height="112" rx="18" fill="${c.ground}" stroke="${sel ? c.ink : c.line}" stroke-width="${sel ? 4 : 2}"/>
 ${text(name, 44, y + 40, { fill: c.ink, size: 21, weight: 800, ls: 1 })}${text(line, 44, y + 70, { fill: c.mute, size: 14 })}
-${mini(c, { ...kind, y: y + 56 })}${sel ? `<circle cx="344" cy="${y + 22}" r="14" fill="${c.ink}"/><path d="M337 ${y + 22} L342 ${y + 28} L352 ${y + 16}" fill="none" stroke="${c.ground}" stroke-width="3"/>` : ""}`;
+${mini(c, { ...kind, y: y + 56 })}${textAction(c, "Rules", 330, y + 100)}${sel ? `<circle cx="344" cy="${y + 22}" r="14" fill="${c.ink}"/><path d="M337 ${y + 22} L342 ${y + 28} L352 ${y + 16}" fill="none" stroke="${c.ground}" stroke-width="3"/>` : ""}`;
       return `${iconButton(c, "back", 40, 88)}${text("CHOOSE A MODE", 80, 94, { fill: c.ink, size: 20, weight: 800, ls: 1.5 })}
 ${row(130, "KEP", "Toss at the hole. Closest scores.", { type: "kep" }, false)}
 ${row(254, "BATTO", "Race three holes and back.", { type: "batto" }, false)}
@@ -144,8 +151,8 @@ ${primaryDisc(c, "NEXT", 195, 630, 52)}${textAction(c, "Surrender", 195, 790)}`;
       ["p3", "", "H3"],
     ])}
 ${routeChips(c, 1)}
-${arena(c, { cy: 440, rx: 178, ry: 150 })}${hole(c, 195, 330, "H3")}${hole(c, 195, 398, "H2")}${hole(c, 195, 466, "H1")}${jalla(c, 195, 560)}
-${marble(c, 130, 420, "p2")}${marble(c, 265, 370, "p3")}${marble(c, 205, 520, "p1", { r: 14, active: true })}
+${battoBoard(c)}
+${marble(c, 140, 410, "p2", { r: 9 })}${marble(c, 250, 330, "p3", { r: 9 })}${marble(c, 200, 520, "p1", { r: 11, active: true })}
 ${cameraBar(c, "angled")}`,
   ],
   [
@@ -157,9 +164,9 @@ ${cameraBar(c, "angled")}`,
       ["p3", "", "H3"],
     ])}
 ${routeChips(c, 1)}
-${arena(c, { cy: 440, rx: 178, ry: 150 })}${hole(c, 195, 330, "H3")}${hole(c, 195, 398, "H2")}${hole(c, 195, 466, "H1")}${jalla(c, 195, 560)}
-<path d="M236 450 L300 360" stroke="${c.glaze}" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
-${marble(c, 300, 355, "p2")}${marble(c, 265, 370, "p3")}${marble(c, 232, 455, "p1", { r: 14, active: true })}
+${battoBoard(c)}
+<path d="M205 515 L252 345" stroke="${c.glaze}" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+${marble(c, 262, 322, "p2", { r: 9 })}${marble(c, 250, 345, "p3", { r: 9 })}${marble(c, 200, 520, "p1", { r: 11, active: true })}
 ${banner(c, "HIT · ONE MORE SHOT", 600)}${cameraBar(c, "angled")}`,
   ],
   [
@@ -264,40 +271,17 @@ ${r(300, "p1", "YOU", 15, "+7")}${r(370, "p2", "", 8, "−3")}${r(440, "p3", "",
 ${primaryDisc(c, "NEXT DAN", 195, 600, 56)}${textAction(c, "Surrender", 195, 760)}`;
     },
   ],
-  [
-    "14-pause",
-    "Pause",
-    (
-      c,
-    ) => `${text("PAUSED", 195, 180, { fill: c.ink, size: 30, weight: 800, anchor: "middle", ls: 3 })}
-${primaryDisc(c, "RESUME", 195, 330, 56)}
-${outlineButton(c, "RESTART", 195, 470, 220)}${outlineButton(c, "HOW TO PLAY", 195, 540, 220)}${outlineButton(c, "SETTINGS", 195, 610, 220)}
-${textAction(c, "Back to menu", 195, 710)}`,
-  ],
-  [
-    "15-settings",
-    "Settings",
-    (c) => {
-      const row = (label, val, y, on) =>
-        `${text(label, 24, y, { fill: c.ink, size: 17, weight: 600 })}<rect x="296" y="${y - 22}" width="70" height="34" rx="17" fill="${on ? c.ink : c.ground}" stroke="${c.ink}" stroke-width="2"/>${text(val, 331, y, { fill: on ? c.ground : c.ink, size: 12, weight: 800, anchor: "middle", ls: 1 })}<line x1="24" y1="${y + 22}" x2="366" y2="${y + 22}" stroke="${c.line}" stroke-opacity="0.4"/>`;
-      const seg = (x, label, on) =>
-        `<rect x="${x}" y="498" width="106" height="44" rx="14" fill="${on ? c.ink : c.ground}" stroke="${c.ink}" stroke-width="2"/>${text(label, x + 53, 526, { fill: on ? c.ground : c.ink, size: 12, weight: 800, anchor: "middle", ls: 1 })}`;
-      return `${iconButton(c, "back", 40, 88)}${text("SETTINGS", 80, 94, { fill: c.ink, size: 20, weight: 800, ls: 1.5 })}
-${row("Sound", "ON", 176, true)}${row("Music", "OFF", 236, false)}${row("Vibration", "ON", 296, true)}${row("Reduce motion", "OFF", 356, false)}${row("Follow camera", "ON", 416, true)}
-${text("Theme", 24, 480, { fill: c.ink, size: 17, weight: 600 })}${seg(24, "SYSTEM", true)}${seg(142, "LIGHT", false)}${seg(260, "DARK", false)}
-${text("Saved on this device only.", 24, 620, { fill: c.mute, size: 14 })}
-${textAction(c, "Reset saved data", 195, 790)}`;
-    },
-  ],
 ];
+
+const ALL = [...SCREENS, ...MORE].sort((a, b) => a[0].localeCompare(b[0]));
 
 export const screenSvg = (id, theme) => {
   const c = THEMES[theme];
-  const s = SCREENS.find(([i]) => i === id);
+  const s = ALL.find(([i]) => i === id);
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="${c.ground}"/>${s[2](c)}</svg>`;
 };
-export const screenList = SCREENS.map(([id, name]) => ({ id, name }));
-export const screenBody = (id, theme) => SCREENS.find(([i]) => i === id)[2](THEMES[theme]);
+export const screenList = ALL.map(([id, name]) => ({ id, name }));
+export const screenBody = (id, theme) => ALL.find(([i]) => i === id)[2](THEMES[theme]);
 
 // Camera views of the same Batto board: angled, top-down, low.
 export const viewsSvg = (theme) => {
@@ -308,6 +292,6 @@ export const viewsSvg = (theme) => {
     `<circle cx="${x}" cy="${y}" r="12" fill="${{ p1: c.glaze, p2: c.amber, p3: c.jade }[k]}" stroke="${c.ink}" stroke-width="1.5"/>`;
   const top = `<circle cx="195" cy="270" r="150" fill="${c.earthRim}"/><circle cx="195" cy="270" r="143" fill="${c.earth}"/>${[190, 270, 350].map((y) => `<ellipse cx="195" cy="${y}" rx="16" ry="16" fill="${c.hole}"/>`).join("")}<path d="M110 440 H280" stroke="${c.ink}" stroke-opacity="0.6" stroke-width="3" stroke-dasharray="10 7"/>${disc(130, 290, "p2")}${disc(265, 230, "p3")}${disc(205, 420, "p1")}`;
   const low = `<rect x="0" y="260" width="390" height="260" fill="${c.earth}"/><rect x="0" y="250" width="390" height="14" fill="${c.earthRim}"/>${marble(c, 110, 340, "p2", { r: 26 })}${marble(c, 300, 330, "p3", { r: 26 })}${marble(c, 200, 440, "p1", { r: 34 })}`;
-  const ang = `<g transform="translate(0,-60)">${arena(c, { cy: 440, rx: 178, ry: 150 })}${hole(c, 195, 330, "H3")}${hole(c, 195, 398, "H2")}${hole(c, 195, 466, "H1")}${jalla(c, 195, 560)}${marble(c, 130, 420, "p2")}${marble(c, 265, 370, "p3")}${marble(c, 205, 520, "p1", { r: 14, active: true })}</g>`;
+  const ang = `<g transform="translate(0,-60)">${battoBoard(c)}${marble(c, 140, 410, "p2", { r: 9 })}${marble(c, 250, 330, "p3", { r: 9 })}${marble(c, 200, 520, "p1", { r: 11, active: true })}</g>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1170" height="520" viewBox="0 0 1170 520">${pane(0, "ANGLED", ang)}${pane(390, "TOP-DOWN", top)}${pane(780, "LOW", low)}</svg>`;
 };

@@ -26,7 +26,7 @@ func test_computer_sides_play_a_match_and_no_marble_is_lost() -> void:
 	match_controller.round_scored.connect(
 		func(_r: RuleResult, _t: Array[int]) -> void: dans[0] += 1
 	)
-	match_controller.start(board, profile, GuliRules.new(), -1, 4242)
+	match_controller.start(board, profile, GuliRules.new(), MatchSetup.computers_only(3), 4242)
 	await wait_for_signal(match_controller.match_over, 900.0)
 	var s := match_controller.state as GuliState
 	var rules := GuliRules.new()
@@ -44,7 +44,7 @@ func test_computer_sides_play_a_match_and_no_marble_is_lost() -> void:
 
 func test_quick_dan_with_computer_sides_ends_after_one_dan() -> void:
 	await _setup(RuleProfile.quick_dan())
-	match_controller.start(board, profile, GuliRules.new(), -1, 77)
+	match_controller.start(board, profile, GuliRules.new(), MatchSetup.computers_only(3), 77)
 	await wait_for_signal(match_controller.match_over, 600.0)
 	var s := match_controller.state as GuliState
 	assert_eq(s.dan_index, 1)
@@ -53,7 +53,7 @@ func test_quick_dan_with_computer_sides_ends_after_one_dan() -> void:
 
 func test_the_stake_appears_round_the_kep_after_the_opening_tosses() -> void:
 	await _setup(RuleProfile.guli())
-	match_controller.start(board, profile, GuliRules.new(), -1, 5)
+	match_controller.start(board, profile, GuliRules.new(), MatchSetup.computers_only(3), 5)
 	for toss in 3:
 		await wait_for_signal(match_controller.shot_judged, 30.0)
 	await wait_for_signal(match_controller.turn_started, 5.0)
@@ -116,7 +116,7 @@ func _board_layout(from: Vector2, spots: Array[Vector2]) -> Array:
 func _until_the_player_must_name_a_baad() -> void:
 	var needed := [false]
 	match_controller.baad_needed.connect(func() -> void: needed[0] = true)
-	match_controller.start(board, profile, GuliRules.new(), 0, 90)
+	match_controller.start(board, profile, GuliRules.new(), MatchSetup.solo(2), 90)
 	for step in 600:
 		if needed[0]:
 			return
@@ -150,7 +150,7 @@ func test_the_player_must_name_a_baad_before_throwing() -> void:
 
 func test_giving_up_ends_the_match_with_the_player_last() -> void:
 	await _setup(RuleProfile.guli())
-	match_controller.start(board, profile, GuliRules.new(), 0, 3)
+	match_controller.start(board, profile, GuliRules.new(), MatchSetup.solo(2), 3)
 	var ranking: Array[int] = []
 	match_controller.match_over.connect(func(r: Array[int]) -> void: ranking.assign(r))
 	assert_true(match_controller.surrender())
@@ -161,5 +161,5 @@ func test_giving_up_ends_the_match_with_the_player_last() -> void:
 
 func test_kep_and_batto_cannot_be_surrendered() -> void:
 	await _setup(RuleProfile.kep())
-	match_controller.start(board, profile, KepRules.new(), 0, 3)
+	match_controller.start(board, profile, KepRules.new(), MatchSetup.solo(2), 3)
 	assert_false(match_controller.surrender())

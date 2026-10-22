@@ -17,7 +17,10 @@ const STEPS = [
 const FACTS = [
   ["Offline", "Plays without a connection. Progress stays on your device."],
   ["Real physics", "Rolling, friction and collisions, so every shot can be learned."],
-  ["Computer sides", "Play against two computer players, and surrender any time."],
+  [
+    "Computers or friends",
+    "Against one to three computers, or pass the phone round with two to five people.",
+  ],
   ["Light and dark", "Both themes, drawn for small screens."],
   ["Nothing to sign up for", "No accounts, ads or purchases."],
   ["By one person", "Made from memory of games played as a child."],

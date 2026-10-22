@@ -47,12 +47,12 @@ func set_turn(side: int, text: String) -> void:
 	_turn_label.text = text
 
 
-## One short label per side; the human side is shown as YOU.
-func set_standings(labels: Array[String], human_side: int) -> void:
+## One short label per side; with the setup, the one person is shown as YOU.
+func set_standings(labels: Array[String], setup: MatchSetup) -> void:
 	for child in _chips_row.get_children():
 		child.queue_free()
 	for side in labels.size():
-		var who := "YOU" if side == human_side else ""
+		var who := setup.chip_label(side)
 		_chips_row.add_child(SideChip.new(side, ("%s %s" % [who, labels[side]]).strip_edges()))
 
 

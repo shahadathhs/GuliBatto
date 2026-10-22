@@ -15,7 +15,7 @@ Character: warm, tactile, grounded, quiet. Not a candy-coloured casual game, not
 - **The disc.** A marble is a disc, the primary button is a disc, the kep is an ellipse, the ring is a circle. Controls that are not the primary action are round icon buttons or outlined rounded rectangles (radius 14). There are no sharp-cornered boxes.
 - **Drawn lines.** The play ring, the start line, and the aim line are drawn in the dirt: a 3 px line in `line`/ink at reduced opacity, dashed for lines you stand behind. The same line weight is used for UI outlines (2 px) and the selected mode (4 px).
 - **One accent: glaze blue.** It is the player's marble colour and the one primary action. The primary button is a solid glaze disc with `on-glaze` text; when the label is longer than six letters ("Rematch", "Back to match") it is a rounded rectangle instead, never a stretched pill. Glaze is not decoration: the player's marbles and the Play/Start/Rematch button are the same blue, so "the blue thing is mine and is what I do next".
-- **Marbles carry the colour, and a mark.** Up to four sides: side 1 (you) = glaze blue with a **ring** mark, side 2 = amber with a **dot**, side 3 = jade with a **bar**, side 4 = plum with a **triangle**. Stake and pot marbles in Guli Khela are plain bone with no mark. Colour is never the only signal; the mark is visible from top-down, angled and low views, and sides 2 to 4 are close in lightness, so the mark is what separates them in grayscale. The active marble also gets a ring on the ground beneath it.
+- **Marbles carry the colour, and a mark.** Up to five sides: side 1 (you) = glaze blue with a **ring** mark, side 2 = amber with a **dot**, side 3 = jade with a **bar**, side 4 = plum with a **triangle**, side 5 = rose with a **diamond** (pass and play with five people). Stake and pot marbles in Guli Khela are plain bone with no mark. Colour is never the only signal; the mark is visible from top-down, angled and low views, and sides 2 to 5 are close in lightness, so the mark is what separates them in grayscale. The active marble also gets a ring on the ground beneath it.
 - **Earth is not a UI colour.** Arena materials (earth, rim, hole) are 3D materials chosen by the scene, listed in section 2 only to keep them close to the UI. UI never uses them as text or fills.
 - **Wordmark.** `GULI & BATTO`, heavy caps with a lighter ampersand. No logo mark until one earns its place.
 
@@ -203,9 +203,11 @@ The game screens are listed with their purpose in [design/SCREENS.md](design/SCR
 - **About:** one plain text screen reached from the menu, with the same layout as Settings; see [README_ABOUT.md](README_ABOUT.md). Mode screens carry no authenticity labels.
 - **Save data failure:** the game starts with defaults and says so once; nothing is blocking.
 
+Two screens belong to the play modes ([`README_PLAY_MODES.md`](README_PLAY_MODES.md)): **Who plays?** (two large choices, a stepper for the computers or the people, Play as the one primary action) and **Pass to …** (the next side's marble, its colour and mark, one tap to continue). A fifth side adds a rose marble with a diamond mark (token `rose`). Both screens, and a five-side Kep, are drawn in `docs/design/screens` (17 to 19) like every other screen.
+
 ## 10. The website
 
-The site uses the same tokens, wordmark and rules, so it reads as the same product. Details and the page-by-page plan are in [README_WEB_AND_APP_PLAN.md](README_WEB_AND_APP_PLAN.md); renders are in [design/web/](design/web/).
+The site uses the same tokens, wordmark and rules, so it reads as the same product. Details and the page-by-page plan are in [README_WEB_AND_APP_PLAN.md](README_WEB_AND_APP_PLAN.md); drawn renders of Home, a game page and Download are in [design/web/](design/web/).
 
 - Purpose: explain the game and get people to install it. **Download is the single primary action.**
 - On the web the primary action is the same glaze, drawn as a full-round button (a disc is impractical for a wide label).

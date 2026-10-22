@@ -88,9 +88,10 @@ func caption(_state: MatchState, profile: RuleProfile) -> String:
 	return profile.title
 
 
-## What the turn label says for the side about to shoot.
-func turn_text(_state: MatchState, is_human: bool) -> String:
-	return "Your shot" if is_human else "Their shot"
+## What the turn label says for the side about to shoot. `owner` is "Your", "Their" or a side's
+## name with an apostrophe ("Blue's"), from `MatchSetup.owner_word`.
+func turn_text(_state: MatchState, owner: String) -> String:
+	return "%s shot" % owner
 
 
 ## One short label per side for the scoreboard chips.
