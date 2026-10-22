@@ -24,9 +24,9 @@ Individual screens (390 × 844, 2x): `screens/light/` and `screens/dark/`.
 | 14  | Pause                     | Resume (primary), Restart, Surrender, Back to menu; cancels any aim in progress                          |
 | 15  | Settings                  | Theme, sound, volume, follow shots, reset to defaults                                                    |
 | 16  | Camera views              | Angled, top-down and low views of the same Batto board (a reference sheet, not a screen)                 |
-| 17  | Who plays? (planned)      | Against the computer (1 to 3) or pass and play (2 to 5), a stepper for each, Play (primary)              |
-| 18  | Pass to … (planned)       | The next side's marble, its name, one tap to continue; between human turns in pass and play              |
-| 19  | Kep, five sides (planned) | The HUD chips and the ground with five sides, the fifth a rose marble with a diamond                     |
+| 17  | Who plays?                | Against the computer (1 to 3) or pass and play (2 to 5), a stepper for each, Play (primary)              |
+| 18  | Pass to …                 | The next side's marble, its name, one tap to continue; between human turns in pass and play              |
+| 19  | Kep, five sides           | The HUD chips and the ground with five sides, the fifth a rose marble with a diamond                     |
 | 20  | Rules card                | A game's picture and three lines, shown the first time a game starts                                     |
 | 21  | How to play               | The page: Taking a shot, numbered steps and the pull diagram                                             |
 

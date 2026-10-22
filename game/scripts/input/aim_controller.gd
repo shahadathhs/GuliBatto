@@ -200,7 +200,7 @@ func _update_aim(screen: Vector2) -> void:
 
 
 func _fire() -> void:
-	var side := match_controller.human_side
+	var side := match_controller.current_side()
 	var fired := false
 	if _power >= Tuning.AIM_DEAD_ZONE:
 		fired = match_controller.submit_shot(ShotCommand.create(side, side, _direction, _power))

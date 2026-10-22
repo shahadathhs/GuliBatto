@@ -7,7 +7,8 @@ signal menu_pressed
 signal surrender_pressed
 
 
-func _init(can_surrender: bool = false) -> void:
+## `give_up_label` is "Surrender", "End the match", or empty when the match cannot be given up.
+func _init(give_up_label: String = "") -> void:
 	super()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	column.add_child(UiKit.spacer(80.0))
@@ -23,9 +24,9 @@ func _init(can_surrender: bool = false) -> void:
 		var b := UiKit.secondary(entry[0])
 		b.pressed.connect(func() -> void: (entry[1] as Signal).emit())
 		add_centered(b)
-	if can_surrender:
+	if give_up_label != "":
 		column.add_child(UiKit.spacer(10.0))
-		var give_up := UiKit.secondary("Surrender")
+		var give_up := UiKit.secondary(give_up_label)
 		give_up.pressed.connect(func() -> void: surrender_pressed.emit())
 		add_centered(give_up)
 	column.add_child(UiKit.spacer(10.0))

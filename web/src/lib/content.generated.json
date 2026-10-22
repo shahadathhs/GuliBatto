@@ -49,7 +49,7 @@
       "In Batto, a marble that finishes the route leaves the ground, a first toss that lands in the first hole counts as reaching it, and a marble resting in a hole is shot from the edge of the hole.",
       "The number of marbles in a stake, the size of a fine, and the number of rounds are set to make a good game on a small screen.",
       "In Guli Khela, every side including the scatterer pays the stake, a fine is one marble that the game sets down by the hole, and giving up ends the match with you last.",
-      "You can play against computer players, and you can surrender."
+      "You can play against one to three computer players, or pass the device round with two to five people, and you can surrender or end a match."
      ]
     },
     {
@@ -416,11 +416,15 @@
     },
     {
      "type": "heading",
-     "text": "The sides"
+     "text": "Who plays"
     },
     {
      "type": "paragraph",
-     "text": "You play against two computer sides. Each side has its own colour and its own mark on the marble: a ring, a dot, a bar or a triangle, so colour is never the only way to tell them apart. Marbles that belong to no side, the stake in Guli Khela, are bone-coloured with a bar."
+     "text": "After you pick a game you choose who plays. Against the computer, you play one to three computer sides. In pass and play, two to five people share one device: before each person shoots, a screen names their side and waits until they tap Ready, so nobody takes a shot meant for someone else."
+    },
+    {
+     "type": "paragraph",
+     "text": "Each side has its own colour and its own mark on the marble: a ring, a dot, a bar, a triangle or a diamond, so colour is never the only way to tell them apart. In pass and play the sides are Blue, Amber, Jade, Plum and Rose. Marbles that belong to no side, the stake in Guli Khela, are bone-coloured with a bar."
     },
     {
      "type": "heading",
@@ -531,7 +535,7 @@
     {
      "type": "qa",
      "q": "How do I leave a match?",
-     "a": "Pause with the button at the top right, then choose Restart or Back to menu. In Guli Khela and Quick Dan you can also surrender, which ends the match with you last."
+     "a": "Pause with the button at the top right, then choose Restart or Back to menu. In Guli Khela and Quick Dan you can also surrender, which ends the match with you last. In pass and play, End the match stops it as it stands and ranks every side."
     },
     {
      "type": "qa",

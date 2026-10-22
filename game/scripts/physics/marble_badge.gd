@@ -1,6 +1,6 @@
 class_name MarbleBadge
 extends Node3D
-## The mark on top of a marble (ring, dot, bar or triangle). It follows the marble's position but
+## The mark on top of a marble (ring, dot, bar, triangle or diamond). It follows its position but
 ## not its spin, so the mark stays readable while the marble rolls.
 
 var marble: Marble
@@ -33,6 +33,13 @@ func _init(target: Marble, side: int, scheme: Palette.Scheme) -> void:
 			tri.height = 0.01
 			tri.radial_segments = 3
 			mesh.mesh = tri
+		SideStyle.Mark.DIAMOND:
+			var d := CylinderMesh.new()
+			d.top_radius = r * 0.36
+			d.bottom_radius = r * 0.36
+			d.height = 0.01
+			d.radial_segments = 4
+			mesh.mesh = d
 	var m := StandardMaterial3D.new()
 	m.albedo_color = SideStyle.on_colour(side, scheme)
 	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED

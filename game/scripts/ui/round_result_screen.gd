@@ -16,7 +16,7 @@ const PLACING_TEXT := {
 func _init(
 	result: RuleResult = null,
 	totals: Array[int] = [],
-	human_side: int = 0,
+	setup: MatchSetup = null,
 	caption: String = "",
 	total_word: String = "total"
 ) -> void:
@@ -30,7 +30,7 @@ func _init(
 	column.add_child(title)
 	column.add_child(UiKit.spacer(16.0))
 	for side in result.points:
-		column.add_child(_row(side, result, totals, human_side, total_word))
+		column.add_child(_row(side, result, totals, setup, total_word))
 	add_fill()
 	var next := UiKit.primary("Next")
 	next.pressed.connect(func() -> void: next_pressed.emit())
@@ -39,11 +39,11 @@ func _init(
 
 
 func _row(
-	side: int, result: RuleResult, totals: Array[int], human_side: int, total_word: String
+	side: int, result: RuleResult, totals: Array[int], setup: MatchSetup, total_word: String
 ) -> Control:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 12)
-	var chip := SideChip.new(side, "YOU" if side == human_side else "")
+	var chip := SideChip.new(side, setup.label(side) if setup != null else "")
 	chip.custom_minimum_size = Vector2(70.0, 28.0)
 	row.add_child(chip)
 	var placing := UiKit.label(PLACING_TEXT.get(result.placing[side], ""), 15, &"ink", true)

@@ -65,19 +65,21 @@ Open: the email or form for Contact.
 - [ ] The basics: sound, locally saved settings with a reset
 - [ ] Contact details to publish; the author's review of the How to play and games wording
 
-## Play modes (planned 2026-10-22, see docs/README_PLAY_MODES.md)
+## Play modes (app built 2026-10-22, see docs/README_PLAY_MODES.md)
 
-- [ ] A fifth side: colour token and mark in both themes, the modulo guard, a test that no two sides share a colour or a mark
-- [ ] `MatchSetup`; the controller and HUD take a set of human sides; side names; the "Pass to ..." screen
-- [ ] Every game at 2 and at 5 sides (Kep, Batto, Guli Khela, Quick Dan), with tests
-- [ ] The "Who plays?" screen, the saved choice, "End the match" in pass and play, the win cue
-- [ ] Content, About and the site describe both modes; the site draws the fifth marble
-- [ ] Two sounds (pass, per-side turn tick); a hand test with real people
-- [x] Drawn renders refreshed (not captured): rose token, app screens 14 to 21, a six-screen README strip and site renders; re-run `node scripts/design/render.mjs` when a screen changes and before each release
+- [x] A fifth side: the `rose` token and a diamond mark in both themes, a guard instead of the modulo wrap, a test that no two sides share a colour or a mark
+- [x] `MatchSetup`; the controller takes a set of human sides; side names; the "Pass to ..." screen
+- [x] Every game at 2 and at 5 sides (Kep, Batto, Guli Khela, Quick Dan): full pass-and-play matches run to the end in tests
+- [x] The "Who plays?" screen, the saved choice, "End the match" in pass and play, the win cue for any person
+- [x] Content, About and the site wording: How to play ("Who plays"), About's list, the Home line, the fifth marble on the site
+- [x] Two sounds: the hand-over notes and a turn tock that rises a tone for each side
+- [x] Drawn renders for the new screens (17 to 19)
+- [ ] A hand test with real people on a phone, in a browser and on the site (pass the device, five people, a Batto match)
+- [ ] Real-device check that the five sides read well in both themes outdoors
 
 ## Phase 7 — release
 
-- [ ] Automatic release of the APK, the web export and `SHA256SUMS` when the version changes
+- [x] Automatic release of the APK, the web export and `SHA256SUMS`: it ran on 2026-10-22 and republished `v0.0.1` with all four games; the version is now `0.0.2` (both play modes), published when that merges
 - [x] Site host chosen and deployed: Vercel, `playgulibatto.vercel.app`
 - [ ] Hand-test on a phone and in a desktop browser; write the known-limitations note
 - [ ] Check the rules with people who played; update the About page from what they said

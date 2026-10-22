@@ -87,11 +87,11 @@ func test_equal_purses_rank_by_side_order() -> void:
 
 func test_the_words_shown_follow_the_state() -> void:
 	assert_eq(rules.caption(state, profile), "Guli Khela · dan 1 · opening toss")
-	assert_eq(rules.turn_text(state, true), "Your toss")
+	assert_eq(rules.turn_text(state, "Your"), "Your toss")
 	assert_eq(rules.standings(state), ["7", "7", "7"] as Array[String])
 	_scatter()
 	assert_eq(rules.caption(state, profile), "Guli Khela · dan 1 · pass 1 of 3")
-	assert_eq(rules.turn_text(state, false), "Their throw")
+	assert_eq(rules.turn_text(state, "Their"), "Their throw")
 	state.out[2] = true
 	assert_eq(rules.standings(state)[2], "OUT")
 	assert_eq(rules.final_text(state, 0), "7 MARBLES")

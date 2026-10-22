@@ -95,8 +95,8 @@ func caption(state: MatchState, profile: RuleProfile) -> String:
 	return "%s · round %d of %d" % [profile.title, state.round_index + 1, state.rounds]
 
 
-func turn_text(_state: MatchState, is_human: bool) -> String:
-	return "Your toss" if is_human else "Their toss"
+func turn_text(_state: MatchState, owner: String) -> String:
+	return "%s toss" % owner
 
 
 func cue_text(result: RuleResult, profile: RuleProfile, snapshot: BoardSnapshot) -> String:

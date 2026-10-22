@@ -1,7 +1,7 @@
 # Guli & Batto — Play modes
 
 > **Purpose:** plan the two ways to play any of the four games: against the computer, and with friends on one device.  
-> **Decided 2026-10-22.** The project overview listed "pass-and-play on one device" under _Not in_. That decision is reversed here, by the author, and the overview is updated with this plan. Online play is still out.
+> **Decided and built in the app 2026-10-22.** The project overview listed "pass-and-play on one device" under _Not in_. That decision is reversed here, by the author, and the overview is updated with this plan. Online play is still out.
 
 ## 1. The two modes
 
@@ -66,7 +66,7 @@ Yes, with two cautions.
 - **Caution 2, long matches with five.** Five people means five times the waiting in Batto and Guli Khela. The turn cap already stops a runaway game; if it still drags, Quick Dan is the short answer.
 - **Sound of it.** The sounds exist today; two cues are new: a soft "pass" tone on the hand-over screen, and the existing turn tick played in a different pitch per side so a listener can tell whose turn it is. Both are synthesized by `scripts/sounds.mjs` with the rest.
 
-## 8. Order of work
+## 8. Order of work (done in the app, except the hand test)
 
 1. Tokens and `SideStyle`: the fifth colour and mark, the guard, tests.
 2. `MatchSetup`, controller and HUD: a set of human sides, side names, hand-over screen; all-human matches in the tests.

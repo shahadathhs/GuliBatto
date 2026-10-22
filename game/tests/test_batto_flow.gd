@@ -19,7 +19,7 @@ func before_each() -> void:
 
 
 func test_the_opening_tosses_leave_every_marble_where_it_lands_and_start_the_race() -> void:
-	match_controller.start(board, profile, BattoRules.new(), -1, 321)
+	match_controller.start(board, profile, BattoRules.new(), MatchSetup.computers_only(3), 321)
 	for toss in 3:
 		await wait_for_signal(match_controller.shot_judged, 30.0)
 	await wait_for_signal(match_controller.turn_started, 5.0)
@@ -30,7 +30,7 @@ func test_the_opening_tosses_leave_every_marble_where_it_lands_and_start_the_rac
 
 
 func test_a_race_turn_starts_from_where_the_marble_rests() -> void:
-	match_controller.start(board, profile, BattoRules.new(), 0, 11)
+	match_controller.start(board, profile, BattoRules.new(), MatchSetup.solo(2), 11)
 	assert_true(match_controller.submit_shot(ShotCommand.create(0, 0, Vector2.UP, 0.3)))
 	var rested := [Vector2.ZERO]
 	var judged := [0]
@@ -54,7 +54,7 @@ func test_computer_sides_race_to_the_end_and_everyone_is_ranked() -> void:
 	# A shorter route and a turn cap keep this quick; the rules are the same.
 	profile.route = PackedInt32Array([0, 1])
 	profile.turn_cap = 14
-	match_controller.start(board, profile, BattoRules.new(), -1, 2468)
+	match_controller.start(board, profile, BattoRules.new(), MatchSetup.computers_only(3), 2468)
 	var shots := [0]
 	match_controller.shot_judged.connect(func(_s: int, _r: RuleResult) -> void: shots[0] += 1)
 	await wait_for_signal(match_controller.match_over, 900.0)

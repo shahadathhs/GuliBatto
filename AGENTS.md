@@ -72,6 +72,6 @@ Full rules are in `docs/README_VISUAL_DESIGN.md`. When touching UI or the site:
 
 - Exactly one primary action per screen: a solid glaze-blue disc (a rounded rectangle when the label is longer than six letters, and a full-round button on the web). Secondary actions are outlined rounded rectangles; tertiary are underlined text.
 - No gradients, glow, drop shadows, glass or blur in the UI; no card inside a card; no taglines, exclamation marks, emoji or folk-motif decoration.
-- Marbles carry colour **and** a mark: player = blue ring, opponent = amber dot, neutral target = bone bar (a fifth side, rose with a diamond, is planned for pass and play). Colour is never the only signal.
+- Marbles carry colour **and** a mark: player = blue ring, opponent = amber dot, neutral target = bone bar (a fifth side, rose with a diamond, exists for pass and play with five people). Colour is never the only signal.
 - Both themes (light and dark) are first-class; check every screen in both. Colours come only from the token table, never hand-written.
 - Concept renders live in `docs/design/` and are regenerated with `node scripts/design/render.mjs`.

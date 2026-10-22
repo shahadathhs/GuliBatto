@@ -117,8 +117,8 @@ func total_word() -> String:
 	return "purse"
 
 
-func turn_text(state: MatchState, is_human: bool) -> String:
-	return GuliText.turn_text(state as GuliState, is_human)
+func turn_text(state: MatchState, owner: String) -> String:
+	return GuliText.turn_text(state as GuliState, owner)
 
 
 func standings(state: MatchState) -> Array[String]:

@@ -1,13 +1,14 @@
 // A marble drawn flat, with the mark that identifies its side (ring, dot, bar, triangle) so colour
 // is never the only signal. Colours come from the token CSS variables.
 
-export type Side = 1 | 2 | 3 | 4 | "pot";
+export type Side = 1 | 2 | 3 | 4 | 5 | "pot";
 
 const FILL: Record<string, string> = {
   1: "var(--glaze)",
   2: "var(--amber)",
   3: "var(--jade)",
   4: "var(--plum)",
+  5: "var(--rose)",
   pot: "var(--bone)",
 };
 const MARK: Record<string, string> = {
@@ -15,6 +16,7 @@ const MARK: Record<string, string> = {
   2: "var(--on-amber)",
   3: "var(--on-jade)",
   4: "var(--on-plum)",
+  5: "var(--on-rose)",
 };
 
 export function Marble({
@@ -85,6 +87,12 @@ export function Marble({
       {side === 4 && (
         <polygon
           points={`${x},${y - r * 0.5} ${x + r * 0.5},${y + r * 0.38} ${x - r * 0.5},${y + r * 0.38}`}
+          style={{ fill: mark }}
+        />
+      )}
+      {side === 5 && (
+        <polygon
+          points={`${x},${y - r * 0.5} ${x + r * 0.42},${y} ${x},${y + r * 0.5} ${x - r * 0.42},${y}`}
           style={{ fill: mark }}
         />
       )}

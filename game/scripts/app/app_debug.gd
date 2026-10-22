@@ -1,9 +1,9 @@
 class_name AppDebug
 extends RefCounted
 ## Debug only: `godot --path game -- --screen=NAME` opens one screen so it can be photographed.
-## NAME is a screen (modes, settings, result, dan, over), a match state (match, aim, pause, batto,
-## batto_aim, batto_top, guli, guli_stake), `page_ID` for a page of the content (page_game_kep) or
-## `card_MODE` for a rules card (card_guli).
+## NAME is a screen (modes, who_plays, settings, result, dan, over, over_five), a match state
+## (match, aim, pause, batto, batto_aim, batto_top, guli, guli_stake, pass_to, five), `page_ID` for
+## a page of the content (page_game_kep) or `card_MODE` for a rules card (card_guli).
 
 
 static func open(app: App, name: String) -> void:
@@ -34,18 +34,46 @@ static func open(app: App, name: String) -> void:
 			var r := RuleResult.new()
 			r.points = sample_points
 			r.placing = sample_placing
-			app._show(RoundResultScreen.new(r, [6, 5, 2] as Array[int], 0, "ROUND 2 OF 5", "total"))
+			app._show(
+				RoundResultScreen.new(
+					r, [6, 5, 2] as Array[int], MatchSetup.solo(), "ROUND 2 OF 5", "total"
+				)
+			)
 		"dan":
 			var d := RuleResult.new()
 			d.points = {0: -3, 1: 6, 2: -3}
 			d.placing = {0: &"none", 1: &"won", 2: &"none"}
-			app._show(RoundResultScreen.new(d, [4, 13, 4] as Array[int], 0, "DAN 1", "purse"))
+			app._show(
+				RoundResultScreen.new(
+					d, [4, 13, 4] as Array[int], MatchSetup.solo(), "DAN 1", "purse"
+				)
+			)
 		"over":
 			app._show(
 				MatchOverScreen.new(
 					[0, 2, 1] as Array[int],
 					["13 points", "11 points", "9 points"] as Array[String],
-					0
+					MatchSetup.solo()
+				)
+			)
+		"who_plays":
+			app._choose_players(&"kep")
+		"pass_to":
+			app._setup = MatchSetup.pass_and_play(3)
+			app._start_match(&"kep")
+		"five":
+			app._setup = MatchSetup.pass_and_play(5)
+			Settings.coach_seen = true
+			app._start_match(&"kep")
+			await app.get_tree().create_timer(0.4, false).timeout
+			app._clear_screen()
+			app._match.controller.confirm_handover()
+		"over_five":
+			app._show(
+				MatchOverScreen.new(
+					[3, 0, 4, 1, 2] as Array[int],
+					["14 points", "11 points", "9 points", "7 points", "5 points"] as Array[String],
+					MatchSetup.pass_and_play(5)
 				)
 			)
 		"match", "aim", "pause", "batto", "batto_aim", "batto_top", "guli", "guli_stake":

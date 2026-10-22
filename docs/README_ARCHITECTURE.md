@@ -153,7 +153,7 @@ The aim handle is a screen-space circle larger than the visible marble (_initial
 
 ## 6. Opponents
 
-> **Planned:** the match will take a set of human sides (`MatchSetup`) instead of one `human_side`, so every side can be a person (pass and play, two to five sides). The plan, including the fifth side's colour and mark, is in [`README_PLAY_MODES.md`](README_PLAY_MODES.md). This section describes what is built.
+> **Who plays.** A `MatchSetup` (`core/`) says how many sides there are and which are people; the controller and every screen ask it, so there is no single `human_side`. Against the computer one person is side 0; in pass and play every side is a person and the controller enters a `HANDOVER` phase before a different person shoots (the `Pass to …` screen, one tap, `confirm_handover`). `give_up` is a surrender against the computer and "End the match" in pass and play. `SideStyle` holds five sides (colour, mark, name) and refuses a sixth. The plan is in [`README_PLAY_MODES.md`](README_PLAY_MODES.md).
 
 One to three AI sides can play (Batto uses up to three). `ai/` produces a `ShotCommand` for the current side and submits it through the same path as the player. It generates a few candidate directions toward targets, scores them with simple distance and angle heuristics, picks one, then adds a configurable error to direction and power. It reads the board snapshot only, and no network, model, or search is involved. In Batto the main candidate is a shot at the side's next hole; a shot at a rival marble is considered when it is close and a hit looks worthwhile, since a hit gives a bonus shot and sends the rival away. Each AI side has its own configurable error.
 

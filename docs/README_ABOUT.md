@@ -29,7 +29,7 @@ I changed some rules so the games work well on a phone. These are my decisions, 
 - In Batto, a marble that finishes the route leaves the ground, a first toss that lands in the first hole counts as reaching it, and a marble resting in a hole is shot from the edge of the hole.
 - The number of marbles in a stake, the size of a fine, and the number of rounds are set to make a good game on a small screen.
 - In Guli Khela, every side including the scatterer pays the stake, a fine is one marble that the game sets down by the hole, and giving up ends the match with you last.
-- You can play against computer players, and you can surrender.
+- You can play against one to three computer players, or pass the device round with two to five people, and you can surrender or end a match.
 
 ### What this is not
 

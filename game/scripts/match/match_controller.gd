@@ -16,14 +16,24 @@ signal match_over(ranking: Array[int])
 ## Guli Khela: the player must name a baad before throwing, and has named one.
 signal baad_needed
 signal baad_named(marble_id: int)
+## Pass and play: the next side is a different person, who must take the device first.
+signal handover_needed(side: int)
+signal handover_confirmed
 
 enum Phase {
-	IDLE, WAITING_FOR_BAAD, WAITING_FOR_SHOT, SHOT_IN_FLIGHT, RESULT_CUE, ROUND_RESULT, MATCH_OVER
+	IDLE,
+	HANDOVER,
+	WAITING_FOR_BAAD,
+	WAITING_FOR_SHOT,
+	SHOT_IN_FLIGHT,
+	RESULT_CUE,
+	ROUND_RESULT,
+	MATCH_OVER
 }
 
 var phase: Phase = Phase.IDLE
 var state: MatchState
-var human_side: int = 0
+var setup: MatchSetup = MatchSetup.solo()
 ## The marble the player has named as baad for this throw, or -1.
 var named_baad: int = -1
 ## The baad of the shot in flight (the player's or a computer side's), or -1.
@@ -38,22 +48,29 @@ var _board: Board
 var _profile: RuleProfile
 var _rules: RuleSet
 var _ai: Dictionary = {}
+## The side that shot last, so a hand-over is asked for only when the person changes.
+var _last_shooter: int = -1
 
 
 func start(
-	board: Board, profile: RuleProfile, rules: RuleSet, human: int = 0, seed_value: int = 0
+	board: Board,
+	profile: RuleProfile,
+	rules: RuleSet,
+	new_setup: MatchSetup = null,
+	seed_value: int = 0
 ) -> void:
 	_board = board
 	_profile = profile
 	_rules = rules
-	human_side = human
+	setup = new_setup if new_setup != null else MatchSetup.solo(profile.side_count - 1)
+	_last_shooter = -1
 	_ai.clear()
-	for side in profile.side_count:
-		if side != human:
+	for side in setup.side_count:
+		if not setup.is_human(side):
 			_ai[side] = _rules.make_ai(seed_value + side * 7919 if seed_value != 0 else 0)
 	if not _board.shot_resolved.is_connected(_on_shot_resolved):
 		_board.shot_resolved.connect(_on_shot_resolved)
-	state = _rules.start(profile, profile.side_count)
+	state = _rules.start(profile, setup.side_count)
 	_rules.seed_state(state, seed_value)
 	_board.clear_marbles()
 	_begin_turn()
@@ -64,13 +81,15 @@ func current_side() -> int:
 
 
 func is_human_turn() -> bool:
-	return phase == Phase.WAITING_FOR_SHOT and current_side() == human_side
+	return phase == Phase.WAITING_FOR_SHOT and setup.is_human(current_side())
 
 
-## The player's shot. Refused unless it is the player's turn and the command is for their marble,
-## and, when the rules want a baad, unless one has been named (it is added to the command here).
+## A person's shot. Refused unless it is a person's turn and the command is for the marble of the
+## side whose turn it is, and, when the rules want a baad, unless one has been named (it is added
+## to the command here).
 func submit_shot(command: ShotCommand) -> bool:
-	if not is_human_turn() or command.side != human_side or command.marble_id != human_side:
+	var side := current_side()
+	if not is_human_turn() or command.side != side or command.marble_id != side:
 		return false
 	if _rules.needs_baad(state):
 		if named_baad < 0:
@@ -82,7 +101,7 @@ func submit_shot(command: ShotCommand) -> bool:
 ## True while the player may tap a marble to name it as baad.
 func can_name_baad() -> bool:
 	var waiting := phase == Phase.WAITING_FOR_BAAD or phase == Phase.WAITING_FOR_SHOT
-	return waiting and current_side() == human_side and _rules.needs_baad(state)
+	return waiting and setup.is_human(current_side()) and _rules.needs_baad(state)
 
 
 ## The marbles the player may name as baad now.
@@ -106,10 +125,30 @@ func name_baad(marble_id: int) -> bool:
 func surrender() -> bool:
 	if not _rules.can_surrender() or phase == Phase.MATCH_OVER or phase == Phase.IDLE:
 		return false
-	_rules.surrender(state, human_side)
+	if setup.humans.is_empty():
+		return false
+	_rules.surrender(state, setup.humans[0])
 	phase = Phase.MATCH_OVER
 	match_over.emit(_rules.ranking(state))
 	return true
+
+
+## Ends the match now. Against the computer that is a surrender (where the rules allow one); in
+## pass and play one person cannot give up for everyone, so the match ends as it stands.
+func give_up() -> bool:
+	if phase == Phase.MATCH_OVER or phase == Phase.IDLE:
+		return false
+	if not setup.hands_over():
+		return surrender()
+	phase = Phase.MATCH_OVER
+	match_over.emit(_rules.ranking(state))
+	return true
+
+
+## The person at the device has taken it and is ready to shoot.
+func confirm_handover() -> void:
+	if phase == Phase.HANDOVER:
+		handover_confirmed.emit()
 
 
 ## The player pressed Next on the round result.
@@ -117,12 +156,13 @@ func continue_after_result() -> void:
 	if phase != Phase.ROUND_RESULT:
 		return
 	_board.clear_marbles()
+	_last_shooter = -1
 	_begin_turn()
 
 
 func _begin_turn() -> void:
-	if _rules.is_out(state, human_side):
-		# The player cannot go on (they could not pay a stake): nothing is left to play for.
+	if _all_people_out():
+		# No person can go on (they could not pay a stake): nothing is left to play for.
 		phase = Phase.MATCH_OVER
 		match_over.emit(_rules.ranking(state))
 		return
@@ -136,13 +176,21 @@ func _begin_turn() -> void:
 		var start: Variant = _rules.shot_start(state, _profile, _board.snapshot(), side)
 		if start != null:
 			await _board.move_marble(side, start as Vector2)
+	var human := setup.is_human(side)
+	if setup.hands_over() and human and side != _last_shooter:
+		phase = Phase.HANDOVER
+		handover_needed.emit(side)
+		await handover_confirmed
+		if phase != Phase.HANDOVER:
+			return
+	_last_shooter = side
 	phase = Phase.WAITING_FOR_SHOT
-	if side == human_side and _rules.needs_baad(state):
+	if human and _rules.needs_baad(state):
 		phase = Phase.WAITING_FOR_BAAD
-	turn_started.emit(side, side == human_side)
+	turn_started.emit(side, human)
 	if phase == Phase.WAITING_FOR_BAAD:
 		baad_needed.emit()
-	if side != human_side:
+	if not human:
 		await get_tree().create_timer(ai_delay, false).timeout
 		if phase == Phase.WAITING_FOR_SHOT and current_side() == side:
 			var ai: TossAI = _ai[side]
@@ -185,3 +233,13 @@ func _on_shot_resolved(snapshot: BoardSnapshot, report: ShotReport, _timed_out: 
 	phase = Phase.ROUND_RESULT
 	if auto_continue:
 		continue_after_result()
+
+
+## True when there are people and none of them can play on.
+func _all_people_out() -> bool:
+	if setup.humans.is_empty():
+		return false
+	for side in setup.humans:
+		if not _rules.is_out(state, side):
+			return false
+	return true

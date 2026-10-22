@@ -168,11 +168,11 @@ export function downloadSvg(theme) {
   const row = (k, v, y) =>
     `${text(k, X + 28, y, { fill: c.mute, size: 14 })}${text(v, X + 120, y, { fill: c.ink, size: 16 })}`;
   const body = `
-${text("Download", X, 150, { fill: c.ink, size: 62, weight: 800 })}${text("Version 0.0.1 for Android (29 MB).", X, 196, { fill: c.mute, size: 20 })}
+${text("Download", X, 150, { fill: c.ink, size: 62, weight: 800 })}${text("Version 0.0.2 for Android (29 MB).", X, 196, { fill: c.mute, size: 20 })}
 ${pill(c, "DOWNLOAD APK", X, 226, 240)}${text("Release notes", X + 270, 263, { fill: c.ink, size: 16, deco: "underline" })}
 ${text("64-bit ARM. A direct download, not a store build.", X, 322, { fill: c.mute, size: 14 })}
 ${text("On another device", X, 372, { fill: c.ink, size: 22, weight: 800 })}${qr(c, X, 392, 168)}${wrap(c, ["Scan this with a phone camera to open", "this page on it, then download the app."], X + 190, 470, { size: 14, fill: c.mute, gap: 22 })}
-<rect x="${X}" y="590" width="510" height="260" rx="18" fill="none" stroke="${c.ink}" stroke-width="2"/>${text("About this APK", X + 26, 630, { fill: c.ink, size: 18, weight: 800 })}${row("File", "gulibatto-0.0.1.apk", 668)}${row("Version", "0.0.1", 700)}${row("Size", "29 MB", 732)}${row("SHA-256", "f07be7d39824eef00724d8a5ce61d29e…", 764)}${text("shasum -a 256 gulibatto-0.0.1.apk", X + 26, 818, { fill: c.ink, size: 13 })}
+<rect x="${X}" y="590" width="510" height="260" rx="18" fill="none" stroke="${c.ink}" stroke-width="2"/>${text("About this APK", X + 26, 630, { fill: c.ink, size: 18, weight: 800 })}${row("File", "gulibatto-0.0.2.apk", 668)}${row("Version", "0.0.2", 700)}${row("Size", "29 MB", 732)}${row("SHA-256", "f07be7d39824eef00724d8a5ce61d29e…", 764)}${text("shasum -a 256 gulibatto-0.0.2.apk", X + 26, 818, { fill: c.ink, size: 13 })}
 <line x1="780" y1="170" x2="780" y2="860" stroke="${c.line}" stroke-width="2"/>
 ${text("Install", 810, 210, { fill: c.ink, size: 32, weight: 800 })}
 ${[

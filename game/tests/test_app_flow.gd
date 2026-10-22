@@ -21,7 +21,7 @@ func test_play_leads_to_modes_and_start_begins_a_match_on_the_players_turn() -> 
 	(app._screen as MenuScreen).play_pressed.emit()
 	await wait_physics_frames(2)
 	assert_true(app._screen is ModesScreen)
-	(app._screen as ModesScreen).start_pressed.emit(&"kep")
+	await _pick(&"kep")
 	await wait_physics_frames(4)
 	assert_not_null(app._match, "a match is running")
 	assert_true(app._match.controller.is_human_turn())
@@ -52,7 +52,7 @@ func test_choosing_batto_starts_a_batto_match() -> void:
 	var modes := app._screen as ModesScreen
 	assert_eq(modes.selected(), &"kep", "Kep is selected first")
 	modes.select(&"batto")
-	modes.start_pressed.emit(modes.selected())
+	await _pick(modes.selected())
 	await wait_physics_frames(4)
 	assert_eq(app._match.profile.mode_id, &"batto")
 	assert_true(app._match.controller.state is BattoState)
@@ -86,7 +86,7 @@ func test_all_four_modes_are_offered_and_each_starts_its_own_match() -> void:
 	assert_eq(ModeRegistry.ORDER.size(), 4)
 	for id in [&"guli", &"quick"]:
 		modes.select(id)
-		modes.start_pressed.emit(modes.selected())
+		await _pick(modes.selected())
 		await wait_physics_frames(4)
 		assert_eq(app._match.profile.mode_id, id)
 		assert_true(app._match.controller.state is GuliState)
@@ -100,15 +100,17 @@ func test_a_dan_result_screen_names_the_winner_and_the_marbles() -> void:
 	var r := RuleResult.new()
 	r.points = {0: -3, 1: 6, 2: -3}
 	r.placing = {0: &"none", 1: &"won", 2: &"none"}
-	var screen := RoundResultScreen.new(r, [4, 13, 4] as Array[int], 0, "DAN 1", "purse")
+	var screen := RoundResultScreen.new(
+		r, [4, 13, 4] as Array[int], MatchSetup.solo(), "DAN 1", "purse"
+	)
 	add_child_autofree(screen)
 	await wait_physics_frames(2)
 	assert_not_null(screen)
 
 
-func test_the_pause_screen_offers_surrender_only_where_it_applies() -> void:
-	var plain := PauseScreen.new(false)
-	var guli := PauseScreen.new(true)
+func test_the_pause_screen_offers_to_give_up_only_where_it_applies() -> void:
+	var plain := PauseScreen.new()
+	var guli := PauseScreen.new("Surrender")
 	add_child_autofree(plain)
 	add_child_autofree(guli)
 	var count := func(root: Node) -> int:
@@ -131,7 +133,7 @@ func test_the_first_time_a_game_is_started_its_rules_card_comes_first() -> void:
 	Settings.reset()
 	Settings.mark_coach_seen()
 	var modes := await _open_modes()
-	modes.start_pressed.emit(&"guli")
+	await _pick(&"guli")
 	await wait_physics_frames(3)
 	assert_true(app._screen is RulesCard, "the card, not the match")
 	assert_null(app._match)
@@ -147,12 +149,12 @@ func test_the_card_is_not_shown_again_and_other_games_still_show_theirs() -> voi
 	Settings.mark_coach_seen()
 	Settings.mark_rules_seen(&"kep")
 	var modes := await _open_modes()
-	modes.start_pressed.emit(&"kep")
+	await _pick(&"kep")
 	await wait_physics_frames(4)
 	assert_not_null(app._match, "Kep has been seen, so it starts")
 	app._show_modes()
 	await wait_physics_frames(2)
-	(app._screen as ModesScreen).start_pressed.emit(&"batto")
+	await _pick(&"batto")
 	await wait_physics_frames(3)
 	assert_true(app._screen is RulesCard, "Batto has not")
 
@@ -161,11 +163,11 @@ func test_the_card_can_go_back_to_the_modes_without_starting() -> void:
 	Settings.reset()
 	Settings.mark_coach_seen()
 	var modes := await _open_modes()
-	modes.start_pressed.emit(&"batto")
+	await _pick(&"batto")
 	await wait_physics_frames(3)
 	(app._screen as RulesCard).back_pressed.emit()
 	await wait_physics_frames(2)
-	assert_true(app._screen is ModesScreen)
+	assert_true(app._screen is WhoPlaysScreen, "back goes to the choice of who plays")
 	assert_false(Settings.has_seen_rules(&"batto"), "going back does not count as having seen it")
 
 
@@ -210,3 +212,12 @@ func test_the_question_mark_in_a_match_shows_the_rules_over_the_paused_match() -
 	await wait_physics_frames(2)
 	assert_false(get_tree().paused, "Back to match resumes")
 	assert_null(app._pause)
+
+
+## Chooses a game on the modes screen, then who plays (you against two computers by default).
+func _pick(mode_id: StringName, setup: MatchSetup = null) -> void:
+	(app._screen as ModesScreen).start_pressed.emit(mode_id)
+	await wait_physics_frames(2)
+	assert_true(app._screen is WhoPlaysScreen, "a game leads to who plays")
+	(app._screen as WhoPlaysScreen).play_pressed.emit(setup if setup != null else MatchSetup.solo())
+	await wait_physics_frames(2)

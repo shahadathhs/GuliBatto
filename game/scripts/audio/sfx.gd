@@ -5,7 +5,7 @@ extends Node
 ## off in Settings. Sound is only ever a reaction to something that happened: it never decides a
 ## shot, a result or a turn.
 
-enum Event { TAP, SHOT, HIT, WALL, DROP, WIN, LOSE }
+enum Event { TAP, SHOT, HIT, WALL, DROP, WIN, LOSE, PASS, TURN }
 
 const FILES := {
 	Event.TAP: "res://audio/tap.wav",
@@ -15,6 +15,8 @@ const FILES := {
 	Event.DROP: "res://audio/drop.wav",
 	Event.WIN: "res://audio/win.wav",
 	Event.LOSE: "res://audio/lose.wav",
+	Event.PASS: "res://audio/pass.wav",
+	Event.TURN: "res://audio/turn.wav",
 }
 ## At most this many sounds at once; a new one reuses the oldest voice.
 const VOICES := 8
@@ -58,13 +60,20 @@ func _exit_tree() -> void:
 		instance = null
 
 
-## Asks for a sound. `strength` is 0 to 1 and scales the volume (a hard hit is louder).
-static func play(event: Event, strength: float = 1.0) -> void:
+## Asks for a sound. `strength` is 0 to 1 and scales the volume (a hard hit is louder); `pitch`
+## is a speed factor, 1 for the sound as made.
+static func play(event: Event, strength: float = 1.0, pitch: float = 1.0) -> void:
 	if record:
 		played.append(event)
 	if instance == null or not Settings.sound_on:
 		return
-	instance._start(event, strength)
+	instance._start(event, strength, pitch)
+
+
+## The pitch of the turn tock for a side: each side a whole tone above the one before, so a
+## listener can tell whose turn it is.
+static func pitch_for_side(side: int) -> float:
+	return pow(2.0, float(side) * 2.0 / 12.0)
 
 
 ## How loud a contact at this speed (metres per second) is, 0.1 to 1.
@@ -72,7 +81,7 @@ static func strength_for_speed(speed: float) -> float:
 	return 0.1 + 0.9 * clampf(speed / 8.0, 0.0, 1.0)
 
 
-func _start(event: Event, strength: float) -> void:
+func _start(event: Event, strength: float, pitch: float = 1.0) -> void:
 	var level := clampf(Settings.volume * strength, 0.0, 1.0)
 	if level <= 0.001:
 		return
@@ -84,6 +93,6 @@ func _start(event: Event, strength: float) -> void:
 	_next = (_next + 1) % VOICES
 	voice.stream = _streams[event]
 	voice.volume_db = linear_to_db(level)
-	voice.pitch_scale = _rng.randf_range(0.94, 1.06) if VARIED.has(event) else 1.0
+	voice.pitch_scale = _rng.randf_range(0.94, 1.06) if VARIED.has(event) else pitch
 	voice.play()
 	started += 1

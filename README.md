@@ -4,8 +4,6 @@
 
 [![CI/CD](https://github.com/shahadathhs/GuliBatto/actions/workflows/ci.yml/badge.svg)](https://github.com/shahadathhs/GuliBatto/actions/workflows/ci.yml) [![Latest release](https://img.shields.io/github/v/release/shahadathhs/GuliBatto?label=release)](https://github.com/shahadathhs/GuliBatto/releases)
 
-> **Status (2026-10-22): all four games are playable on `dev`, and the site is redesigned there.** Kep, Batto, Guli Khela and Quick Dan are built, with saved settings, a follow camera, sound, and the same pages in the app and on the site. No release is published right now (the old `v0.0.1` had Kep only and was deleted); the release badge above shows the current one, and the next release will have all four. Nothing has been played by hand on a phone yet, and the game has only been run in a headless browser. Next: play modes against the computer and pass and play ([docs/README_PLAY_MODES.md](docs/README_PLAY_MODES.md)). The plan and the checklist are in [docs/README_ROADMAP.md](docs/README_ROADMAP.md) and [TODO.md](TODO.md). This paragraph is written by hand; the badges are live.
-
 ## Live
 
 |          |                                                                                                                       |
@@ -16,7 +14,7 @@
 
 ![The app: menu, modes, who plays, Kep, Batto and Guli Khela, light theme](docs/design/app-strip-light.png)
 
-_Drawn renders of the app's screens, in light and dark, regenerated from the design tokens with `node scripts/design/render.mjs`. All four games are built; the "Who plays?" screen and the five-side Kep screen are design targets for the planned play modes. Every screen is listed in [docs/design/SCREENS.md](docs/design/SCREENS.md)._
+_Drawn renders of the app's screens, in light and dark, regenerated from the design tokens with `node scripts/design/render.mjs`. All four games are built; the "Who plays?" screen and the five-side Kep screen are built too. Every screen is listed in [docs/design/SCREENS.md](docs/design/SCREENS.md)._
 
 ## The idea
 
@@ -26,7 +24,7 @@ Nothing here is invented from nothing. Each game starts from one people played, 
 
 ## The games
 
-Play against one to three computer sides today; planned next, pass and play with two to five people on one device ([docs/README_PLAY_MODES.md](docs/README_PLAY_MODES.md)). The rules in plain words are in [docs/README_GAME_RULES.md](docs/README_GAME_RULES.md).
+Play against one to three computer sides, or pass and play: two to five people share one device, with a hand-over screen before each turn ([docs/README_PLAY_MODES.md](docs/README_PLAY_MODES.md)). The rules in plain words are in [docs/README_GAME_RULES.md](docs/README_GAME_RULES.md).
 
 | Game           | The idea                                                                                                                                                                   | State    |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |

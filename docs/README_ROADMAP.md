@@ -6,17 +6,17 @@
 
 **Built**
 
-- The shot, settling and physics core, with tests (Phase 1) and the camera and input (Phase 2), checked headless and in rendered frames; **not played by hand on a phone**.
-- Kep and Batto, complete as playable modes against computer sides, with their rules and match flow, and the menu, HUD, results, About, pause and settings screens in light and dark (Phase 3).
-- A first version of the website: home, how to play, about, download, privacy, and a play page that frames Godot's default page.
-- The Android and web builds are produced by CI. No release is published at the moment (the old `v0.0.1` was deleted); the next one will have all four games. Only the web export has been run, in a headless browser; the APK has not been run on a real device.
-- The site is live at <https://playgulibatto.vercel.app>.
-- Checks: lint, token and colour checks, 199 game tests, site tests and a smoke test, and a CI pipeline that passes on `main` and has published a release.
+- The shot, settling and physics core, the camera and the input, with tests; **not played by hand on a phone**.
+- All four games (Kep, Batto, Guli Khela, Quick Dan), complete, with computer sides, saved settings, a shot-follow camera, sound, and the pages and rules cards from the shared `content/`.
+- Two play modes: against one to three computers, and pass and play for two to five people ([`README_PLAY_MODES.md`](README_PLAY_MODES.md)), with a fifth side (rose, diamond), a hand-over screen and two sounds.
+- The website, redesigned: Home, the games, How to play, About, Contact, Privacy, Download (with a QR code) and Play (a phone, then the game), all rendered from the same `content/` as the app.
+- The Android and web builds are produced by CI. `v0.0.1` was published on 2026-10-21 (Kep only) and on 2026-10-22 (all four games); the version is now `0.0.2`, and the first merge to `main` publishes it. Only the web export has been run, in a headless browser; the APK has not been run on a real device.
+- Checks: lint, token, colour, sound and content checks, 230 game tests, site tests and a smoke test of every page, and a CI pipeline that passes.
 
 **Not built**
 
-- The shared content source, the large Home, per-game and How to play pages, Contact, the in-app pages, the site-native browser loader, and the all-platform download page.
-- Sound, saved settings, and checking the rules with people who played.
+- The site-native browser loader and the all-platform download page.
+- Real-device checks, and checking the rules with people who played.
 
 ## Order of the remaining app work
 
@@ -98,7 +98,7 @@ Deliverables ([`README_WEB_AND_APP_PLAN.md`](README_WEB_AND_APP_PLAN.md)):
 
 Deliverables: a fifth side (colour and mark), `MatchSetup` with human sides, the hand-over screen, every game checked at 2 and 5 sides, the "Who plays?" screen, two sounds, the site and About updated, then fresh screenshots for the README and the site. The full plan and exit criteria are in [`README_PLAY_MODES.md`](README_PLAY_MODES.md).
 
-**Status:** planned 2026-10-22; nothing built.
+**Status:** the app side is built (2026-10-22): `MatchSetup`, the fifth side, the hand-over screen, the Who plays? screen, End the match, both sounds, and tests that run every game to its end with two and five people. The site and About carry the same words. Open: a hand test with real people.
 
 ## Phase 7 — Release
 

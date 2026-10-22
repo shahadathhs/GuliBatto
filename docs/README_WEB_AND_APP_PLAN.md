@@ -2,7 +2,7 @@
 
 > **Purpose:** plan the pages and content that the website and the app share, how the game runs in the browser, and how people get it on Android and in the browser.  
 > **Replanned 2026-10-21.** The first version of this plan treated the site as a brochure for an Android file and the browser game as a try-out. The web and the app are now peers: both are the whole game, and both carry the same information.  
-> **Status (2026-10-22):** the site is live at <https://playgulibatto.vercel.app>, and `dev` has the redesign: Home, `/games` and four game pages, How to play, About, Contact, Privacy, Download (with a QR code) and Play (a phone, then the game), all rendered from the shared `content/`. The app has the same pages. Not yet built: the site-native browser loader and the all-platform download page. With no release published, the Download page shows "no release yet" until the next one.
+> **Status (2026-10-22):** the site is live at <https://playgulibatto.vercel.app>, with the redesign: Home, `/games` and four game pages, How to play, About, Contact, Privacy, Download (with a QR code) and Play (a phone, then the game), all rendered from the shared `content/`. The app has the same pages. Not yet built: the site-native browser loader and the all-platform download page. The Download page reads the latest release, which since 2026-10-22 has all four games.
 
 ## 1. Goal
 

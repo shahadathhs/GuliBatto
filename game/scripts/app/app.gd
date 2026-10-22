@@ -7,6 +7,8 @@ var _layer: CanvasLayer
 var _screen: Control
 var _match: MatchScene
 var _mode: StringName = &"kep"
+## Who plays the match being started or played; chosen on the "Who plays?" screen.
+var _setup: MatchSetup = MatchSetup.solo()
 var _pause: Control
 
 
@@ -58,7 +60,7 @@ func _show_modes() -> void:
 	s.rules_pressed.connect(
 		func(mode_id: StringName) -> void: _show_page(ModeRegistry.page_id(mode_id), _show_modes)
 	)
-	s.start_pressed.connect(_play)
+	s.start_pressed.connect(_choose_players)
 	_show(s)
 
 
@@ -87,13 +89,25 @@ func _follow_link(target: String, back_here: Callable, place: Callable) -> void:
 		OS.shell_open(Content.link(parts[1]))
 
 
+## After the game is chosen, who plays: the computer or people passing the device.
+func _choose_players(mode_id: StringName) -> void:
+	var s := WhoPlaysScreen.new()
+	s.back_pressed.connect(_show_modes)
+	s.play_pressed.connect(
+		func(chosen: MatchSetup) -> void:
+			_setup = chosen
+			_play(mode_id)
+	)
+	_show(s)
+
+
 ## The first time a game is started its rules card comes first; after that it starts at once.
 func _play(mode_id: StringName) -> void:
 	if Settings.has_seen_rules(mode_id):
 		_start_match(mode_id)
 		return
 	var s := RulesCard.new(mode_id, "Start", true)
-	s.back_pressed.connect(_show_modes)
+	s.back_pressed.connect(_choose_players.bind(mode_id))
 	s.primary_pressed.connect(
 		func() -> void:
 			Settings.mark_rules_seen(mode_id)
@@ -120,11 +134,13 @@ func _start_match(mode_id: StringName = &"") -> void:
 	_clear_screen()
 	_match = MatchScene.new()
 	add_child(_match)
-	_match.start(ModeRegistry.profile(_mode), ModeRegistry.rules(_mode))
+	# Connected before the match starts: pass and play asks for the first hand-over at once.
+	_match.handover_requested.connect(_show_handover)
 	_match.pause_requested.connect(_open_pause)
 	_match.help_requested.connect(_open_help)
 	_match.round_finished.connect(_on_round_finished)
 	_match.match_finished.connect(_on_match_finished)
+	_match.start(ModeRegistry.profile(_mode), ModeRegistry.rules(_mode), _setup)
 
 
 func _end_match() -> void:
@@ -139,7 +155,7 @@ func _on_round_finished(
 ) -> void:
 	if result.kind == &"match":
 		return
-	var s := RoundResultScreen.new(result, totals, _match.human_side, caption, total_word)
+	var s := RoundResultScreen.new(result, totals, _match.setup, caption, total_word)
 	s.next_pressed.connect(
 		func() -> void:
 			_clear_screen()
@@ -149,7 +165,7 @@ func _on_round_finished(
 
 
 func _on_match_finished(ranking: Array[int], details: Array[String]) -> void:
-	var s := MatchOverScreen.new(ranking, details, _match.human_side)
+	var s := MatchOverScreen.new(ranking, details, _match.setup)
 	s.rematch_pressed.connect(func() -> void: _start_match())
 	s.modes_pressed.connect(_show_modes)
 	s.menu_pressed.connect(_show_menu)
@@ -159,11 +175,11 @@ func _on_match_finished(ranking: Array[int], details: Array[String]) -> void:
 func _open_pause() -> void:
 	if _pause != null or _match == null:
 		return
-	var s := PauseScreen.new(_match.rules.can_surrender())
+	var s := PauseScreen.new(_give_up_label())
 	s.surrender_pressed.connect(
 		func() -> void:
 			_close_pause()
-			_match.controller.surrender()
+			_match.controller.give_up()
 	)
 	s.resume_pressed.connect(_close_pause)
 	s.restart_pressed.connect(func() -> void: _start_match())
@@ -171,6 +187,25 @@ func _open_pause() -> void:
 	_pause = s
 	_layer.add_child(s)
 	get_tree().paused = true
+
+
+## What the pause menu calls ending the match: a surrender against the computer where the rules
+## allow one, and "End the match" in pass and play.
+func _give_up_label() -> String:
+	if _match.setup.hands_over():
+		return "End the match"
+	return "Surrender" if _match.rules.can_surrender() else ""
+
+
+## Pass and play: the next person takes the device, then the turn goes on.
+func _show_handover(side: int) -> void:
+	var s := HandoverScreen.new(side, _match.rules.caption(_match.controller.state, _match.profile))
+	s.ready_pressed.connect(
+		func() -> void:
+			_clear_screen()
+			_match.controller.confirm_handover()
+	)
+	_show(s)
 
 
 ## The "?" in a match: the rules card over the paused match, with the full rules a tap away.
